@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+{{ template "header.html" . }}
+<div class="container">
+  <div class="card text-left">
+    <div class="card-body">
+    <form action="/user/update" class="needs-validation" novalidate method="POST">
+        <h1>Восстановление доступа на автоматизированное рабочее место </h1>
+        <div class="mb-3">
+            <label for="email">Адрес электронной почты</label>
+            <input type="email" class="form-control" placeholder="my@email.com" name ="email" required>
+                <div class="invalid-feedback">Пожалуйста укажите корректный адрес электронной почты</div>
+                <div id="email" class="form-text">На этот адрес электронной почты будет отправлено сообщение с ссылкой для изменения пароля</div>
+        </div>  
+        <div class="mb-3">
+            <a href="/" class="btn btn-outline-danger">Отменить</a>
+            <button type="submit" class="btn btn-outline-success">Восстановить пароль</button>
+            {{if .Signal }}
+            <div class="alert alert-danger" role = "alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Внимание! </strong>{{.Signal}}
+            </div>           
+            {{end}}   
+       </div> 
+    </div>
+  </div>
+</form>
+</div> 
+</form>       
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Get the forms we want to add validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })()
+    </script>
+ <script src="../static/js/bootstrap.bundle.min.js"></script>
+</body>
+{{ template "footer.html" . }}
+</html>

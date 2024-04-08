@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+{{ template "header.html" . }}
+<body>
+    {{if or (eq .User.Role.ID 3) (eq .User.Role.ID 1)}}
+               <div class="card text-left">
+                <div class="card-body">
+                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addModal"> Добавить</button>
+                </div>
+            </div>
+            <div class="card text-left">
+                <div class="card-body">
+    <table id="accounts" class="table table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
+        <thead class="thead-dark">
+            <tr c>
+                <th  class="table-primary">Подразделение</th>
+                <th  class="table-primary">Наименование</th>
+                <th  class="table-primary">Номер договора</th>
+                <th  class="table-primary">Номер лицевого счета</th>
+                <th  class="table-primary">ФЛ/ЮЛ</th>
+                <th  class="table-primary">Дата начала действия договора</th>
+                <th  class="table-primary">Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .Attribute.Entities}}
+            <tr role="button" onclick="location.href = '/account/view?id={{ .ID }}'" style="cursor: pointer;">
+                <td>{{ .DivisionName.String }}</td>
+                <td>{{ .Name.String }}</td>
+                <td>{{ if .Number.Valid}} {{ .Number.String }} {{end}}</td>
+                <td>{{ if .Code.Valid}} {{ printf "%.0f" .Code.Float64  }} {{end}}</td>
+                <td>{{ if .EE.Bool }} Юридическое лицо {{else }} Физическое лицо {{end}}</td>    
+                <td>{{ if .BeginDate.Valid }} {{.BeginDate.Time.Format "02-01-2006"}} {{end}}</td>
+                <td><a href="/account/delete?id={{ .ID }}" class="btn btn-outline-danger" role="button">Открепить</a>      
+            </tr>
+            {{ end }}
+        </tbody>   
+    </table>
+        </div>
+    </div>
+    {{else}}
+    На адрес электронной почты {{ .User.Email }} отправлено письмо с ссылкой для завершения процесса авторизации
+    {{end}}
+<!-- Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Прикрепить к аккаунту новый лицевой счет</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="/account/add" method="POST">
+                <div class="form-group">
+                    Лицевой счет:<input type="number" class="form-control" placeholder="Номер лицевого счета"
+                        name="accountnumber">
+                </div>
+                <div class="form-group">
+                  Договор:<input type="text" class="form-control" placeholder="Номер договора"
+                      name="contractnumber">
+              </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-outline-success">Добавить</button>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div> 
+  <script>
+    $(document).ready( function () {
+        $('#accounts').DataTable({language: {url:'../static/DataTables/language.json'},
+        order: [[3, 'desc']],
+    });
+    } );
+</script>
+</body>
+{{ template "footer.html" . }}
+</html>
