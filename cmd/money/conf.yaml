@@ -1,8 +1,6 @@
-RUN_ADDRESS: localhost:8080
-WORKPLACE_DB:  postgres://app:qqqQQQ123@localhost:5433/storage?sslmode=disable
-AUTH_DB: postgres://app:qqqQQQ123@localhost:5433/auth?sslmode=disable
-AUTH_TYPE: CUSTOM
+RUN_ADDRESS: :8080
+WORKPLACE_DB:  postgres://sa:qqqQQQ123@158.160.92.212:5432/datum?sslmode=disable
+AUTH_DB: postgres://sa:qqqQQQ123@158.160.92.212:5432/datum?sslmode=disable
 SSL_SERTIFICATE_RELATIVE_PATH: certFile
 SSL_SERTIFICATE_KEY_RELATIVE_PATH: certKey
-APP_NAME: Workplace
 JWT_KEY: Top_Secret_Key

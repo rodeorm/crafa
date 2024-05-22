@@ -3,7 +3,7 @@ package cookie
 import (
 	"net/http"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt"
 )
 
 // JWT ключ, используемый для создания подписи (TODO: вынести в конфиг)
