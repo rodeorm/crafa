@@ -2,11 +2,7 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"log"
 	"os"
-
-	"gopkg.in/yaml.v3"
 )
 
 var (
@@ -32,11 +28,9 @@ func configuate() (*Config, error) {
 			2. Конфигурационный файл
 	*/
 
+	config := &Config{RunAddress: os.Getenv("RUN_ADDRESS"), WorkplaceDB: os.Getenv("DATABASE_URI"), AuthDB: os.Getenv("DATABASE_URI")}
+
 	flag.Parse()
-	config, err := configFromFile()
-	if err != nil {
-		return nil, err
-	}
 	if *r != "" {
 		config.RunAddress = *r
 	}
@@ -52,6 +46,7 @@ func configuate() (*Config, error) {
 	return config, nil
 }
 
+/* obsolete
 func configFromFile() (*Config, error) {
 	file, _ := os.Open("conf.yaml")
 	defer file.Close()
@@ -66,3 +61,4 @@ func configFromFile() (*Config, error) {
 	fmt.Println(configuration)
 	return &configuration, nil
 }
+*/

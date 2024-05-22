@@ -1,6 +1,0 @@
-RUN_ADDRESS: :8080
-WORKPLACE_DB:  postgres://sa:qqqQQQ123@158.160.92.212:5432/datum?sslmode=disable
-AUTH_DB: postgres://sa:qqqQQQ123@158.160.92.212:5432/datum?sslmode=disable
-SSL_SERTIFICATE_RELATIVE_PATH: certFile
-SSL_SERTIFICATE_KEY_RELATIVE_PATH: certKey
-JWT_KEY: Top_Secret_Key
