@@ -9,5 +9,7 @@ import (
 type Server struct {
 	srv      *http.Server
 	storages *core.Storage
-	cfg      cfg.HTTPConfig
+	cfg      *cfg.ServerConfig
+
+	exit chan struct{}
 }

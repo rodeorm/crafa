@@ -35,11 +35,14 @@ func Execute(folder string, page string, w http.ResponseWriter, s *core.Session,
 	if err != nil {
 		return errors.Wrap(err, "ошибка при получении абсолютного пути для шаблонов")
 	}
-	var html *template.Template
-	html, _ = template.ParseFiles(absPath, footPath, headAuthPath, headPath, headAdminPath, headRegPath)
-	err = html.Execute(w, s)
+	html, err := template.ParseFiles(absPath, footPath, headAuthPath, headPath, headAdminPath, headRegPath)
 	if err != nil {
 		return errors.Wrap(err, "ошибка при попытке разобрать шаблоны")
+	}
+
+	err = html.Execute(w, s)
+	if err != nil {
+		return errors.Wrap(err, "ошибка при попытке запустить шаблоны")
 	}
 	return nil
 }

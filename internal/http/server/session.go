@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"money/internal/core"
-	"money/internal/crypt"
 	"money/internal/http/cookie"
 )
 
@@ -14,7 +13,7 @@ func (s *Server) getSession(r *http.Request) (*core.Session, error) {
 		return nil, err
 	}
 
-	sn, err := crypt.GetSessionFromTkn(tkn)
+	sn, err := core.GetSessionFromTkn(tkn)
 	if err != nil {
 		return nil, err
 	}

@@ -33,6 +33,6 @@ func (s *Server) regPost(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	s.storages.AddEmail(ctx, &core.Email{Login: session.Login, Email: session.Email})
+	s.storages.AddMessage(ctx, &core.Message{Login: session.Login, Destination: session.Email})
 	page.Execute("email", "verify", w, session, nil)
 }

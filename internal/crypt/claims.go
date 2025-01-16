@@ -16,7 +16,7 @@ type Claims struct {
 }
 
 // createClaims создает jwt-claims. Время жизни токена в миллисекундах!
-func createClaims(login string, sessionID, roleID, userID int, liveTime time.Duration) *Claims {
+func CreateClaims(login string, sessionID, roleID, userID int, liveTime time.Duration) *Claims {
 	return &Claims{
 		SessionID: sessionID,
 		Login:     login,

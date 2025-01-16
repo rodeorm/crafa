@@ -34,7 +34,7 @@ func (s *Server) loginPost(w http.ResponseWriter, r *http.Request) {
 		page.Execute("index", "index", w, nil, pg)
 		return
 	}
-	cookie, err := cookie.NewCookieWithSession(session, s.cfg.SecurityConfig.JWTKey, s.cfg.SecurityConfig.TokeLiveTime)
+	cookie, err := cookie.NewCookieWithSession(session, s.cfg.JWTKey, s.cfg.TokeLiveTime)
 	if err != nil {
 		sign := make(map[string]string)
 		sign["russ"] = "внутренняя ошибка сервера"

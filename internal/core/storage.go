@@ -2,6 +2,6 @@ package core
 
 type Storage struct {
 	UserStorager
-	EmailStorager
+	MessageStorager
 	SessionStorager
 }

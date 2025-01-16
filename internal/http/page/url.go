@@ -1,6 +1,6 @@
 package page
 
-func makeURLWithAttributes(origin string, params map[string]string) string {
+func MakeURLWithAttributes(origin string, params map[string]string) string {
 	var paramPart string
 
 	for key, value := range params {
