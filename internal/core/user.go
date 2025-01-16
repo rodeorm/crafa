@@ -1,15 +1,7 @@
 package core
 
-import (
-	"database/sql"
-	"time"
-)
+import "context"
 
-/*
-Учетная запись	Хранимая в компьютерной системе совокупность данных о пользователе,
-необходимая для его опознавания (аутентификации) и предоставления доступа к его личным данным и настройкам.
-Формируется в результате регистрации пользователя.
-*/
 type User struct {
 	ID         int
 	Login      string // Логин
@@ -22,10 +14,8 @@ type User struct {
 	Role       Role
 }
 
-type Notification struct {
-	UserID      int
-	Header      string
-	Message     string
-	CreatedDate time.Time
-	ReadDite    sql.NullTime
+type UserStorager interface {
+	RegUser(context.Context, *User) error
+	AuthUser(context.Context, *User) error
+	UpdateUser(context.Context, *User) error
 }

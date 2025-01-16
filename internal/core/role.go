@@ -1,14 +1,13 @@
 package core
 
-type Role struct {
-	ID     int
-	Name   string
-	Access []Section
-	Denied []Section
-}
+const (
+	Guest = iota // Гость
+	Admin        // Администратор
+	Reg          // Зарегистрированный
+	Auth         // Авторизованный
+)
 
-type Section struct {
-	ID      int
-	Name    string
-	BaseUrl string
+type Role struct {
+	ID   int
+	Name string
 }

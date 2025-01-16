@@ -1,17 +1,21 @@
 package core
 
 import (
+	"context"
 	"database/sql"
+	"time"
 )
 
 type Session struct {
-	ID   int
-	User *User
+	ID int
+	User
 
-	LogInTime      sql.NullTime
-	LogOutTime     sql.NullTime
+	LoginTime      time.Time
+	LogoutTime     sql.NullTime
 	LastActionTime sql.NullTime
+}
 
-	Device string
-	IP     string
+type SessionStorager interface {
+	AddSession(context.Context, *User) (*Session, error) // На основании данных пользователя добавляем сесиию
+	UpdateSession(context.Context, *Session) error
 }
