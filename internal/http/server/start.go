@@ -41,10 +41,10 @@ func Start(cfg *cfg.ServerConfig, wg *sync.WaitGroup, exit chan struct{}) error 
 	r.PathPrefix(staticUserDir).Handler(http.StripPrefix(staticUserDir, http.FileServer(http.Dir("./"+staticDir))))
 	admin.PathPrefix(staticAdminDir).Handler(http.StripPrefix(staticAdminDir, http.FileServer(http.Dir("./"+staticDir))))
 
-	//	Запрет на доступ
-	r.HandleFunc("/forbidden", s.forbidden)
-	//	Стартовая страница
-	r.HandleFunc("/", s.index)
+	r.HandleFunc("/forbidden", s.forbidden) //	Запрет на доступ
+	r.HandleFunc("/", s.index)              //	Стартовая страница
+	r.HandleFunc("/user/reg", s.regGet)     //	Регистрация нового пользователя
+
 	s.gracefulShutDown()
 	err := srv.ListenAndServe()
 	if err != nil {

@@ -1,6 +1,13 @@
 package server
 
-/*
+import (
+	"context"
+	"money/internal/core"
+	"money/internal/http/cookie"
+	"money/internal/http/page"
+	"net/http"
+)
+
 func (s *Server) loginPost(w http.ResponseWriter, r *http.Request) {
 	user := &core.User{Login: r.FormValue("login"), Password: r.FormValue("password")}
 	ctx := context.Background()
@@ -12,7 +19,7 @@ func (s *Server) loginPost(w http.ResponseWriter, r *http.Request) {
 		sign["err"] = err.Error()
 		pg := page.NewPage(page.WithSignals(sign))
 		w.WriteHeader(http.StatusUnauthorized)
-		page.Execute("index", "index", w, nil, pg)
+		page.Execute("index", "index", w, pg)
 		return
 	}
 
@@ -23,7 +30,7 @@ func (s *Server) loginPost(w http.ResponseWriter, r *http.Request) {
 		sign["err"] = err.Error()
 		pg := page.NewPage(page.WithSignals(sign))
 		w.WriteHeader(http.StatusUnauthorized)
-		page.Execute("index", "index", w, nil, pg)
+		page.Execute("index", "index", w, pg)
 		return
 	}
 	cookie, err := cookie.NewCookieWithSession(session, s.cfg.JWTKey, s.cfg.TokeLiveTime)
@@ -33,7 +40,7 @@ func (s *Server) loginPost(w http.ResponseWriter, r *http.Request) {
 		sign["err"] = err.Error()
 		pg := page.NewPage(page.WithSignals(sign))
 		w.WriteHeader(http.StatusUnauthorized)
-		page.Execute("index", "index", w, nil, pg)
+		page.Execute("index", "index", w, pg)
 		return
 	}
 
@@ -41,4 +48,3 @@ func (s *Server) loginPost(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 
 }
-*/
