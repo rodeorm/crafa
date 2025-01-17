@@ -42,6 +42,6 @@ func GetSessionFromTkn(tknStr string) (*Session, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Session{ID: cl.SessionID, User: User{ID: cl.UserID, Login: cl.Login}}, nil
+	return &Session{ID: cl.SessionID, User: User{ID: cl.UserID, Login: cl.Login, Role: Role{ID: cl.RoleID}}}, nil
 
 }

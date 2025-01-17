@@ -7,20 +7,16 @@ import (
 )
 
 func main() {
-	// Через этот канал горутины узнают, что надо закрываться для изящного завершения работы
+	// Через этот канал основные горутины узнают, что надо закрываться для изящного завершения работы
 	exit := make(chan struct{})
 
-	s := cfg.ServerConfig{
-		AppConfig: cfg.AppConfig{
-			RunAddress:      "localhost:8080",
-			ReadTimeout:     10,
-			WriteTimeout:    10,
-			ShutdownTimeout: 10,
-		},
+	c, err := cfg.ConfigurateServer()
+	if err != nil {
+		panic(err)
 	}
 
 	var wg sync.WaitGroup
-
-	server.Start(s, &wg, exit)
-
+	wg.Add(1)
+	server.Start(c, &wg, exit)
+	wg.Wait()
 }

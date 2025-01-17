@@ -1,13 +1,6 @@
 package server
 
-import (
-	"context"
-	"net/http"
-
-	"money/internal/core"
-	"money/internal/http/page"
-)
-
+/*
 func (s *Server) regPost(w http.ResponseWriter, r *http.Request) {
 
 	user := core.User{
@@ -36,3 +29,4 @@ func (s *Server) regPost(w http.ResponseWriter, r *http.Request) {
 	s.storages.AddMessage(ctx, &core.Message{Login: session.Login, Destination: session.Email})
 	page.Execute("email", "verify", w, session, nil)
 }
+*/

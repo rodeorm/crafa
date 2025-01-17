@@ -2,7 +2,7 @@ package page
 
 import (
 	"fmt"
-	"money/internal/core"
+	"log"
 	"net/http"
 	"path/filepath"
 	"text/template"
@@ -10,7 +10,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func Execute(folder string, page string, w http.ResponseWriter, s *core.Session, p *Page) error {
+func Execute(folder string, page string, w http.ResponseWriter, p *Page) error {
 	absPath, err := filepath.Abs(filepath.Join(".", "view", folder, fmt.Sprintf("%s.html", page))) // fmt.Sprintf("./view/%s/%s.html", folder, page))
 	if err != nil {
 		return errors.Wrap(err, "ошибка при получении абсолютного пути для шаблонов")
@@ -35,13 +35,16 @@ func Execute(folder string, page string, w http.ResponseWriter, s *core.Session,
 	if err != nil {
 		return errors.Wrap(err, "ошибка при получении абсолютного пути для шаблонов")
 	}
+
 	html, err := template.ParseFiles(absPath, footPath, headAuthPath, headPath, headAdminPath, headRegPath)
 	if err != nil {
+		log.Println("ParseFiles", err)
 		return errors.Wrap(err, "ошибка при попытке разобрать шаблоны")
 	}
 
-	err = html.Execute(w, s)
+	err = html.Execute(w, p)
 	if err != nil {
+		log.Println("Execute", err)
 		return errors.Wrap(err, "ошибка при попытке запустить шаблоны")
 	}
 	return nil

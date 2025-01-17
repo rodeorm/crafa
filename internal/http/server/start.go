@@ -1,69 +1,64 @@
 package server
 
 import (
-	"context"
 	"net/http"
-	"os"
-	"os/signal"
 	"sync"
-	"syscall"
-	"time"
 
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 
 	"money/internal/cfg"
+	"money/internal/http/middle"
 	"money/internal/logger"
 )
 
-func Start(a cfg.ServerConfig, wg *sync.WaitGroup, exit chan struct{}) error {
+func Start(cfg *cfg.ServerConfig, wg *sync.WaitGroup, exit chan struct{}) error {
+	defer wg.Done()
 	r := mux.NewRouter()
 	srv := &http.Server{
 		Handler:      r,
-		Addr:         a.RunAddress,
-		WriteTimeout: 15 * time.Second,
-		ReadTimeout:  15 * time.Second,
+		Addr:         cfg.RunAddress,
+		WriteTimeout: cfg.WriteTimeout,
+		ReadTimeout:  cfg.ReadTimeout,
 	}
-	s := Server{srv: srv, exit: exit, cfg: &a}
+	s := Server{srv: srv, exit: exit, cfg: cfg}
+	r.Use(middle.WithLog)
 
+	// То, что доступно только администратору, прошедшему аутентификацию
+	admin := r.PathPrefix("/").Subrouter()
+	admin.Use(middle.WithAdmin, middle.WithAuth, middle.WithLog)
+
+	// То, что доступно любому авторизованному пользователю, прошедшему аутентификацию
+	auth := r.PathPrefix("/").Subrouter()
+	auth.Use(middle.WithAuth, middle.WithLog)
+
+	// Обработка статичных файлов
+	staticDir := "/static/"
+	staticUserDir := "/user/static/"
+	staticAdminDir := "/admin/static/"
+
+	r.PathPrefix(staticDir).Handler(http.StripPrefix(staticDir, http.FileServer(http.Dir("./"+staticDir))))
+	r.PathPrefix(staticUserDir).Handler(http.StripPrefix(staticUserDir, http.FileServer(http.Dir("./"+staticDir))))
+	admin.PathPrefix(staticAdminDir).Handler(http.StripPrefix(staticAdminDir, http.FileServer(http.Dir("./"+staticDir))))
+
+	//	Запрет на доступ
+	r.HandleFunc("/forbidden", s.forbidden)
+	//	Стартовая страница
+	r.HandleFunc("/", s.index)
 	s.gracefulShutDown()
-	srv.ListenAndServe()
-	// ждём завершения процедуры graceful shutdown
-	<-s.exit
-	// получили оповещение о завершении
-	// например закрыть соединение с базой данных,
-	// закрыть открытые файлы
-	logger.Log.Info("http server shutdowned",
-		zap.String("Завершили изящное выключение", s.cfg.RunAddress),
-	)
-	return nil
-}
-
-func (s *Server) gracefulShutDown() {
-	sigint := make(chan os.Signal, 1)
-	signal.Notify(sigint, os.Interrupt, syscall.SIGTERM, syscall.SIGQUIT)
-	go func() {
-		// читаем из канала прерываний
-		// поскольку нужно прочитать только одно прерывание,
-		// можно обойтись без цикла
-		<-sigint
-
-		// создаем контекст с таймаутом
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		defer cancel()
-
-		// получили сигнал os.Interrupt, запускаем процедуру graceful shutdown
-		if err := s.srv.Shutdown(ctx); err != nil {
-			// ошибки закрытия Listener
-			logger.Log.Error("Server Shutdowned",
-				zap.String("Ошибка при изящном выключении", "Сервер без https"),
-			)
-		}
-		// сообщаем основному потоку,
-		// что все сетевые соединения обработаны и закрыты
-		logger.Log.Info("Server Shutdown",
-			zap.String("Начали изящное выключение", ""),
+	err := srv.ListenAndServe()
+	if err != nil {
+		logger.Log.Info("ListenAndServe",
+			zap.String("Потенциальная ошибка", err.Error()),
 		)
-		close(s.exit)
-	}()
+	}
+
+	<-s.exit // получили оповещение о необходимости завершить работу
+	// TODO: закрыть соединение с базой данных,
+	// TODO: закрыть открытые файлы
+	logger.Log.Info("http server shutdowned",
+		zap.String("Изящное выключение", "Завершено"),
+	)
+
+	return nil
 }

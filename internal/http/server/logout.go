@@ -1,14 +1,6 @@
 package server
 
-import (
-	"context"
-	"net/http"
-	"time"
-
-	"money/internal/http/cookie"
-	"money/internal/http/page"
-)
-
+/*
 func (s *Server) logOutPost(w http.ResponseWriter, r *http.Request) {
 	session, err := s.getSession(r)
 
@@ -24,3 +16,4 @@ func (s *Server) logOutPost(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, cookie.RemoveTokenFromCookie())
 	page.Execute("index", "logout", w, nil, nil)
 }
+*/

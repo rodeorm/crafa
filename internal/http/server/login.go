@@ -1,14 +1,6 @@
 package server
 
-import (
-	"context"
-	"net/http"
-
-	"money/internal/core"
-	"money/internal/http/cookie"
-	"money/internal/http/page"
-)
-
+/*
 func (s *Server) loginPost(w http.ResponseWriter, r *http.Request) {
 	user := &core.User{Login: r.FormValue("login"), Password: r.FormValue("password")}
 	ctx := context.Background()
@@ -49,3 +41,4 @@ func (s *Server) loginPost(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 
 }
+*/
