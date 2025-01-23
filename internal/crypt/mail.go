@@ -1,21 +1,40 @@
 package crypt
 
 import (
-	"fmt"
-	"math/rand"
-	"time"
+	"crypto/rand"
+	"encoding/base32"
 )
 
-var letters = []rune("abcdefghijklmnopqrstuvwxyz")
+// GetOneTimePassword возвращает одноразовый пароль
+func GetOneTimePassword() string {
+	// Создаем байтовый массив необходимой длины
+	length := 6
+	bytes := make([]byte, length)
 
-func GetOneTimePassword(n int) (string, error) {
-	if n <= 0 {
-		return "", fmt.Errorf("некорректное значение ключа %v", n)
+	// Генерируем криптостойкие случайные байты
+	_, err := rand.Read(bytes)
+	if err != nil {
+		return ""
 	}
-	rand.New(rand.NewSource((time.Now().UnixNano())))
-	b := make([]rune, n)
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
+
+	// Кодируем байты в строку Base32
+	otp := base32.StdEncoding.EncodeToString(bytes)
+	return otp[:length]
+}
+
+func GetVerifyURL(url string) string {
+	// Создаем байтовый массив необходимой длины
+	length := 6
+	bytes := make([]byte, length)
+
+	// Генерируем криптостойкие случайные байты
+	_, err := rand.Read(bytes)
+	if err != nil {
+		return ""
 	}
-	return string(b), nil
+
+	// Кодируем байты в строку Base32
+	otp := base32.StdEncoding.EncodeToString(bytes)
+
+	return url + "/" + otp[:length]
 }

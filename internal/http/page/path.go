@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 )
 
-func GetPaths() map[string]string {
+func getCommonPaths() map[string]string {
 	commonPaths := make(map[string]string)
 	commonPaths["footPath"], _ = filepath.Abs(filepath.Join(".", "view", "common", "footer.html"))
 	commonPaths["headPath"], _ = filepath.Abs(filepath.Join(".", "view", "common", "header.html"))

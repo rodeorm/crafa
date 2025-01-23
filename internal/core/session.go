@@ -16,10 +16,11 @@ type Session struct {
 	LoginTime      time.Time
 	LogoutTime     sql.NullTime
 	LastActionTime sql.NullTime
+
+	OTP string
 }
 
 type SessionStorager interface {
-	AddSession(context.Context, *User) (*Session, error) // На основании данных пользователя добавляем сесиию
 	UpdateSession(context.Context, *Session) error
 }
 
@@ -37,8 +38,8 @@ func CodeSession(s *Session, jwtKey string, tokenLiveTime time.Duration) (string
 
 }
 
-func GetSessionFromTkn(tknStr string) (*Session, error) {
-	cl, err := crypt.GetClaims(tknStr)
+func GetSessionFromTkn(tknStr, jwtKey string) (*Session, error) {
+	cl, err := crypt.GetClaims(tknStr, jwtKey)
 	if err != nil {
 		return nil, err
 	}

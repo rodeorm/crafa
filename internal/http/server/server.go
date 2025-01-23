@@ -7,9 +7,9 @@ import (
 )
 
 type Server struct {
-	srv      *http.Server
-	storages *core.Storage
-	cfg      *cfg.ServerConfig
+	srv  *http.Server
+	stgs *core.Storage
+	cfg  *cfg.Config
 
 	exit chan struct{}
 }

@@ -1,12 +1,11 @@
 package server
 
 import (
-	"log"
+	"money/internal/http/page"
 	"net/http"
 )
 
 func (s *Server) forbidden(w http.ResponseWriter, r *http.Request) {
-	log.Println("forbidden")
-	// currentInformation, _ := h.getSessionInformation(r)
-	// pages.ExecuteHTML("index", "forbidden", w, *currentInformation)
+	session, _ := s.getSession(r)
+	page.Execute("index", "forbidden", w, page.NewPage(page.WithSession(session)))
 }

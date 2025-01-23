@@ -2,6 +2,12 @@ package core
 
 type Storage struct {
 	UserStorager
-	MessageStorager
+	EmailStorager
 	SessionStorager
+	DBStorager
+}
+
+type DBStorager interface {
+	Ping() error
+	Close() error
 }

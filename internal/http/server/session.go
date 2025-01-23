@@ -13,7 +13,7 @@ func (s *Server) getSession(r *http.Request) (*core.Session, error) {
 		return nil, err
 	}
 
-	sn, err := core.GetSessionFromTkn(tkn)
+	sn, err := core.GetSessionFromTkn(tkn, s.cfg.JWTKey)
 	if err != nil {
 		return nil, err
 	}

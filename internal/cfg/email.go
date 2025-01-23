@@ -1,6 +1,6 @@
 package cfg
 
-type MessageConfig struct {
+type EmailConfig struct {
 	FillWorkerCount   int    `yaml:"FILL_WORKERS"`
 	SendWorkerCount   int    `yaml:"SEND_WORKERS"`
 	SMTPServer        string `yaml:"SMTP_SERVER"`         //Адрес сервера электронной почты

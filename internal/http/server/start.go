@@ -12,7 +12,7 @@ import (
 	"money/internal/logger"
 )
 
-func Start(cfg *cfg.ServerConfig, wg *sync.WaitGroup, exit chan struct{}) error {
+func Start(cfg *cfg.Config, wg *sync.WaitGroup, exit chan struct{}) error {
 	defer wg.Done()
 	r := mux.NewRouter()
 	srv := &http.Server{
@@ -26,11 +26,11 @@ func Start(cfg *cfg.ServerConfig, wg *sync.WaitGroup, exit chan struct{}) error 
 
 	// То, что доступно только администратору, прошедшему аутентификацию
 	admin := r.PathPrefix("/").Subrouter()
-	admin.Use(middle.WithAdmin, middle.WithAuth, middle.WithLog)
+	admin.Use(middle.WithAdmin(s.cfg.JWTKey), middle.WithLog)
 
 	// То, что доступно любому авторизованному пользователю, прошедшему аутентификацию
 	auth := r.PathPrefix("/").Subrouter()
-	auth.Use(middle.WithAuth, middle.WithLog)
+	auth.Use(middle.WithAuth(s.cfg.JWTKey), middle.WithLog)
 
 	// Обработка статичных файлов
 	staticDir := "/static/"
@@ -41,9 +41,15 @@ func Start(cfg *cfg.ServerConfig, wg *sync.WaitGroup, exit chan struct{}) error 
 	r.PathPrefix(staticUserDir).Handler(http.StripPrefix(staticUserDir, http.FileServer(http.Dir("./"+staticDir))))
 	admin.PathPrefix(staticAdminDir).Handler(http.StripPrefix(staticAdminDir, http.FileServer(http.Dir("./"+staticDir))))
 
-	r.HandleFunc("/forbidden", s.forbidden) //	Запрет на доступ
-	r.HandleFunc("/", s.index)              //	Стартовая страница
-	r.HandleFunc("/user/reg", s.regGet)     //	Регистрация нового пользователя
+	r.HandleFunc("/forbidden", s.forbidden)
+	r.HandleFunc("/", s.index).Methods(http.MethodGet)
+
+	r.HandleFunc("/user/reg", s.regGet).Methods(http.MethodGet)
+	r.HandleFunc("/user/reg", s.regPost).Methods(http.MethodPost)
+	r.HandleFunc("/user/confirm", s.confirmGet).Methods(http.MethodGet)
+	r.HandleFunc("/user/login", s.loginPost).Methods(http.MethodPost)
+	r.HandleFunc("/user/verify", s.verifyPost).Methods(http.MethodPost)
+	r.HandleFunc("/user/logout", s.logOut)
 
 	s.gracefulShutDown()
 	err := srv.ListenAndServe()

@@ -18,8 +18,8 @@ type Claims struct {
 // createClaims создает jwt-claims. Время жизни токена в миллисекундах!
 func CreateClaims(login string, sessionID, roleID, userID int, liveTime time.Duration) *Claims {
 	return &Claims{
-		SessionID: sessionID,
 		Login:     login,
+		SessionID: sessionID,
 		UserID:    userID,
 		RoleID:    roleID,
 		StandardClaims: jwt.StandardClaims{
@@ -28,7 +28,7 @@ func CreateClaims(login string, sessionID, roleID, userID int, liveTime time.Dur
 	}
 }
 
-func GetClaims(tknStr string) (*Claims, error) {
+func GetClaims(tknStr, jwtKey string) (*Claims, error) {
 	claims := &Claims{}
 	tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) {
 		return jwtKey, nil

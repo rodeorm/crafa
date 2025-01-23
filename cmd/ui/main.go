@@ -3,20 +3,14 @@ package main
 import (
 	"money/internal/cfg"
 	"money/internal/http/server"
-	"sync"
 )
 
 func main() {
-	// Через этот канал основные горутины узнают, что надо закрываться для изящного завершения работы
-	exit := make(chan struct{})
+	config, exit, wg := cfg.GetConfig()
 
-	c, err := cfg.ConfigurateServer()
-	if err != nil {
-		panic(err)
-	}
-
-	var wg sync.WaitGroup
 	wg.Add(1)
-	server.Start(c, &wg, exit)
+	go server.Start(config, wg, exit)
+	// go sender.Start(config, wg, exit)
+	// go filler.Start(config, wg, exit)
 	wg.Wait()
 }

@@ -1,7 +1,7 @@
 package crypt
 
-func GetRoleIDFromTkn(tknStr string) (int, error) {
-	cl, err := GetClaims(tknStr)
+func GetRoleIDFromTkn(tknStr, jwtKey string) (int, error) {
+	cl, err := GetClaims(tknStr, jwtKey)
 	if err != nil {
 		return 0, err
 	}

@@ -8,20 +8,28 @@ import (
 	"time"
 )
 
-var (
-	appCfg      *AppConfig
-	messageCfg  *MessageConfig
-	postgresCfg *PostgresConfig
-	securityCfg *SecurityConfig
+type Config struct {
+	AppConfig
+	PostgresConfig
+	EmailConfig
+	SecurityConfig
+}
 
+var (
+	cfg  *Config
+	exit chan struct{} // Через этот канал основные горутины узнают, что надо закрываться для изящного завершения работы
+	wg   sync.WaitGroup
 	once sync.Once
 )
 
-func Configurate() (*AppConfig, *MessageConfig, *PostgresConfig, *SecurityConfig) {
+func GetConfig() (*Config, chan struct{}, *sync.WaitGroup) {
 	once.Do(
 		func() {
-			appCfg = &AppConfig{
+			cfg = &Config{}
+
+			cfg.AppConfig = AppConfig{
 				RunAddress:      os.Getenv("RUN_ADDRESS"),
+				Domain:          "crafa.ru", //os.Getenv("DOMAIN")
 				SSLPath:         "ssl/certificate_ca.crt",
 				SSLKey:          "ssl/certificate.key",
 				ReadTimeout:     10 * time.Second,
@@ -34,7 +42,7 @@ func Configurate() (*AppConfig, *MessageConfig, *PostgresConfig, *SecurityConfig
 				smtpPort = 465
 			}
 
-			messageCfg = &MessageConfig{
+			cfg.EmailConfig = EmailConfig{
 				FillWorkerCount:   runtime.NumCPU() / 2,
 				SendWorkerCount:   runtime.NumCPU() / 2,
 				SMTPServer:        os.Getenv("SMTP_SERVER"),
@@ -45,16 +53,17 @@ func Configurate() (*AppConfig, *MessageConfig, *PostgresConfig, *SecurityConfig
 				QueueFillPeriod:   30,
 			}
 
-			postgresCfg = &PostgresConfig{
+			cfg.PostgresConfig = PostgresConfig{
 				ConnectionString: os.Getenv("POSTGRES_CONNECTION"),
 			}
 
-			securityCfg = &SecurityConfig{
-				TokeLiveTime: 1800000,
+			cfg.SecurityConfig = SecurityConfig{
+				TokeLiveTime: 1800000, // os.Getenv("TOKEN_LIVE_TIME")
 				JWTKey:       os.Getenv("JWK_KEY"),
 			}
 
+			exit = make(chan struct{})
 		})
 
-	return appCfg, messageCfg, postgresCfg, securityCfg
+	return cfg, exit, &wg
 }

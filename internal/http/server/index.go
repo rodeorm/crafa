@@ -10,7 +10,6 @@ func (s *Server) index(w http.ResponseWriter, r *http.Request) {
 
 	session, err := s.getSession(r)
 	if err != nil {
-
 		page.Execute("index", "index", w, page.NewPage())
 		return
 	}
@@ -19,10 +18,10 @@ func (s *Server) index(w http.ResponseWriter, r *http.Request) {
 	case core.Guest:
 		page.Execute("index", "index", w, p)
 	case core.Admin:
-		page.Execute("admin", "accountList", w, p)
+		page.Execute("admin", "index", w, p)
 	case core.Reg:
-		page.Execute("index", "indexUnAuth", w, p)
+		page.Execute("index", "reg", w, p)
 	case core.Auth:
-		page.Execute("index", "indexAuth", w, p)
+		page.Execute("index", "auth", w, p)
 	}
 }

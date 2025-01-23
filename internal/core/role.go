@@ -5,11 +5,11 @@ const (
 	Admin           // Администратор
 	Reg             // Зарегистрированный
 	Auth            // Авторизованный
-	Support         // Техническая поддержка
 	Employee        // Сотрудник
 )
 
 type Role struct {
-	ID   int
-	Name string
+	ID    int
+	Name  string
+	Const string
 }
