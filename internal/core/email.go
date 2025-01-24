@@ -5,6 +5,8 @@ import (
 	"database/sql"
 
 	"money/internal/crypt"
+
+	"gopkg.in/gomail.v2"
 )
 
 const (
@@ -27,6 +29,8 @@ type Email struct {
 
 	Used   bool // OTP из сообщения уже был использован
 	Queued bool // Сообщение в очереди на отправку
+
+	GMS *gomail.Message
 }
 
 type EmailStorager interface {

@@ -34,6 +34,15 @@ func (s *postgresStorage) prepareStatements() error {
 		return err
 	}
 
+	updateEmail, err := s.DB.Preparex(`UPDATE msg.Emails SET Used = $2, Queued = $3, SendTime = $4 WHERE id = $1;`)
+	if err != nil {
+		return err
+	}
+	selectEmailUnsended, err := s.DB.Preparex(`SELECT id, userid AS "user.id", text, email AS destination FROM msg.Emails  WHERE SendTime IS NULL AND (Queued IS NULL OR Queued = false);`)
+	if err != nil {
+		return err
+	}
+
 	/*
 		stmtUpdateUser, err := s.DB.Preparex(`UPDATE cmn.Users SET name = $2, email = $3, phone = $4, password = $5, verified = $6 WHERE ID = $1;`)
 		if err != nil {
@@ -65,29 +74,14 @@ func (s *postgresStorage) prepareStatements() error {
 		if err != nil {
 			return err
 		}
-		stmtUpdateEmail, err := s.DB.Preparex(`UPDATE cmn.Emails SET OTP = $2, Email = $3, SendedDate = $4, Used = $5, Queued = $6 WHERE id = $1;`)
-		if err != nil {
-			return err
-		}
-		stmpSelectEmailForSending, err := s.DB.Preparex(`SELECT id, userid, otp, email AS destination FROM cmn.Emails WHERE SendedDate IS NULL AND (Queued IS NULL OR Queued = false);`)
-		if err != nil {
-			return err
-		}
+
 	*/
 	s.preparedStatements["insertUser"] = insertUser
 	s.preparedStatements["insertEmail"] = insertEmail
 	s.preparedStatements["insertSession"] = insertSession
 	s.preparedStatements["selectUser"] = selectUser
-	/*
-		s.preparedStatements["UpdateUser"] = stmtUpdateUser
-		s.preparedStatements["AuthUser"] = stmtAuthUser
-		s.preparedStatements["VerifyUser"] = stmtVerifyUser
-		s.preparedStatements["StartSession"] = stmtStartSession
-		s.preparedStatements["UpdateSession"] = stmtUpdateSession
-		s.preparedStatements["EndSession"] = stmtEndSession
-		s.preparedStatements["AddEmail"] = stmtAddEmail
-		s.preparedStatements["UpdateEmail"] = stmtUpdateEmail
-		s.preparedStatements["SelectEmailForSending"] = stmpSelectEmailForSending
-	*/
+	s.preparedStatements["updateEmail"] = updateEmail
+	s.preparedStatements["selectEmailUnsended"] = selectEmailUnsended
+
 	return nil
 }
