@@ -16,7 +16,7 @@ func WithAdmin(jwtKey string) func(http.Handler) http.Handler {
 				return
 			}
 			roleID, err := crypt.GetRoleIDFromTkn(tkn, jwtKey)
-			if err != nil || roleID != core.Admin {
+			if err != nil || roleID != core.RoleAdmin {
 				http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 				return
 			}

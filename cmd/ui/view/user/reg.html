@@ -2,8 +2,8 @@
 <html lang="en">
 {{ template "header.html" . }}
 <div class="container">
-    <form action="/user/reg" class="needs-validation" novalidate method="POST">
-        <h1>Регистрация пользователя</h1>
+   <form action="/user/reg" class="needs-validation" novalidate method="POST">
+    <h1>Регистрация пользователя</h1>
         {{  if .Attributes }}
         <div class="row align-items-start">
             <div class="col">
@@ -29,8 +29,8 @@
             <div class="col">
                 <label for="familyname">Фамилия:</label>
                 <input 
-                {{if .Attributes.User.Surname }}
-                            value={{.Attributes.User.Surname}} 
+                {{if .Attributes.User.FamilyName }}
+                            value={{.Attributes.User.FamilyName}} 
                     {{end}}                  
                 type="text" class="form-control" placeholder="Иванов" name ="familyname" required>
             <div class="invalid-feedback">Пожалуйста укажите фамилию</div>
@@ -47,8 +47,8 @@
             <div class="col">
                 <label for="patronname">Отчество:</label>
                 <input 
-                {{if .Attributes.User.Patronymic }}
-                            value={{.Attributes.User.Patronymic}} 
+                {{if .Attributes.User.PatronName }}
+                            value={{.Attributes.User.PatronName}} 
                     {{end}} 
                 
                 type="text" class="form-control" placeholder="Иванович" name ="patronname" required>
@@ -60,7 +60,7 @@
             <label for="email">Адрес электронной почты:</label>
             <input 
             {{if .Attributes.User.Email }}
-                        value={{.User.Email}} 
+                        value={{.Attributes.User.Email }} 
             {{end}}   
           type="email" class="form-control" placeholder="priemn@dvec.ru" name ="email" required>
         <div class="invalid-feedback">Пожалуйста укажите корректный адрес электронной почты</div>
@@ -127,25 +127,22 @@
                 <div class="invalid-feedback">Пожалуйста укажите корректный номер телефона (без +7 или 8)</div>
             </div>  
         </div>
- </div>
+    </div>
  {{ end }}
 
+ <div class="d-flex flex-column flex-sm-row align-items-center">
+    <button type="submit" class="btn btn-outline-success mb-2 mb-sm-0 me-sm-2" style="min-width: 150px;">Зарегистрироваться</button>
+    {{if .Signals }}
+    <div class="alert alert-danger mb-0" role="alert" style="flex: 1; display: flex; align-items: center;">
+        <strong>{{.Signals.Russ}}:</strong>&nbsp;{{.Signals.Err}}
+    </div>
+    {{end}}
+</div>
+ </div>
 
-
- <div class="form-group">        <button type="submit" class="btn btn-outline-success">Зарегистрироваться</button></div>
-  
-    <div class="form-group"> 
-        {{if .Signals }}
-        <div class="alert alert-danger" role = "alert">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Внимание! </strong>{{.Signal}}
-          </div>            
-        {{end}}
-    </div>   
 </div>   
 </form>
-</div> 
-</form>       
+</div>      
     <script>
         (function () {
             'use strict';

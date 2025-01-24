@@ -8,11 +8,12 @@ import (
 	"go.uber.org/zap"
 
 	"money/internal/cfg"
+	"money/internal/core"
 	"money/internal/http/middle"
 	"money/internal/logger"
 )
 
-func Start(cfg *cfg.Config, wg *sync.WaitGroup, exit chan struct{}) error {
+func Start(cfg *cfg.Config, stgs *core.Storage, wg *sync.WaitGroup, exit chan struct{}) error {
 	defer wg.Done()
 	r := mux.NewRouter()
 	srv := &http.Server{
@@ -21,7 +22,7 @@ func Start(cfg *cfg.Config, wg *sync.WaitGroup, exit chan struct{}) error {
 		WriteTimeout: cfg.WriteTimeout,
 		ReadTimeout:  cfg.ReadTimeout,
 	}
-	s := Server{srv: srv, exit: exit, cfg: cfg}
+	s := Server{srv: srv, exit: exit, cfg: cfg, stgs: stgs}
 	r.Use(middle.WithLog)
 
 	// То, что доступно только администратору, прошедшему аутентификацию
@@ -46,16 +47,20 @@ func Start(cfg *cfg.Config, wg *sync.WaitGroup, exit chan struct{}) error {
 
 	r.HandleFunc("/user/reg", s.regGet).Methods(http.MethodGet)
 	r.HandleFunc("/user/reg", s.regPost).Methods(http.MethodPost)
+	r.HandleFunc("/user/send", s.send)
 	r.HandleFunc("/user/confirm", s.confirmGet).Methods(http.MethodGet)
 	r.HandleFunc("/user/login", s.loginPost).Methods(http.MethodPost)
 	r.HandleFunc("/user/verify", s.verifyPost).Methods(http.MethodPost)
 	r.HandleFunc("/user/logout", s.logOut)
-
+	logger.Log.Info("HTTP Server",
+		zap.String("Порт", cfg.RunAddress),
+		zap.String("БД", cfg.ConnectionString),
+	)
 	s.gracefulShutDown()
 	err := srv.ListenAndServe()
 	if err != nil {
-		logger.Log.Info("ListenAndServe",
-			zap.String("Потенциальная ошибка", err.Error()),
+		logger.Log.Info("HTTP Server",
+			zap.String("Порт", err.Error()),
 		)
 	}
 

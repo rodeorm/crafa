@@ -1,11 +1,11 @@
 package core
 
 const (
-	Guest    = iota // Гость
-	Admin           // Администратор
-	Reg             // Зарегистрированный
-	Auth            // Авторизованный
-	Employee        // Сотрудник
+	RoleGuest    = iota // Гость
+	RoleAdmin           // Администратор
+	RoleReg             // Зарегистрированный
+	RoleAuth            // Авторизованный
+	RoleEmployee        // Сотрудник
 )
 
 type Role struct {

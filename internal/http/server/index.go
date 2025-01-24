@@ -15,13 +15,13 @@ func (s *Server) index(w http.ResponseWriter, r *http.Request) {
 	}
 	p := page.NewPage(page.WithSession(session))
 	switch session.User.Role.ID {
-	case core.Guest:
+	case core.RoleGuest:
 		page.Execute("index", "index", w, p)
-	case core.Admin:
+	case core.RoleAdmin:
 		page.Execute("admin", "index", w, p)
-	case core.Reg:
-		page.Execute("index", "reg", w, p)
-	case core.Auth:
+	case core.RoleReg:
+		http.Redirect(w, r, "/user/send", http.StatusTemporaryRedirect)
+	case core.RoleAuth:
 		page.Execute("index", "auth", w, p)
 	}
 }

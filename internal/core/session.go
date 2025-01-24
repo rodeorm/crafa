@@ -21,7 +21,7 @@ type Session struct {
 }
 
 type SessionStorager interface {
-	UpdateSession(context.Context, *Session) error
+	UpdateSession(context.Context, *Session) error // Обновление сессии (совмещенное с проверкой)
 }
 
 // CodeSession кодирует сессию в строку c использованием JWT

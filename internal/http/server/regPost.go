@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"log"
 	"money/internal/core"
 	"money/internal/http/cookie"
 	"money/internal/http/page"
@@ -15,24 +16,23 @@ func (s *Server) regPost(w http.ResponseWriter, r *http.Request) {
 		Login:      r.FormValue("login"),
 		Password:   r.FormValue("password"),
 		Name:       r.FormValue("name"),
-		Patronymic: r.FormValue("patronname"),
-		Surname:    r.FormValue("familyname"),
+		PatronName: r.FormValue("patronname"),
+		FamilyName: r.FormValue("familyname"),
 		Email:      r.FormValue("email"),
 		Phone:      r.FormValue("phonenumber"),
-		Role:       core.Role{ID: core.Reg},
 	}
 	// Регистрируем пользователя. Получаем идентификатор пользователя и идентификатор сессии
-	session, err := s.stgs.RegUser(context.TODO(), &user)
+	session, err := s.stgs.RegUser(context.TODO(), &user, s.cfg.Domain)
 	if err != nil {
 		sign := make(map[string]string)
-		sign["russ"] = "Ошибка при регистрации"
-		sign["err"] = err.Error()
-
+		sign["Russ"] = "Ошибка при регистрации"
+		sign["Err"] = err.Error()
 		at := make(map[string]any)
-		at["user"] = user
+		at["User"] = user
 		pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at))
+		log.Println(pg)
 		w.WriteHeader(http.StatusUnauthorized)
-		page.Execute("index", "index", w, pg)
+		page.Execute("user", "reg", w, pg)
 		return
 	}
 	// Создаем jwt-токен и сохраняем его в куках
@@ -43,14 +43,14 @@ func (s *Server) regPost(w http.ResponseWriter, r *http.Request) {
 		sign["err"] = err.Error()
 
 		at := make(map[string]any)
-		at["user"] = user
+		at["User"] = user
 		pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at))
 		w.WriteHeader(http.StatusUnauthorized)
-		page.Execute("index", "index", w, pg)
+		page.Execute("user", "reg", w, pg)
 		return
 	}
+
 	http.SetCookie(w, ck)
 
-	// Редирект на страницу верификации email
-
+	http.Redirect(w, r, "/user/send", http.StatusTemporaryRedirect)
 }

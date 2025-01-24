@@ -27,6 +27,7 @@ func GetPostgresStorage(connectionString, cryptKey string) (*postgresStorage, er
 		func() {
 			db, dbErr = sqlx.Open("pgx", connectionString)
 			if dbErr != nil {
+
 				return
 			}
 			ps = &postgresStorage{DB: db, preparedStatements: map[string]*sqlx.Stmt{}}

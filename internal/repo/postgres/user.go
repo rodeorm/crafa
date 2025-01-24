@@ -2,184 +2,62 @@ package postgres
 
 import (
 	"context"
-	"database/sql"
-	"fmt"
 	"log"
 	"money/internal/core"
 	"money/internal/crypt"
-	"money/internal/logger"
-
-	"go.uber.org/zap"
+	"time"
 )
 
 // RegUser создает пользователя в БД
-func (s *postgresStorage) RegUser(ctx context.Context, u *core.User) (*core.Email, *core.Session, error) {
+func (s *postgresStorage) RegUser(ctx context.Context, u *core.User, domain string) (*core.Session, error) {
 	passwordHash, err := crypt.HashPassword(u.Password)
 	if err != nil {
-		return nil, nil, err
+		log.Println("RegUser 1", err)
+		return nil, err
 	}
 
-	err = s.preparedStatements["RegUser"].GetContext(ctx, &u.ID, u.Login, u.Name, u.Email, u.Phone, passwordHash)
+	tx, err := s.DB.BeginTxx(ctx, nil)
 	if err != nil {
-		return nil, nil, err
+		log.Println("RegUser 2", err)
+		return nil, err
 	}
 
-	// Добавление аутентификационных сообщений не мешает регистрации, чтобы можно было подтвердить адрес и позднее. Время жизни токена ограничено.
-	// Поэтому в транзакцию не завернуто, и ошибка не возвращается
-	m := core.NewAuthEmail(*u)
-
-	err = s.AddEmail(ctx, m)
+	err = tx.Stmtx(s.preparedStatements["insertUser"]).GetContext(ctx, &u.ID, core.RoleReg, u.Login, passwordHash, u.Name, u.FamilyName, u.PatronName, u.Email, u.Phone)
 	if err != nil {
-		logger.Log.Error("Ошибка при попытке добавить в БД новое авторизационное сообщение при регистрации пользователя",
-			zap.String(u.Login, fmt.Sprintf("Для email %s: %v", u.Email, err)),
-		)
+		log.Println("RegUser 3", err)
+		tx.Rollback()
+		return nil, err
 	}
-	return nil, nil, err
+
+	m := core.NewConfirmEmail(*u, domain)
+	err = tx.Stmtx(s.preparedStatements["insertEmail"]).GetContext(ctx, &m.ID, core.MessageConfirm, u.ID, m.Text, m.Email)
+	if err != nil {
+		log.Println("RegUser 4", err)
+		tx.Rollback()
+		return nil, err
+	}
+
+	u.Role = core.Role{ID: core.RoleReg}
+
+	session := &core.Session{User: *u}
+	err = tx.Stmtx(s.preparedStatements["insertSession"]).GetContext(ctx, &session.ID, u.ID, time.Now(), time.Now())
+	if err != nil {
+		log.Println("RegUser 5", err)
+		tx.Rollback()
+		return nil, err
+	}
+
+	tx.Commit()
+
+	return session, nil
 }
 
 // Аутентифицирует пользователя на основании данных в БД и возвращает все его данные
-func (s *postgresStorage) AuthUser(ctx context.Context, u *core.User) bool {
-	pass := u.Password
-	err := s.preparedStatements["AuthUser"].GetContext(ctx, u, u.Login)
-
-	log.Println(u)
-
-	if err != nil {
-		logger.Log.Error("Ошибка при аутентификации пользователя",
-			zap.String(u.Login, err.Error()),
-		)
-		return false
-	}
-	authenticated := crypt.CheckPasswordHash(pass, u.Password)
-
-	if authenticated {
-		logger.Log.Info("Пользователь прошел аутентификацию",
-			zap.String("Успешно", u.Login),
-		)
-	} else {
-		logger.Log.Info("Пользователь прошел аутентификацию",
-			zap.String("Провал", u.Login),
-		)
-		return false
-	}
-
-	// Добавление аутентификационных сообщений не мешает авторизации, чтобы можно было использовать OTP и позднее. Время жизни токена ограничено.
-	// Поэтому в транзакцию не завернуто, и ошибка не возвращается
-	// TODO: Добавить сложные проверки (ограничение числа попыток ввода, ограничение времени запроса повторного сообщения и т.п. и т.д.)
-
-	m := core.NewAuthEmail(*u)
-	err = s.AddEmail(ctx, m)
-	if err != nil {
-		logger.Log.Error("Ошибка при попытке добавить в БД новое авторизационное сообщение при аутентификации и авторизации пользователя",
-			zap.String(u.Login, fmt.Sprintf("Для email %s: %v", u.Email, err)),
-		)
-	}
-
-	return authenticated
+func (s *postgresStorage) BaseAuthUser(ctx context.Context, u *core.User) bool {
+	return false
 }
 
-func (s *postgresStorage) VerifyEmail(ctx context.Context, otp, otpLiveTime int, u *core.User) bool {
-	em := &core.Email{}
-
-	tx := s.DB.MustBegin()
-	defer func() {
-		if r := recover(); r != nil {
-			tx.Rollback()
-		}
-	}()
-
-	checkUser := `SELECT u.id FROM cmn.Users AS u WHERE u.Login = $1;`
-	checkOTP := `SELECT e.id FROM cmn.emails AS e WHERE e.UserID = $1 AND e.sendeddate + ($2 * INTERVAL '1 hour') > NOW() AND e.Used = false AND e.OTP = $3;`
-	useOTP := `UPDATE cmn.emails SET Used = true WHERE id = $1`
-
-	err := tx.GetContext(ctx, &u.ID, checkUser, u.Login)
-	if err != nil && err != sql.ErrNoRows {
-		tx.Rollback()
-		logger.Log.Error("ошибка при проверке пользователя", zap.String("error", err.Error()))
-		return false
-	}
-
-	err = tx.GetContext(ctx, &em.ID, checkOTP, u.ID, otpLiveTime, otp)
-	if err != nil && err != sql.ErrNoRows {
-		tx.Rollback()
-		logger.Log.Error("ошибка при проверке OTP", zap.String("error", err.Error()))
-		return false
-	}
-
-	if em.ID == 0 {
-		tx.Rollback()
-		return false
-	}
-
-	_, err = tx.ExecContext(ctx, useOTP, em.ID)
-	if err != nil {
-		tx.Rollback()
-		logger.Log.Error("ошибка при обновлении OTP", zap.String("error", err.Error()))
-		return false
-	}
-
-	if err = tx.Commit(); err != nil {
-		logger.Log.Error("ошибка при фиксации транзакции", zap.String("error", err.Error()))
-		log.Println("HERE 3")
-		return false
-	}
-
-	return true
-}
-
-func (s *postgresStorage) VerifyAuth(ctx context.Context, otp string, otpLiveTime int, u *core.User) bool {
-	em := &core.Email{}
-
-	tx := s.DB.MustBegin()
-	defer func() {
-		if r := recover(); r != nil {
-			tx.Rollback()
-		}
-	}()
-
-	checkUser := `SELECT u.id FROM cmn.Users AS u WHERE u.Login = $1;`
-	checkOTP := `SELECT e.id FROM cmn.emails AS e WHERE e.UserID = $1 AND e.sendeddate + ($2 * INTERVAL '1 hour') > NOW() AND e.Used = false AND e.OTP = $3;`
-	useOTP := `UPDATE cmn.emails SET Used = true WHERE id = $1`
-
-	err := tx.GetContext(ctx, &u.ID, checkUser, u.Login)
-	if err != nil && err != sql.ErrNoRows {
-		tx.Rollback()
-		logger.Log.Error("ошибка при проверке пользователя", zap.String("error", err.Error()))
-		return false
-	}
-
-	err = tx.GetContext(ctx, &em.ID, checkOTP, u.ID, otpLiveTime, otp)
-	if err != nil && err != sql.ErrNoRows {
-		tx.Rollback()
-		logger.Log.Error("ошибка при проверке OTP", zap.String("error", err.Error()))
-		return false
-	}
-
-	if em.ID == 0 {
-		tx.Rollback()
-		return false
-	}
-
-	_, err = tx.ExecContext(ctx, useOTP, em.ID)
-	if err != nil {
-		tx.Rollback()
-		logger.Log.Error("ошибка при обновлении OTP", zap.String("error", err.Error()))
-		return false
-	}
-
-	if err = tx.Commit(); err != nil {
-		logger.Log.Error("ошибка при фиксации транзакции", zap.String("error", err.Error()))
-		log.Println("HERE 3")
-		return false
-	}
-
-	return true
-}
-
-func (s *postgresStorage) UpdateUser(context.Context, *core.User) error {
-
-	return nil
-}
-func (s *postgresStorage) DeleteUser(context.Context, *core.User) error {
-	return nil
+// Аутентифицирует пользователя на основании данных в БД и возвращает все его данные
+func (s *postgresStorage) GetUser(ctx context.Context, u *core.User) error {
+	return s.preparedStatements["selectUser"].GetContext(ctx, u, u.ID)
 }

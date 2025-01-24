@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	Verify = iota
-	OTP
-	Notify
+	MessageConfirm = iota + 1
+	MessageAuth
+	MessageNotify
 )
 
 // Email базовое сообщение
@@ -35,12 +35,12 @@ type EmailStorager interface {
 	UpdateEmail(context.Context, *Email) error
 }
 
-// NewAuthMessage создает новое сообщение
+// NewAuthMessage создает новое сообщение для аутентификации
 func NewAuthEmail(u User) *Email {
 	return &Email{User: u, Text: crypt.GetOneTimePassword()}
 }
 
-// NewVerifyEmail создает новое сообщение
-func NewVerifyEmail(u User, url string) *Email {
+// NewConfirmEmail создает новое сообщение для подтверждения адреса электронной почты
+func NewConfirmEmail(u User, url string) *Email {
 	return &Email{User: u, Text: crypt.GetVerifyURL(url)}
 }

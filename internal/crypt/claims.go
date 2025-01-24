@@ -31,11 +31,15 @@ func CreateClaims(login string, sessionID, roleID, userID int, liveTime time.Dur
 func GetClaims(tknStr, jwtKey string) (*Claims, error) {
 	claims := &Claims{}
 	tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwtKey, nil
+		// Проверка алгоритма токена по умолчанию и возврат ключа
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("неверный метод подписи")
+		}
+		return []byte(jwtKey), nil
 	})
 
 	if err != nil || !tkn.Valid {
-		return nil, fmt.Errorf("невалидный токен %v", err)
+		return nil, fmt.Errorf("невалидный токен: %v", err)
 	}
 	return claims, nil
 }

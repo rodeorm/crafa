@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <body>
+        {{ template "header.html" . }}
+    
+        <div class="container d-flex flex-column justify-content-center">
+            <div class="jumbotron text-center">
+                <p class="lead">Регистрация завершена</p>
+                <hr>
+                <p class="lead">На указанный адрес электронной почты <strong>{{.Session.User.Email }}</strong> отправлено письмо с ссылкой для подтверждения <strong>{{.Session.User.Login}}</strong></p>
+                <p class="lead">Дальнейшая работа невозможна без подтверждения электронной почты. В случае некорректного адреса электронной почты, пожалуйста, зарегистрируйтесь повторно.</p>
+                <p class="lead">
+                    Если необходимо повторно отправить письмо, нажмите <a class="btn btn-outline-primary btn-lg" href="/user/email?userid={{.Session.User.ID}}">сюда</a> для повторной отправки сообщения.
+                </p>
+            </div>
+        </div>
+    
+        {{ template "footer.html" . }}
+    </body>
+    </html>
+</html>
