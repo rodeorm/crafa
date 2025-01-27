@@ -16,4 +16,4 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 
 ENV TZ Europe/Moscow
-ENTRYPOINT ["/app/ui"]
+ENTRYPOINT ["/app/money"]
