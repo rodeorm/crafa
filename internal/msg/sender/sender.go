@@ -1,7 +1,6 @@
 package sender
 
 import (
-	"context"
 	"fmt"
 	"sync"
 	"time"
@@ -16,33 +15,34 @@ import (
 
 // Sender - рабочий, отправляющий сообщения
 type Sender struct {
-	emailStorager core.EmailStorager //16 байт. Хранилище сообщений
-	from          string             //16 байт. Отправитель
-	fileName      string             //16 байт. Имя файла вложения
-	queue         *core.Queue        //8 байт. Очередь сообщений
-	dialer        *gomail.Dialer     //8 байт. Отправитель
-	ID            int                //8 байт. Идентификатор воркера
-	period        int                //8 байт. Периодичность отправки сообщений
+	msgStorager core.MessageStorager // Хранилище сообщений
+	domain      string               // Домен
+	from        string               // Отправитель
+	fileName    string               // Имя файла вложения
+	queue       *core.Queue          // Очередь сообщений
+	emailDialer *gomail.Dialer       // Отправитель
+	ID          int                  // Идентификатор воркера
+	period      int                  // Периодичность отправки сообщений
 }
 
 // NewSender создает новый Sender
 // Каждый Sender может рассылать сообщения через свой собственный smtp сервер
-func NewSender(queue *core.Queue, storage core.EmailStorager, id, smtpPort, prd int, smtpServer, smtpLogin, smtpPassword, from, fileName string) *Sender {
+func NewSender(queue *core.Queue, storage core.MessageStorager, id, smtpPort, prd int, smtpServer, smtpLogin, smtpPassword, from, fileName, domain string) *Sender {
 	s := Sender{
-		ID:            id,
-		queue:         queue,
-		emailStorager: storage,
-		period:        prd,
-		from:          from,
-		fileName:      fileName,
+		ID:          id,
+		queue:       queue,
+		msgStorager: storage,
+		period:      prd,
+		from:        from,
+		fileName:    fileName,
 	}
 
-	s.dialer = gomail.NewDialer(smtpServer, smtpPort, smtpLogin, smtpPassword)
+	s.emailDialer = gomail.NewDialer(smtpServer, smtpPort, smtpLogin, smtpPassword)
 
 	return &s
 }
 
-func Start(config *cfg.EmailConfig, storage core.EmailStorager, wg *sync.WaitGroup, exit chan struct{}) {
+func Start(config *cfg.Config, storage core.MessageStorager, wg *sync.WaitGroup, exit chan struct{}) {
 	for i := range config.SendWorkerCount {
 		// Асинхронно запускаем email сендеры
 		s := NewSender(
@@ -56,6 +56,7 @@ func Start(config *cfg.EmailConfig, storage core.EmailStorager, wg *sync.WaitGro
 			config.SMTPPass,
 			config.From,
 			config.File,
+			config.Domain,
 		)
 
 		go s.StartSending(exit, wg)
@@ -110,23 +111,4 @@ func (s *Sender) StartSending(exit chan struct{}, wg *sync.WaitGroup) {
 		}
 
 	}
-}
-
-// Send отправляет сообщение
-func (s *Sender) Send(ms *core.Email) error {
-	email := s.NewEmail(s.from, ms)
-
-	if err := s.dialer.DialAndSend(email.GMS); err != nil {
-		logger.Log.Error("Send",
-			zap.String(fmt.Sprintf("Сендер %d не отправил сообщение", s.ID), err.Error()),
-		)
-		return err
-	}
-
-	ctx := context.TODO()
-	ms.SendedDate.Time = time.Now()
-	ms.SendedDate.Valid = true
-	s.emailStorager.UpdateEmail(ctx, ms)
-
-	return nil
 }

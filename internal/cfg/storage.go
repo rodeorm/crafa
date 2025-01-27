@@ -11,7 +11,7 @@ func GetStorages(p PostgresConfig, s SecurityConfig) (*core.Storage, error) {
 		return nil, err
 	}
 
-	cs := &core.Storage{}
-	cs.UserStorager = ps
+	cs := &core.Storage{UserStorager: ps, MessageStorager: ps}
+
 	return cs, err
 }

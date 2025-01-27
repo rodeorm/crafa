@@ -4,7 +4,7 @@ import "context"
 
 // User - это сесияя для пользователя
 type User struct {
-	ID         int
+	ID         int    `db:"user.id"`
 	Login      string // Логин
 	FamilyName string // Фамилия
 	Name       string // Имя

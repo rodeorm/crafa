@@ -6,11 +6,11 @@ import (
 
 // Queue - очередь на отправку сообщений
 type Queue struct {
-	ch chan *Email // Канал для отправки сообщений
+	ch chan *Message // Канал для отправки сообщений
 }
 
 // Push помещает сообщение в очередь
-func (q *Queue) Push(m *Email) error {
+func (q *Queue) Push(m *Message) error {
 	var wg sync.WaitGroup
 
 	wg.Add(1)
@@ -27,13 +27,13 @@ func (q *Queue) Push(m *Email) error {
 func NewQueue(n int) *Queue {
 
 	q := &Queue{
-		ch: make(chan *Email, n),
+		ch: make(chan *Message, n),
 	}
 	return q
 }
 
 // PopWait извлекает сообщение из очереди на отправку
-func (q *Queue) PopWait() *Email {
+func (q *Queue) PopWait() *Message {
 	select {
 	case val := <-q.ch:
 		return val

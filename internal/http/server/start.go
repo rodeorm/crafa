@@ -56,7 +56,7 @@ func Start(cfg *cfg.Config, stgs *core.Storage, wg *sync.WaitGroup, exit chan st
 		zap.String("Порт", cfg.RunAddress),
 		zap.String("БД", cfg.ConnectionString),
 	)
-	s.gracefulShutDown()
+	s.gracefulShutdown()
 	err := srv.ListenAndServe()
 	if err != nil {
 		logger.Log.Info("HTTP Server",
@@ -65,9 +65,12 @@ func Start(cfg *cfg.Config, stgs *core.Storage, wg *sync.WaitGroup, exit chan st
 	}
 
 	<-s.exit // получили оповещение о необходимости завершить работу
-	// TODO: закрыть соединение с базой данных,
+
+	// TODO: закрыть соединение с базой данных
+	// s.stgs.DBStorager.Close()
 	// TODO: закрыть открытые файлы
-	logger.Log.Info("http server shutdowned",
+
+	logger.Log.Info("HTTP Server",
 		zap.String("Изящное выключение", "Завершено"),
 	)
 

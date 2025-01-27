@@ -29,8 +29,7 @@ func (s *postgresStorage) RegUser(ctx context.Context, u *core.User, domain stri
 		return nil, err
 	}
 
-	m := core.NewConfirmEmail(*u, domain)
-	err = tx.Stmtx(s.preparedStatements["insertEmail"]).GetContext(ctx, &m.ID, core.MessageConfirm, u.ID, m.Text, m.Email)
+	_, err = tx.Stmtx(s.preparedStatements["insertMsg"]).ExecContext(ctx, core.MessageTypeConfirm, core.MessageCategoryEmail, u.ID, crypt.GetOneTimePassword(), u.Email)
 	if err != nil {
 		log.Println("RegUser 4", err)
 		tx.Rollback()

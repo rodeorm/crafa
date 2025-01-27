@@ -15,13 +15,13 @@ import (
 
 // Filler - рабочий, заполняющий очередь сообщений
 type Filler struct {
-	emailStorager core.EmailStorager //16 байт. Хранилище сообщений
-	queue         *core.Queue        //8 байт. Очередь сообщений
-	ID            int                //8 байт. Идентификатор воркера
-	period        int                //8 байт. Периодичность наполнения сообщений
+	msgStorager core.MessageStorager //16 байт. Хранилище сообщений
+	queue       *core.Queue          //8 байт. Очередь сообщений
+	ID          int                  //8 байт. Идентификатор воркера
+	period      int                  //8 байт. Периодичность наполнения сообщений
 }
 
-func Start(config *cfg.EmailConfig, es core.EmailStorager, wg *sync.WaitGroup, exit chan struct{}) {
+func Start(config *cfg.Config, es core.MessageStorager, wg *sync.WaitGroup, exit chan struct{}) {
 	// Асинхронно запускаем наполнитель очереди
 	s := NewFiller(
 		config.EmailQueue,
@@ -49,7 +49,7 @@ func (f *Filler) StartFilling(exit chan struct{}, wg *sync.WaitGroup) {
 			}
 		default:
 			go func() {
-				msgs, err := f.emailStorager.SelectUnsendedEmails(ctx)
+				msgs, err := f.msgStorager.SelectUnsendedMsgs(ctx)
 
 				if err != nil {
 					logger.Log.Error("StartFilling",
@@ -66,7 +66,7 @@ func (f *Filler) StartFilling(exit chan struct{}, wg *sync.WaitGroup) {
 						return
 					}
 					v.Queued = true
-					f.emailStorager.UpdateEmail(ctx, &v)
+					f.msgStorager.UpdateMsg(ctx, &v)
 				}
 			}()
 			time.Sleep(time.Duration(f.period) * time.Second)

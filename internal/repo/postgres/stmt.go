@@ -7,12 +7,13 @@ func (s *postgresStorage) prepareStatements() error {
 										SELECT $1, $2, $3, $4, $5, $6, $7, $8
 										RETURNING id;`)
 	if err != nil {
+
 		return err
 	}
 
-	insertEmail, err := s.DB.Preparex(`INSERT INTO msg.Emails
-									   (typeid, userid, text, email) 
-										SELECT $1, $2, $3, $4
+	insertMsg, err := s.DB.Preparex(`INSERT INTO msg.Messages
+									   (typeid, categoryid, userid, text, email) 
+										SELECT $1, $2, $3, $4, $5
 										RETURNING id;`)
 	if err != nil {
 		return err
@@ -34,54 +35,26 @@ func (s *postgresStorage) prepareStatements() error {
 		return err
 	}
 
-	updateEmail, err := s.DB.Preparex(`UPDATE msg.Emails SET Used = $2, Queued = $3, SendTime = $4 WHERE id = $1;`)
+	updateMsg, err := s.DB.Preparex(`	UPDATE msg.Messages 
+										SET Used = $2, Queued = $3, SendTime = $4 
+										WHERE id = $1;`)
 	if err != nil {
 		return err
 	}
-	selectEmailUnsended, err := s.DB.Preparex(`SELECT id, userid AS "user.id", text, email AS destination FROM msg.Emails  WHERE SendTime IS NULL AND (Queued IS NULL OR Queued = false);`)
+	selectUnsendedMsgs, err := s.DB.Preparex(`	SELECT 
+												id, userid AS "user.id", typeid as "type.id", categoryid as "category.id", text, email 
+											    FROM msg.Messages  
+												WHERE SendTime IS NULL AND (Queued IS NULL OR Queued = false);`)
 	if err != nil {
 		return err
 	}
 
-	/*
-		stmtUpdateUser, err := s.DB.Preparex(`UPDATE cmn.Users SET name = $2, email = $3, phone = $4, password = $5, verified = $6 WHERE ID = $1;`)
-		if err != nil {
-			return err
-		}
-		stmtAuthUser, err := s.DB.Preparex(`SELECT Login, Password, ID, Email, RoleID AS role.ID FROM cmn.Users WHERE Login = $1;`)
-		if err != nil {
-			return err
-		}
-		stmtVerifyUser, err := s.DB.Preparex(`SELECT e.id FROM cmn.emails AS e INNER JOIN cmn.Users AS u ON u.id = e.UserID WHERE u.Login = $1 AND e.sendeddate + ($2 * INTERVAL '1 hour') > NOW()
-		AND e.Used = false AND e.OTP = $3; `)
-		if err != nil {
-			return err
-		}
-
-		stmtStartSession, err := s.DB.Preparex(`INSERT INTO cmn.Sessions (UserID, LoginDate, LastActionDate) SELECT $1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP`)
-		if err != nil {
-			return err
-		}
-		stmtUpdateSession, err := s.DB.Preparex(`UPDATE cmn.Sessions SET LastActionDate = CURRENT_TIMESTAMP WHERE id = $1;`)
-		if err != nil {
-			return err
-		}
-		stmtEndSession, err := s.DB.Preparex(`UPDATE cmn.Sessions SET LogoutDate = CURRENT_TIMESTAMP WHERE id = $1;`)
-		if err != nil {
-			return err
-		}
-		stmtAddEmail, err := s.DB.Preparex(`INSERT INTO cmn.Emails (UserID, OTP, Email) SELECT $1, $2, $3 RETURNING id;`)
-		if err != nil {
-			return err
-		}
-
-	*/
 	s.preparedStatements["insertUser"] = insertUser
-	s.preparedStatements["insertEmail"] = insertEmail
+	s.preparedStatements["insertMsg"] = insertMsg
 	s.preparedStatements["insertSession"] = insertSession
 	s.preparedStatements["selectUser"] = selectUser
-	s.preparedStatements["updateEmail"] = updateEmail
-	s.preparedStatements["selectEmailUnsended"] = selectEmailUnsended
+	s.preparedStatements["updateMsg"] = updateMsg
+	s.preparedStatements["selectUnsendedMsgs"] = selectUnsendedMsgs
 
 	return nil
 }

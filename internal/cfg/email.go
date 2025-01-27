@@ -3,16 +3,26 @@ package cfg
 import "money/internal/core"
 
 type EmailConfig struct {
-	FillWorkerCount   int    `yaml:"FILL_WORKERS"`
-	SendWorkerCount   int    `yaml:"SEND_WORKERS"`
-	SMTPServer        string `yaml:"SMTP_SERVER"`         //Адрес сервера электронной почты
-	SMTPPort          int    `yaml:"SMTP_PORT"`           //Порт сервера электронной почты
-	SMTPLogin         string `yaml:"SMTP_LOGIN"`          //Логин сервера электронной почты
-	SMTPPass          string `yaml:"SMTP_PASSWORD"`       //Пароль сервера электронной почты
-	MessageSendPeriod int    `yaml:"MESSAGE_SEND_PERIOD"` //Периодичность отправки сообщений (В секундах)
-	QueueFillPeriod   int    `yaml:"QUEUE_FILL_PERIOD"`   //Периодичность наполнения очереди на отправку (В секундах)
-	From              string `yaml:"FROM"`                //Периодичность отправки сообщений (В секундах)
-	File              string `yaml:"FILE"`                //Периодичность наполнения очереди на отправку (В секундах)
+	//Количество наполнителей очереди на отправку
+	FillWorkerCount int `yaml:"FILL_WORKERS"`
+	//Количество отправителей
+	SendWorkerCount int `yaml:"SEND_WORKERS"`
+	//Адрес сервера электронной почты
+	SMTPServer string `yaml:"SMTP_SERVER"`
+	//Порт сервера электронной почты
+	SMTPPort int `yaml:"SMTP_PORT"`
+	//Логин сервера электронной почты
+	SMTPLogin string `yaml:"SMTP_LOGIN"`
+	//Пароль сервера электронной почты
+	SMTPPass string `yaml:"SMTP_PASSWORD"`
+	//Периодичность отправки сообщений (В секундах)
+	MessageSendPeriod int `yaml:"MESSAGE_SEND_PERIOD"`
+	//Периодичность наполнения очереди на отправку (В секундах)
+	QueueFillPeriod int `yaml:"QUEUE_FILL_PERIOD"`
+	//От кого
+	From string `yaml:"FROM"`
+	// Файл-вложение
+	File string `yaml:"FILE"`
 
 	EmailQueue *core.Queue
 }

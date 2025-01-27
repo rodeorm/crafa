@@ -12,7 +12,7 @@ import (
 )
 
 // gracefulShutDown реализует изящное выключение http сервера
-func (s *Server) gracefulShutDown() {
+func (s *Server) gracefulShutdown() {
 	sigint := make(chan os.Signal, 1)
 	signal.Notify(sigint, os.Interrupt, syscall.SIGTERM, syscall.SIGQUIT)
 	go func() {

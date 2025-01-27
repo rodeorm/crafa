@@ -3,7 +3,6 @@ package cfg
 import (
 	"money/internal/core"
 	"os"
-	"runtime"
 	"strconv"
 	"sync"
 	"time"
@@ -45,14 +44,17 @@ func GetConfig() (*Config, *core.Storage, chan struct{}, *sync.WaitGroup) {
 			}
 
 			cfg.EmailConfig = EmailConfig{
-				FillWorkerCount:   runtime.NumCPU() / 2,
-				SendWorkerCount:   runtime.NumCPU() / 2,
+				FillWorkerCount:   1, //runtime.NumCPU() / 2,
+				SendWorkerCount:   3, //runtime.NumCPU() / 2,
 				SMTPServer:        os.Getenv("SMTP_SERVER"),
 				SMTPPort:          smtpPort,
 				SMTPLogin:         os.Getenv("SMTP_LOGIN"),
 				SMTPPass:          os.Getenv("SMTP_PASS"),
 				MessageSendPeriod: 30,
 				QueueFillPeriod:   30,
+				EmailQueue:        core.NewQueue(5),
+				From:              "i@ilyinal.ru",
+				File:              "",
 			}
 
 			cfg.PostgresConfig = PostgresConfig{

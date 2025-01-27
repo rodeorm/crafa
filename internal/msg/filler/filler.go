@@ -6,10 +6,10 @@ import (
 
 // NewFiller создает новый Filler
 // Каждый Filler может наполнять очередь
-func NewFiller(queue *core.Queue, storage core.EmailStorager, prd int) *Filler {
+func NewFiller(queue *core.Queue, storage core.MessageStorager, prd int) *Filler {
 	return &Filler{
-		queue:         queue,
-		emailStorager: storage,
-		period:        prd,
+		queue:       queue,
+		msgStorager: storage,
+		period:      prd,
 	}
 }
