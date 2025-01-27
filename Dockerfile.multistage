@@ -2,15 +2,15 @@ FROM golang:alpine AS builder
 RUN apk update && apk add ca-certificates tzdata
 WORKDIR /app
 COPY . .
-WORKDIR /app/cmd/ui
+WORKDIR /app/cmd/money
 RUN CGO_ENABLED=0 go install -ldflags '-extldflags "-static"'
 
 FROM scratch
 WORKDIR /app
-COPY --from=builder /go/bin/ui .
-COPY --from=builder /app/cmd/ui .
-COPY --from=builder /app/cmd/ui/static static
-COPY --from=builder /app/cmd/ui/view view
+COPY --from=builder /go/bin/money .
+COPY --from=builder /app/cmd/money .
+COPY --from=builder /app/cmd/money/static static
+COPY --from=builder /app/cmd/money/view view
 #
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
