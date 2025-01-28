@@ -27,11 +27,11 @@ type Message struct {
 	Type
 	Category
 
-	SendedDate sql.NullTime // Время, когда сообщение было отправлено
-	Text       string       // Сообщение
-	ID         int
-	Used       bool // OTP из сообщения уже был использован
-	Queued     bool // Сообщение в очереди на отправку
+	SendTime sql.NullTime // Время, когда сообщение было отправлено
+	Text     string       // Сообщение
+	ID       int
+	Used     bool // OTP из сообщения уже был использован
+	Queued   bool // Сообщение в очереди на отправку
 }
 
 type Type struct {

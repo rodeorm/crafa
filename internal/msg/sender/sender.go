@@ -32,6 +32,7 @@ func NewSender(queue *core.Queue, storage core.MessageStorager, id, smtpPort, pr
 		ID:          id,
 		queue:       queue,
 		msgStorager: storage,
+		domain:      domain,
 		period:      prd,
 		from:        from,
 		fileName:    fileName,

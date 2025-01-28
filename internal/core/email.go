@@ -53,7 +53,7 @@ func WithHeader(from, to string) func(*Email) {
 }
 
 // WithBody персонализирует текст email сообщения по шаблону (папка, страница)
-func WithBody(domain, otp string) func(*Email) {
+func WithBody(domain, sign string, userID int) func(*Email) {
 	return func(e *Email) {
 		var (
 			templatePath string
@@ -62,14 +62,19 @@ func WithBody(domain, otp string) func(*Email) {
 		switch e.Type.ID {
 		case MessageTypeConfirm:
 			templatePath, _ = filepath.Abs(fmt.Sprintf("./view/%s/%s.html", "email", "confirm"))
+			mail, _ := template.ParseFiles(templatePath)
+			url := fmt.Sprintf("https://%s/user/confirm?id=%d&otp=%s", domain, userID, sign)
+			mail.Execute(&body, url)
+
 		case MessageTypeAuth:
 			templatePath, _ = filepath.Abs(fmt.Sprintf("./view/%s/%s.html", "email", "auth"))
+			mail, _ := template.ParseFiles(templatePath)
+			mail.Execute(&body, sign)
 		case MessageTypeNotify:
 			templatePath, _ = filepath.Abs(fmt.Sprintf("./view/%s/%s.html", "email", "notify"))
+			mail, _ := template.ParseFiles(templatePath)
+			mail.Execute(&body, sign)
 		}
-
-		mail, _ := template.ParseFiles(templatePath)
-		mail.Execute(&body, otp)
 		e.GMS.SetBody("text/html", body.String())
 	}
 }

@@ -48,6 +48,19 @@ func (s *postgresStorage) prepareStatements() error {
 	if err != nil {
 		return err
 	}
+	selectConfMsg, err := s.DB.Preparex(`	SELECT 
+											id, used, queued, sendtime
+											FROM msg.Messages  
+											WHERE Used = false AND UserID = $1 AND Text = $2;`)
+	if err != nil {
+		return err
+	}
+	updateUserRole, err := s.DB.Preparex(`	UPDATE cmn.Users
+											SET  RoleID = $2
+											WHERE ID = $1;`)
+	if err != nil {
+		return err
+	}
 
 	s.preparedStatements["insertUser"] = insertUser
 	s.preparedStatements["insertMsg"] = insertMsg
@@ -55,6 +68,8 @@ func (s *postgresStorage) prepareStatements() error {
 	s.preparedStatements["selectUser"] = selectUser
 	s.preparedStatements["updateMsg"] = updateMsg
 	s.preparedStatements["selectUnsendedMsgs"] = selectUnsendedMsgs
+	s.preparedStatements["selectConfMsg"] = selectConfMsg
+	s.preparedStatements["updateUserRole"] = updateUserRole
 
 	return nil
 }

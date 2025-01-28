@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"money/internal/core"
 	"money/internal/crypt"
@@ -49,6 +50,46 @@ func (s *postgresStorage) RegUser(ctx context.Context, u *core.User, domain stri
 	tx.Commit()
 
 	return session, nil
+}
+
+func (s *postgresStorage) ConfirmUserEmail(ctx context.Context, userID int, otp string) error {
+	tx, err := s.DB.BeginTxx(ctx, nil)
+	if err != nil {
+		log.Println("ConfirmUserEmail 1", err)
+		return err
+	}
+	msg := core.Message{}
+	// Проверяем переданный код  UserID = $1 AND Text = $2 AND Email = $3
+	err = tx.Stmtx(s.preparedStatements["selectConfMsg"]).GetContext(ctx, &msg, userID, otp)
+	if err != nil {
+		log.Println("ConfirmUserEmail 2", err)
+		tx.Rollback()
+		return err
+	}
+
+	if msg.ID == 0 {
+		tx.Rollback()
+		return fmt.Errorf("переданные данные невалидны. нет сообщения для такого пользователя с таким адресом и кодом подтверждения")
+	}
+	msg.Used = true
+
+	// Обновляем сообщение, что оно было использовано
+	_, err = tx.Stmtx(s.preparedStatements["updateMsg"]).ExecContext(ctx, msg.ID, msg.Used, msg.Queued, msg.SendTime)
+	if err != nil {
+		log.Println("ConfirmUserEmail 2", err)
+		tx.Rollback()
+		return err
+	}
+
+	// Обновляем роль пользователя
+	_, err = tx.Stmtx(s.preparedStatements["updateUserRole"]).ExecContext(ctx, userID, core.RoleAuth)
+	if err != nil {
+		log.Println("ConfirmUserEmail 3", err)
+		tx.Rollback()
+		return err
+	}
+	tx.Commit()
+	return nil
 }
 
 // Аутентифицирует пользователя на основании данных в БД и возвращает все его данные

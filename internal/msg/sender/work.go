@@ -15,7 +15,7 @@ func (s *Sender) Send(m *core.Message) error {
 	if m.Category.ID == core.MessageCategoryEmail {
 		email := core.NewEmail(*m,
 			core.WithHeader(s.from, m.Email),
-			core.WithBody(s.domain, m.Text))
+			core.WithBody(s.domain, m.Text, m.User.ID))
 		if err := s.emailDialer.DialAndSend(email.GMS); err != nil {
 			logger.Log.Error("Send",
 				zap.String(fmt.Sprintf("Сендер %d не отправил сообщение", s.ID), err.Error()),
@@ -24,8 +24,8 @@ func (s *Sender) Send(m *core.Message) error {
 		}
 	}
 
-	m.SendedDate.Time = time.Now()
-	m.SendedDate.Valid = true
+	m.SendTime.Time = time.Now()
+	m.SendTime.Valid = true
 	s.msgStorager.UpdateMsg(context.TODO(), m)
 
 	return nil

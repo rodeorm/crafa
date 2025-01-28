@@ -15,6 +15,7 @@ import (
 
 func Start(cfg *cfg.Config, stgs *core.Storage, wg *sync.WaitGroup, exit chan struct{}) error {
 	defer wg.Done()
+
 	r := mux.NewRouter()
 	srv := &http.Server{
 		Handler:      r,
@@ -22,6 +23,7 @@ func Start(cfg *cfg.Config, stgs *core.Storage, wg *sync.WaitGroup, exit chan st
 		WriteTimeout: cfg.WriteTimeout,
 		ReadTimeout:  cfg.ReadTimeout,
 	}
+	defer srv.Close()
 	s := Server{srv: srv, exit: exit, cfg: cfg, stgs: stgs}
 	r.Use(middle.WithLog)
 
