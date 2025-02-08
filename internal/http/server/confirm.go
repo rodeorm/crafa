@@ -33,7 +33,7 @@ func (s *Server) confirmGet(w http.ResponseWriter, r *http.Request) {
 	if session != nil {
 		session.Role.ID = core.RoleAuth
 		// Создаем новый jwt-токен и сохраняем его в куках
-		ck, _ := cookie.NewCookieWithSession(session, s.cfg.JWTKey, s.cfg.TokeLiveTime)
+		ck, _ := cookie.NewCookieWithSession(session, s.cfg.JWTKey, s.cfg.TokenLiveTime)
 		http.SetCookie(w, ck)
 		page.Execute("user", "confirm", w, page.NewPage(page.WithAttrs(at), page.WithSession(session)))
 		return

@@ -11,6 +11,13 @@ import (
 
 // RegUser создает пользователя в БД
 func (s *postgresStorage) RegUser(ctx context.Context, u *core.User, domain string) (*core.Session, error) {
+	if u.Login == "" { //TODO: проверку на сложность логина
+		return nil, fmt.Errorf("логин не может быть пустым")
+	}
+	if u.Password == "" { //TODO: проверку на сложность пароля
+		return nil, fmt.Errorf("пароль не может быть пустым")
+	}
+
 	passwordHash, err := crypt.HashPassword(u.Password)
 	if err != nil {
 		log.Println("RegUser 1", err)
@@ -93,11 +100,58 @@ func (s *postgresStorage) ConfirmUserEmail(ctx context.Context, userID int, otp 
 }
 
 // Аутентифицирует пользователя на основании данных в БД и возвращает все его данные
-func (s *postgresStorage) BaseAuthUser(ctx context.Context, u *core.User) bool {
-	return false
+func (s *postgresStorage) BaseAuthUser(ctx context.Context, u *core.User) error {
+	// Сохраняем введенный пароль
+	pass := u.Password
+
+	// Получаем данные пользователя, включая хэш пароля
+	err := s.preparedStatements["baseAuthUser"].Get(u, u.Login)
+	if err != nil {
+		return err
+	}
+	//Сравнить полученный хэш с паролем
+	if !crypt.CheckPasswordHash(pass, u.Password) {
+		return fmt.Errorf("некорректный пароль")
+	}
+
+	//Добавляем сообщение с одноразовым паролем
+	s.preparedStatements["insertMsg"].ExecContext(ctx, core.MessageTypeAuth, core.MessageCategoryEmail, u.ID, crypt.GetOneTimePassword(), u.Email)
+
+	return nil
 }
 
-// Аутентифицирует пользователя на основании данных в БД и возвращает все его данные
+// /AdvAuthUser авторизует пользователя, прошедшего базовую аутентификацию по одноразовому паролю
+func (s *postgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp string, otpLiveTime time.Duration) (*core.Session, error) {
+	msg := core.Message{}
+	// Проверяем переданный код  UserID = $1 AND Text = $2
+	err := s.preparedStatements["selectConfMsg"].GetContext(ctx, &msg, u.ID, otp)
+	if err != nil {
+		log.Println("AdvAuthUser 2", err)
+		return nil, err
+	}
+
+	if time.Since(msg.SendTime.Time) > otpLiveTime {
+		return nil, fmt.Errorf("срок действия одноразового пароля истек")
+	}
+
+	// Если всё хорошо с паролем, то получаем данные пользователя, включая роль
+	err = s.preparedStatements["selectUser"].GetContext(ctx, &u, u.ID)
+	if err != nil {
+		log.Println("AdvAuthUser 3", err)
+		return nil, err
+	}
+
+	sn := core.Session{}
+	// Затем создаем для него новую сессию и возвращаем её
+	s.preparedStatements["insertSession"].GetContext(ctx, &sn.ID, u.ID, time.Now(), time.Now())
+	if err != nil {
+		log.Println("AdvAuthUser 4", err)
+		return nil, err
+	}
+	return &sn, nil
+}
+
+// Возвращает данные пользователя
 func (s *postgresStorage) GetUser(ctx context.Context, u *core.User) error {
 	return s.preparedStatements["selectUser"].GetContext(ctx, u, u.ID)
 }

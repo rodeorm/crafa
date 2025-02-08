@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"sync"
 )
 
@@ -25,9 +26,8 @@ func (q *Queue) Push(m *Message) error {
 
 // NewQueue создает новую очередь сообщений размером n
 func NewQueue(n int) *Queue {
-
 	q := &Queue{
-		ch: make(chan *Message, n),
+		ch: make(chan *Message, 2),
 	}
 	return q
 }
@@ -36,6 +36,7 @@ func NewQueue(n int) *Queue {
 func (q *Queue) PopWait() *Message {
 	select {
 	case val := <-q.ch:
+		fmt.Println("PopWait", val)
 		return val
 	default:
 		return nil

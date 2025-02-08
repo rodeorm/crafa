@@ -36,7 +36,7 @@ func (s *Server) regPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Создаем jwt-токен и сохраняем его в куках
-	ck, err := cookie.NewCookieWithSession(session, s.cfg.JWTKey, s.cfg.TokeLiveTime)
+	ck, err := cookie.NewCookieWithSession(session, s.cfg.JWTKey, s.cfg.TokenLiveTime)
 	if err != nil {
 		sign := make(map[string]string)
 		sign["russ"] = "Ошибка при регистрации"

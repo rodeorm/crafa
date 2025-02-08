@@ -3,6 +3,7 @@ package cfg
 import "time"
 
 type SecurityConfig struct {
-	TokeLiveTime time.Duration
-	JWTKey       string
+	TokenLiveTime time.Duration
+	OTPLiveTime   time.Duration
+	JWTKey        string
 }

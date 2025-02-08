@@ -3,6 +3,7 @@ package postgres
 import (
 	"money/internal/logger"
 	"sync"
+	"time"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
@@ -26,6 +27,9 @@ func GetPostgresStorage(connectionString, cryptKey string) (*postgresStorage, er
 	once.Do(
 		func() {
 			db, dbErr = sqlx.Open("pgx", connectionString)
+			db.SetMaxOpenConns(10)
+			db.SetMaxIdleConns(5)
+			db.SetConnMaxLifetime(10 * time.Second)
 			if dbErr != nil {
 
 				return
@@ -44,6 +48,10 @@ func GetPostgresStorage(connectionString, cryptKey string) (*postgresStorage, er
 	return ps, nil
 }
 
-func (s postgresStorage) CloseConnection() {
-	s.DB.Close()
+func (s postgresStorage) Close() error {
+	return s.DB.Close()
+}
+
+func (s postgresStorage) Ping() error {
+	return s.DB.Ping()
 }

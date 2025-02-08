@@ -1,19 +1,7 @@
 package logger
 
-import "go.uber.org/zap"
+var Log *LoggerWrapper // Синглтон
 
 func init() {
-	lvl, err := zap.ParseAtomicLevel("INFO")
-	if err != nil {
-		return
-	}
-
-	cfg := zap.NewProductionConfig()
-	cfg.Level = lvl
-	zl, err := cfg.Build()
-	if err != nil {
-		return
-	}
-
-	Log = zl
+	Log, _ = NewLoggerWrapper()
 }

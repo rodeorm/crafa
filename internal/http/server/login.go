@@ -1,29 +1,33 @@
 package server
 
 import (
+	"context"
+	"log"
 	"net/http"
+
+	"money/internal/core"
+	"money/internal/http/page"
 )
 
 func (s *Server) loginPost(w http.ResponseWriter, r *http.Request) {
-	/*
-		user := &core.User{Login: r.FormValue("login"), Password: r.FormValue("password")}
-		ctx := context.Background()
+	user := &core.User{Login: r.FormValue("login"), Password: r.FormValue("password")}
+	ctx := context.Background()
 
-		err := s.stgs.UserStorager.BaseAuthUser(ctx, user)
-		if err != nil {
-			sign := make(map[string]string)
-			sign["russ"] = "неправильное имя пользователя или пароль"
-			sign["err"] = err.Error()
-			pg := page.NewPage(page.WithSignals(sign))
-			w.WriteHeader(http.StatusUnauthorized)
-			page.Execute("index", "index", w, pg)
-			return
-		}
+	err := s.stgs.UserStorager.BaseAuthUser(ctx, user)
+	if err != nil {
+		log.Println("loginPost 1", err)
 
-		at := make(map[string]any)
-		at["login"] = user.Login
-		at["email"] = user.Password
+		sign := make(map[string]string)
+		sign["Russ"] = "неправильное имя пользователя или пароль"
+		sign["Err"] = err.Error()
+		pg := page.NewPage(page.WithSignals(sign))
+		w.WriteHeader(http.StatusUnauthorized)
+		page.Execute("index", "index", w, pg)
+		return
+	}
 
-		page.Execute("index", "verify", w, page.NewPage(page.WithAttrs(at)))
-	*/
+	at := make(map[string]any)
+	at["User"] = user
+
+	page.Execute("user", "verify", w, page.NewPage(page.WithAttrs(at)))
 }

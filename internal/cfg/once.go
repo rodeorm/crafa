@@ -51,7 +51,7 @@ func GetConfig() (*Config, *core.Storage, chan struct{}, *sync.WaitGroup) {
 				SMTPLogin:         os.Getenv("SMTP_LOGIN"),
 				SMTPPass:          os.Getenv("SMTP_PASS"),
 				MessageSendPeriod: 1,
-				QueueFillPeriod:   1,
+				QueueFillPeriod:   5,
 				EmailQueue:        core.NewQueue(5),
 				From:              "i@ilyinal.ru",
 				File:              "",
@@ -62,8 +62,9 @@ func GetConfig() (*Config, *core.Storage, chan struct{}, *sync.WaitGroup) {
 			}
 
 			cfg.SecurityConfig = SecurityConfig{
-				TokeLiveTime: 1800000, // os.Getenv("TOKEN_LIVE_TIME")
-				JWTKey:       os.Getenv("JWK_KEY"),
+				TokenLiveTime: 1800000, // os.Getenv("TOKEN_LIVE_TIME")
+				OTPLiveTime:   18000,
+				JWTKey:        os.Getenv("JWK_KEY"),
 			}
 
 			exit = make(chan struct{})

@@ -16,6 +16,10 @@ func (s *Sender) Send(m *core.Message) error {
 		email := core.NewEmail(*m,
 			core.WithHeader(s.from, m.Email),
 			core.WithBody(s.domain, m.Text, m.User.ID))
+
+		logger.Log.Info("Send",
+			zap.String(fmt.Sprintf("Сендер %d получил сообщение для отправки %s", s.ID, m.Email), m.Text))
+
 		if err := s.emailDialer.DialAndSend(email.GMS); err != nil {
 			logger.Log.Error("Send",
 				zap.String(fmt.Sprintf("Сендер %d не отправил сообщение", s.ID), err.Error()),

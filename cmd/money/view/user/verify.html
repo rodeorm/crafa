@@ -26,28 +26,21 @@
 </style>
 <body style="background-color: #f8f9fa; height: 100vh; overflow: visible;">
   <div class="container mt-5">
-      <form action="/user/login" method="POST">
+      <form action="/user/verify?id={{ .Attributes.User.ID }}" method="POST">
               <div class="card text-center mt-4">
                   <div class="card-body">
-                      <h5 class="height" style="font-size: 1.5rem; color: rgb(22, 14, 95);">Авторизация в системе</h5>
+                      <h5 class="height" style="font-size: 1.5rem; color: rgb(22, 14, 95);">На адрес электронной почты {{ .Attributes.User.Email }} отправлено сообщение с одноразовым паролем</h5>
                       <form>
                           <div class="mb-3">
-                              <label class="label">Имя пользователя</label>
-                              <input type="text" class="form-control" id="login" placeholder="Введите имя пользователя" name="login" required>
+                              <input type="text" class="form-control" id="login" placeholder="Код из сообщения" name="login" required>
                           </div>
-                          <div class="mb-3">
-                            <label class="label">Пароль</label>
-                              <input type="password" class="form-control" id="password" placeholder="Введите пароль" name="password" required>
-                          </div>
-                          <button type="submit" class="btn btn-lg btn-outline-success"; color: white;">Войти</button>
+                          <button type="submit" class="btn btn-lg btn-outline-success"; color: white;">Продолжить</button>
                       </form>
                       {{if .Signals }}
                       <div class="alert alert-danger mt-3" role="alert">
                           <strong>{{.Signals.Russ}}:</strong>&nbsp;{{.Signals.Err}}
                       </div>
                       {{end}}  
-                      <div class="text-center mt-3">Нет учетной записи? <a href="/user/reg">Зарегистрироваться</a></div>
-                      <div class="text-center">Забыли имя пользователя или пароль? <a href="/user/restore">Восстановить</a></div>
                   </div>
               </div>
       </form>
