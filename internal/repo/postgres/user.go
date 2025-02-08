@@ -31,7 +31,16 @@ func (s *postgresStorage) RegUser(ctx context.Context, u *core.User, domain stri
 	}
 
 	err = tx.Stmtx(s.preparedStatements["insertUser"]).GetContext(ctx, &u.ID, core.RoleReg, u.Login, passwordHash, u.Name, u.FamilyName, u.PatronName, u.Email, u.Phone)
+
 	if err != nil {
+		switch err.Error() {
+		case `ERROR: duplicate key value violates unique constraint "users_login_key" (SQLSTATE 23505)`:
+			tx.Rollback()
+			return nil, fmt.Errorf("такой логин уже используется")
+		case `ERROR: duplicate key value violates unique constraint "users_email_key" (SQLSTATE 23505)`:
+			tx.Rollback()
+			return nil, fmt.Errorf("такой адрес электронной почты уже используется")
+		}
 		log.Println("RegUser 3", err)
 		tx.Rollback()
 		return nil, err

@@ -15,5 +15,5 @@ COPY --from=builder /app/cmd/money/view view
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 
-ENV TZ Europe/Moscow
+ENV TZ=Europe/Moscow
 ENTRYPOINT ["/app/money"]
