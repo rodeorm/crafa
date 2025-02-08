@@ -1,6 +1,7 @@
 package middle
 
 import (
+	"money/internal/core"
 	"money/internal/crypt"
 	"money/internal/http/cookie"
 	"net/http"
@@ -15,7 +16,7 @@ func WithAuth(jwtKey string) func(http.Handler) http.Handler {
 				return
 			}
 			roleID, err := crypt.GetRoleIDFromTkn(tkn, jwtKey)
-			if err != nil || roleID != 0 {
+			if err != nil || roleID != core.RoleAuth {
 				http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 				return
 			}

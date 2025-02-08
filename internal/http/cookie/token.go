@@ -6,6 +6,7 @@ import (
 
 // NewCookieWithToken создает cookie с переданным токеном
 func NewCookieWithToken(token string, maxAge int) *http.Cookie {
+	// log.Printf("NewCookieWithToken %d", maxAge)
 	return &http.Cookie{
 		Name:   "token",
 		Value:  token,
@@ -26,6 +27,14 @@ func RemoveTokenFromCookie() *http.Cookie {
 // GetTokenFromRequest возвращает токен из request
 func GetTokenFromRequest(r *http.Request) (string, error) {
 	c, err := r.Cookie("token")
+
+	/*
+		log.Printf("Получили куки %s истекающие:%s\n ", c.Value, c.Expires)
+
+		if c.Expires.Before(time.Now()) {
+			return "", err
+		}
+	*/
 	if err != nil {
 		return "", err
 	}

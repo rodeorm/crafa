@@ -126,8 +126,8 @@ func (s *postgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp str
 	// Проверяем переданный код  UserID = $1 AND Text = $2
 	err := s.preparedStatements["selectAuthMsg"].GetContext(ctx, &msg, u.ID, otp)
 	if err != nil {
-		log.Println("AdvAuthUser 2", err)
-		return nil, err
+		log.Println("AdvAuthUser 2", err, u.ID, otp)
+		return nil, fmt.Errorf("неправильный одноразовый пароль")
 	}
 
 	if time.Since(msg.SendTime.Time) > otpLiveTime {
@@ -142,12 +142,34 @@ func (s *postgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp str
 	}
 
 	sn := core.Session{User: *u}
-	// Затем создаем для него новую сессию и возвращаем её
-	s.preparedStatements["insertSession"].GetContext(ctx, &sn.ID, u.ID, time.Now(), time.Now())
+
+	tx, err := s.DB.BeginTxx(ctx, nil)
 	if err != nil {
-		log.Println("AdvAuthUser 4", err)
+		log.Println("ConfirmUserEmail 1", err)
 		return nil, err
 	}
+
+	// Затем создаем для него новую сессию и возвращаем её
+	tx.Stmtx(s.preparedStatements["insertSession"]).GetContext(ctx, &sn.ID, u.ID, time.Now(), time.Now())
+	if err != nil {
+		log.Println("AdvAuthUser 4", err)
+		tx.Rollback()
+		return nil, err
+	}
+
+	// Обновляем сообщение, проставляем признак, что было использовано
+	msg.Used = true
+
+	// Обновляем сообщение, что оно было использовано
+	_, err = tx.Stmtx(s.preparedStatements["updateMsg"]).ExecContext(ctx, msg.ID, msg.Used, msg.Queued, msg.SendTime)
+	if err != nil {
+		log.Println("ConfirmUserEmail 2", err)
+		tx.Rollback()
+		return nil, err
+	}
+
+	tx.Commit()
+
 	return &sn, nil
 }
 
