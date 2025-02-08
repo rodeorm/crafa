@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -36,7 +35,6 @@ func NewQueue(n int) *Queue {
 func (q *Queue) PopWait() *Message {
 	select {
 	case val := <-q.ch:
-		fmt.Println("PopWait", val)
 		return val
 	default:
 		return nil

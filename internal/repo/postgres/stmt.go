@@ -29,9 +29,9 @@ func (s *postgresStorage) prepareStatements() error {
 	}
 
 	selectUser, err := s.DB.Preparex(`SELECT 
-									  roleid AS "role.id", name, familyname, patronname, email, phone
+									  roleid AS "role.id", login, name, familyname, patronname, email, phone
 									  FROM cmn.Users
-									  WHERE id = $1`)
+									  WHERE id = $1;`)
 	if err != nil {
 		return errors.Wrap(err, "selectUser")
 	}
@@ -71,12 +71,12 @@ func (s *postgresStorage) prepareStatements() error {
 		return errors.Wrap(err, "baseAuthUser")
 	}
 
-	advAuthUser, err := s.DB.Preparex(`		SELECT 
+	selectAuthMsg, err := s.DB.Preparex(`		SELECT 
 											id, used, queued, sendtime
 											FROM msg.Messages  
 											WHERE Used = false AND UserID = $1 AND Text = $2;`)
 	if err != nil {
-		return errors.Wrap(err, "advAuthUser")
+		return errors.Wrap(err, "selectAuthMsg")
 	}
 
 	s.preparedStatements["insertUser"] = insertUser
@@ -88,7 +88,7 @@ func (s *postgresStorage) prepareStatements() error {
 	s.preparedStatements["selectConfMsg"] = selectConfMsg
 	s.preparedStatements["updateUserRole"] = updateUserRole
 	s.preparedStatements["baseAuthUser"] = baseAuthUser
-	s.preparedStatements["advAuthUser"] = advAuthUser
+	s.preparedStatements["selectAuthMsg"] = selectAuthMsg
 
 	return nil
 }

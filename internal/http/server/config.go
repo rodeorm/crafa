@@ -17,8 +17,8 @@ func configPaths(r, admin, auth *mux.Router, s *Server) {
 	r.HandleFunc("/user/login", s.loginPost).Methods(http.MethodPost)
 	r.HandleFunc("/user/verify", s.verifyPost).Methods(http.MethodPost)
 	r.HandleFunc("/user/logout", s.logOut)
-	admin.HandleFunc("/admin/index", s.forbidden)
-	auth.HandleFunc("/auth/index", s.forbidden)
+	//admin.HandleFunc("/admin/index", s.forbidden)
+	r.HandleFunc("/main", s.main)
 }
 
 func configMiddlewares(r, admin, auth *mux.Router, s *Server) {

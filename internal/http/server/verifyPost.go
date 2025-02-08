@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"log"
 	"money/internal/core"
 	"money/internal/http/cookie"
 	"money/internal/http/page"
@@ -11,13 +12,14 @@ import (
 
 func (s *Server) verifyPost(w http.ResponseWriter, r *http.Request) {
 
-	id := r.FormValue("id") // из скрытого поля
-	otp := r.FormValue("otp")
-	uID, err := strconv.Atoi(id)
+	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil {
 		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+		return
 	}
-	usr := &core.User{ID: uID}
+
+	otp := r.FormValue("otp")
+	usr := &core.User{ID: id}
 
 	session, err := s.stgs.UserStorager.AdvAuthUser(context.TODO(), usr, otp, s.cfg.OTPLiveTime)
 	if err != nil {
@@ -29,6 +31,8 @@ func (s *Server) verifyPost(w http.ResponseWriter, r *http.Request) {
 		page.Execute("user", "verify", w, pg)
 		return
 	}
+
+	log.Println("verifyPost", session)
 
 	ck, err := cookie.NewCookieWithSession(session, s.cfg.JWTKey, s.cfg.TokenLiveTime)
 	if err != nil {

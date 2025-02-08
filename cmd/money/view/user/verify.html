@@ -32,9 +32,9 @@
                       <h5 class="height" style="font-size: 1.5rem; color: rgb(22, 14, 95);">На адрес электронной почты {{ .Attributes.User.Email }} отправлено сообщение с одноразовым паролем</h5>
                       <form>
                           <div class="mb-3">
-                              <input type="text" class="form-control" id="login" placeholder="Код из сообщения" name="login" required>
+                              <input type="text" class="form-control" id="otp" placeholder="Код из сообщения" name="otp" required>
                           </div>
-                          <button type="submit" class="btn btn-lg btn-outline-success"; color: white;">Продолжить</button>
+                          <button type="submit" class="btn btn-lg btn-outline-warning"; color: white;">Продолжить</button>
                       </form>
                       {{if .Signals }}
                       <div class="alert alert-danger mt-3" role="alert">

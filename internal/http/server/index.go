@@ -1,7 +1,6 @@
 package server
 
 import (
-	"log"
 	"money/internal/core"
 	"money/internal/http/page"
 	"net/http"
@@ -14,16 +13,18 @@ func (s *Server) index(w http.ResponseWriter, r *http.Request) {
 		page.Execute("index", "index", w, page.NewPage())
 		return
 	}
+
 	p := page.NewPage(page.WithSession(session))
 	switch session.User.Role.ID {
 	case core.RoleGuest:
 		page.Execute("index", "index", w, p)
-	case core.RoleAdmin:
-		page.Execute("admin", "index", w, p)
 	case core.RoleReg:
 		http.Redirect(w, r, "/user/send", http.StatusTemporaryRedirect)
+	case core.RoleAdmin:
+		http.Redirect(w, r, "/main", http.StatusTemporaryRedirect)
 	case core.RoleAuth:
-		log.Println("HERE WE ARE")
-		page.Execute("index", "auth", w, p)
+		http.Redirect(w, r, "/main", http.StatusTemporaryRedirect)
+	case core.RoleEmployee:
+		http.Redirect(w, r, "/main", http.StatusTemporaryRedirect)
 	}
 }

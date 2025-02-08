@@ -124,7 +124,7 @@ func (s *postgresStorage) BaseAuthUser(ctx context.Context, u *core.User) error 
 func (s *postgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp string, otpLiveTime time.Duration) (*core.Session, error) {
 	msg := core.Message{}
 	// Проверяем переданный код  UserID = $1 AND Text = $2
-	err := s.preparedStatements["selectConfMsg"].GetContext(ctx, &msg, u.ID, otp)
+	err := s.preparedStatements["selectAuthMsg"].GetContext(ctx, &msg, u.ID, otp)
 	if err != nil {
 		log.Println("AdvAuthUser 2", err)
 		return nil, err
@@ -135,13 +135,13 @@ func (s *postgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp str
 	}
 
 	// Если всё хорошо с паролем, то получаем данные пользователя, включая роль
-	err = s.preparedStatements["selectUser"].GetContext(ctx, &u, u.ID)
+	err = s.preparedStatements["selectUser"].GetContext(ctx, u, u.ID)
 	if err != nil {
 		log.Println("AdvAuthUser 3", err)
 		return nil, err
 	}
 
-	sn := core.Session{}
+	sn := core.Session{User: *u}
 	// Затем создаем для него новую сессию и возвращаем её
 	s.preparedStatements["insertSession"].GetContext(ctx, &sn.ID, u.ID, time.Now(), time.Now())
 	if err != nil {

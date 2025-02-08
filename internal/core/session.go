@@ -3,6 +3,7 @@ package core
 import (
 	"context"
 	"database/sql"
+
 	"money/internal/crypt"
 	"time"
 
@@ -43,6 +44,6 @@ func GetSessionFromTkn(tknStr, jwtKey string) (*Session, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Session{ID: cl.SessionID, User: User{ID: cl.UserID, Login: cl.Login, Role: Role{ID: cl.RoleID}}}, nil
 
+	return &Session{ID: cl.SessionID, User: User{ID: cl.UserID, Login: cl.Login, Role: Role{ID: cl.RoleID}}}, nil
 }

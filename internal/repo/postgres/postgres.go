@@ -27,9 +27,10 @@ func GetPostgresStorage(connectionString, cryptKey string) (*postgresStorage, er
 	once.Do(
 		func() {
 			db, dbErr = sqlx.Open("pgx", connectionString)
-			db.SetMaxOpenConns(10)
-			db.SetMaxIdleConns(5)
+			db.SetMaxOpenConns(10) // Подобрать оптимальное значение
+			db.SetMaxIdleConns(5)  // Подобрать оптимальное значение
 			db.SetConnMaxLifetime(10 * time.Second)
+
 			if dbErr != nil {
 
 				return
