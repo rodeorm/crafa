@@ -1,17 +1,42 @@
 package logger
 
-import "go.uber.org/zap"
+import (
+	"os"
+	"time"
 
-var Log *zap.Logger = zap.NewNop() // Будет доступен всему коду как синглтон
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+)
+
+var Log *zap.Logger // Доступен всему коду как синглтон (потокобезопасно)
 
 func init() {
-	lvl, err := zap.ParseAtomicLevel("INFO")
-	if err != nil {
+
+	customTimeEncoder := func(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+		enc.AppendString(t.Format("02.01.2006 15:04:05"))
 	}
 
-	cfg := zap.NewProductionConfig()
-	cfg.Level = lvl
-	zl, err := cfg.Build()
+	// Define custom encoder configuration
+	encoderConfig := zapcore.EncoderConfig{
+		TimeKey:        "timestamp",
+		LevelKey:       "level",
+		NameKey:        "logger",
+		CallerKey:      "caller",
+		MessageKey:     "message",
+		StacktraceKey:  "stacktrace",
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    zapcore.CapitalLevelEncoder,    // Capitalize the log level names
+		EncodeTime:     customTimeEncoder,              // zapcore.ISO8601TimeEncoder,     // ISO8601 UTC timestamp format
+		EncodeDuration: zapcore.SecondsDurationEncoder, // Duration in seconds
+		EncodeCaller:   zapcore.ShortCallerEncoder,     // Short caller (file and line)
+	}
 
-	Log = zl
+	// Create a core logger with JSON encoding
+	core := zapcore.NewCore(
+		zapcore.NewJSONEncoder(encoderConfig), // Using JSON encoder
+		zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout)),
+		zap.InfoLevel,
+	)
+
+	Log = zap.New(core)
 }
