@@ -3,11 +3,11 @@ package core
 import (
 	"context"
 	"database/sql"
-
-	"money/internal/crypt"
 	"time"
 
 	"github.com/golang-jwt/jwt"
+
+	"money/internal/crypt"
 )
 
 type Session struct {

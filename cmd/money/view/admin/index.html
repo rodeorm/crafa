@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+{{ template "header.html" . }}
+
+<div class="card text-left"> 
+      <div class="b-example-divider"></div>
+      <div class="px-4 py-5 my-5 text-center">
+        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+            <div class="col d-flex align-items-start">
+              <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg class="bi" width="1em" height="1em"><use xlink:href="#toggles2"></use></svg>
+              </div>
+              <div>
+                <h3 class="fs-2 text-body-emphasis">Техническая поддержка</h3>
+                <p>Данный раздел предназначен для пользователей Заказчиков и предназначен для решения их вопросов</p>
+                <a href="#" class="btn btn-outline-primary">
+                  Начать поддержку
+                </a>
+              </div>
+            </div>
+            <div class="col d-flex align-items-start">
+              <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg class="bi" width="1em" height="1em"><use xlink:href="#cpu-fill"></use></svg>
+              </div>
+              <div>
+                <h3 class="fs-2 text-body-emphasis">Разработка</h3>
+                <p>Данный раздел системы предназначен для сотрудников, учета трудозатрат и заведения рабочих артефактов разработки. Он связан с системой контроля версий (Git)</p>
+                <a href="#" class="btn btn-outline-success">
+                  Начать разработку
+                </a>
+              </div>
+            </div>
+            <div class="col d-flex align-items-start">
+              <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg class="bi" width="1em" height="1em"><use xlink:href="#tools"></use></svg>
+              </div>
+              <div>
+                <h3 class="fs-2 text-body-emphasis">Администрирование</h3>
+                <p>Данный раздел предназначен для администрирования процесса разработки и управления пользователями</p>
+                <a href="#" class="btn btn-outline-warning">
+                  Начать администрирование
+                </a>
+              </div>
+            </div>
+          </div>
+
+    </body>
+    {{ template "footer.html" . }}
+    </html>
+</div>

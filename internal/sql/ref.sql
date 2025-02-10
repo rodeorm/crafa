@@ -1,3 +1,4 @@
+
 DROP SCHEMA IF EXISTS ref CASCADE;
 CREATE SCHEMA IF NOT EXISTS ref;
 CREATE TABLE IF NOT EXISTS ref.Levels(
@@ -13,9 +14,8 @@ VALUES
 (1, 'Эпика', 'Epic'),
 (2, 'Требование', 'Requirement'),
 (3, 'Проблема', 'Issue'),
-(4, 'Требование', 'Requirement'),
-(5, 'Функциональность', 'Feature'),
-(6, 'Задача', 'Task');
+(4, 'Функциональность', 'Feature'),
+(5, 'Задача', 'Task');
 
 
 CREATE TABLE IF NOT EXISTS ref.Categories(

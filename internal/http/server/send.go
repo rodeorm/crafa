@@ -13,6 +13,6 @@ func (s *Server) send(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	s.stgs.UserStorager.GetUser(context.TODO(), &session.User)
+	s.stgs.UserStorager.SelectUser(context.TODO(), &session.User)
 	page.Execute("user", "send", w, page.NewPage(page.WithSession(session)))
 }

@@ -79,6 +79,60 @@ func (s *postgresStorage) prepareStatements() error {
 		return errors.Wrap(err, "selectAuthMsg")
 	}
 
+	selectAllUsers, err := s.DB.Preparex(`		SELECT 
+												id, roleid AS "role.id", login, name, familyname, patronname, email, phone
+												FROM cmn.Users;`)
+	if err != nil {
+		return errors.Wrap(err, "selectAllUsers")
+	}
+
+	updateUser, err := s.DB.Preparex(`		UPDATE cmn.Users 
+											SET roleid = $2, login = $3, name = $4, familyname = $5, patronname = $6, email = $7, phone = $8
+											WHERE ID = $1;`)
+	if err != nil {
+		return errors.Wrap(err, "updateUser")
+	}
+	changeUserPassword, err := s.DB.Preparex(`	UPDATE cmn.Users 
+												SET password = $2
+												WHERE ID = $1;`)
+	if err != nil {
+		return errors.Wrap(err, "changeUserPassword")
+	}
+
+	insertProject, err := s.DB.Preparex(`		INSERT INTO data.Projects
+												(Name)
+												SELECT $1
+												RETURNING id;`)
+	if err != nil {
+		return errors.Wrap(err, "insertProject")
+	}
+
+	updateProject, err := s.DB.Preparex(`		UPDATE data.Projects 
+												SET Name = $2
+												WHERE ID = $1;`)
+	if err != nil {
+		return errors.Wrap(err, "updateProject")
+	}
+
+	selectProject, err := s.DB.Preparex(`		SELECT id, name
+												FROM data.Projects
+												WHERE ID = $1;`)
+	if err != nil {
+		return errors.Wrap(err, "selectProject")
+	}
+
+	selectAllProjects, err := s.DB.Preparex(`		SELECT id, name 
+													FROM data.Projects;`)
+	if err != nil {
+		return errors.Wrap(err, "selectAllProjects")
+	}
+
+	deleteProject, err := s.DB.Preparex(`	DELETE FROM data.Projects
+											WHERE ID = $1;`)
+	if err != nil {
+		return errors.Wrap(err, "deleteProject")
+	}
+
 	s.preparedStatements["insertUser"] = insertUser
 	s.preparedStatements["insertMsg"] = insertMsg
 	s.preparedStatements["insertSession"] = insertSession
@@ -89,6 +143,14 @@ func (s *postgresStorage) prepareStatements() error {
 	s.preparedStatements["updateUserRole"] = updateUserRole
 	s.preparedStatements["baseAuthUser"] = baseAuthUser
 	s.preparedStatements["selectAuthMsg"] = selectAuthMsg
+	s.preparedStatements["selectAllUsers"] = selectAllUsers
+	s.preparedStatements["updateUser"] = updateUser
+	s.preparedStatements["changeUserPassword"] = changeUserPassword
+	s.preparedStatements["insertProject"] = insertProject
+	s.preparedStatements["updateProject"] = updateProject
+	s.preparedStatements["selectProject"] = selectProject
+	s.preparedStatements["selectAllProjects"] = selectAllProjects
+	s.preparedStatements["deleteProject"] = deleteProject
 
 	return nil
 }

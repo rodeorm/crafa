@@ -135,7 +135,6 @@ func (s *postgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp str
 	// Проверяем переданный код  UserID = $1 AND Text = $2
 	err := s.preparedStatements["selectAuthMsg"].GetContext(ctx, &msg, u.ID, otp)
 	if err != nil {
-		log.Println("AdvAuthUser 2", err, u.ID, otp)
 		return nil, fmt.Errorf("неправильный одноразовый пароль")
 	}
 
@@ -159,9 +158,8 @@ func (s *postgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp str
 	}
 
 	// Затем создаем для него новую сессию и возвращаем её
-	tx.Stmtx(s.preparedStatements["insertSession"]).GetContext(ctx, &sn.ID, u.ID, time.Now(), time.Now())
+	err = tx.Stmtx(s.preparedStatements["insertSession"]).GetContext(ctx, &sn.ID, u.ID, time.Now(), time.Now())
 	if err != nil {
-		log.Println("AdvAuthUser 4", err)
 		tx.Rollback()
 		return nil, err
 	}
@@ -183,6 +181,40 @@ func (s *postgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp str
 }
 
 // Возвращает данные пользователя
-func (s *postgresStorage) GetUser(ctx context.Context, u *core.User) error {
+func (s *postgresStorage) SelectUser(ctx context.Context, u *core.User) error {
 	return s.preparedStatements["selectUser"].GetContext(ctx, u, u.ID)
+}
+
+// Возвращает данные всех пользователей
+func (s *postgresStorage) SelectAllUsers(ctx context.Context) ([]core.User, error) {
+	u := make([]core.User, 0)
+	err := s.preparedStatements["selectAllUsers"].SelectContext(ctx, u)
+	if err != nil {
+		return nil, err
+	}
+	return u, nil
+}
+
+// Обновляет данные пользователя
+func (s *postgresStorage) UpdateUser(ctx context.Context, u *core.User) error {
+	//roleid = $2, login = $3, name = $4, familyname = $5, patronname = $6, email = $7, phone = $8
+	_, err := s.preparedStatements["updateUser"].ExecContext(ctx, u.ID, u.Role.ID, u.Login, u.Name, u.FamilyName, u.PatronName, u.Email, u.Phone)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Меняет пароль пользователю
+func (s *postgresStorage) ChangeUserPassword(ctx context.Context, u *core.User) error {
+	// Хэшируем пароль
+	pwdHash, err := crypt.HashPassword(u.Password)
+	if err != nil {
+		return err
+	}
+	_, err = s.preparedStatements["changeUserPassword"].ExecContext(ctx, u.ID, pwdHash)
+	if err != nil {
+		return err
+	}
+	return nil
 }
