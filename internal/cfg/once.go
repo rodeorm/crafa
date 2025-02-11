@@ -2,6 +2,7 @@ package cfg
 
 import (
 	"money/internal/core"
+	"money/internal/queue"
 	"os"
 	"strconv"
 	"sync"
@@ -52,7 +53,7 @@ func GetConfig() (*Config, *core.Storage, chan struct{}, *sync.WaitGroup) {
 				SMTPPass:          os.Getenv("SMTP_PASS"),
 				MessageSendPeriod: 1,
 				QueueFillPeriod:   1,
-				EmailQueue:        core.NewQueue(5),
+				Queue:             queue.NewQueue(5),
 				From:              "i@ilyinal.ru",
 				File:              "",
 			}

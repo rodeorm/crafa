@@ -25,15 +25,14 @@ func init() {
 		MessageKey:     "message",
 		StacktraceKey:  "stacktrace",
 		LineEnding:     zapcore.DefaultLineEnding,
-		EncodeLevel:    zapcore.CapitalLevelEncoder,    // Capitalize the log level names
-		EncodeTime:     customTimeEncoder,              // zapcore.ISO8601TimeEncoder,     // ISO8601 UTC timestamp format
-		EncodeDuration: zapcore.SecondsDurationEncoder, // Duration in seconds
-		EncodeCaller:   zapcore.ShortCallerEncoder,     // Short caller (file and line)
+		EncodeLevel:    zapcore.CapitalLevelEncoder,
+		EncodeTime:     customTimeEncoder,
+		EncodeDuration: zapcore.SecondsDurationEncoder,
+		EncodeCaller:   zapcore.ShortCallerEncoder,
 	}
 
-	// Create a core logger with JSON encoding
 	core := zapcore.NewCore(
-		zapcore.NewJSONEncoder(encoderConfig), // Using JSON encoder
+		zapcore.NewJSONEncoder(encoderConfig),
 		zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout)),
 		zap.InfoLevel,
 	)

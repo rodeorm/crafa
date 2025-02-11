@@ -2,7 +2,6 @@ package filler
 
 import (
 	"context"
-	"log"
 	"sync"
 	"time"
 
@@ -13,18 +12,10 @@ import (
 	"go.uber.org/zap"
 )
 
-// Filler - рабочий, заполняющий очередь сообщений
-type Filler struct {
-	msgStorager core.MessageStorager //16 байт. Хранилище сообщений
-	queue       *core.Queue          //8 байт. Очередь сообщений
-	ID          int                  //8 байт. Идентификатор воркера
-	period      int                  //8 байт. Периодичность наполнения сообщений
-}
-
 func Start(config *cfg.Config, es core.MessageStorager, wg *sync.WaitGroup, exit chan struct{}) {
 	// Асинхронно запускаем наполнитель очереди
 	s := NewFiller(
-		config.EmailQueue,
+		config.Queue,
 		es,
 		config.QueueFillPeriod,
 	)
@@ -57,12 +48,9 @@ func (f *Filler) StartFilling(exit chan struct{}, wg *sync.WaitGroup) {
 			}
 
 			for _, v := range msgs {
-				log.Println("Филлер пишет сообщение", v.ID)
 				f.queue.Push(&v)
-				log.Println("Филлер записал сообщение", v.ID)
 				v.Queued = true
 				f.msgStorager.UpdateMsg(ctx, &v)
-				log.Println("Филлер обновил сообщение в БД", v.ID)
 			}
 		}
 		time.Sleep(time.Duration(f.period) * time.Second)

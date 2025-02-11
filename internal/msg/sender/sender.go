@@ -19,15 +19,20 @@ type Sender struct {
 	domain      string               // Домен
 	from        string               // Отправитель
 	fileName    string               // Имя файла вложения
-	queue       *core.Queue          // Очередь сообщений
+	queue       QueueStorager        // Очередь сообщений
 	emailDialer *gomail.Dialer       // Отправитель
 	ID          int                  // Идентификатор воркера
 	period      int                  // Периодичность отправки сообщений
 }
 
+type QueueStorager interface {
+	PopWait() *core.Message
+	Len() int
+}
+
 // NewSender создает новый Sender
 // Каждый Sender может рассылать сообщения через свой собственный smtp сервер
-func NewSender(queue *core.Queue, storage core.MessageStorager, id, smtpPort, prd int, smtpServer, smtpLogin, smtpPassword, from, fileName, domain string) *Sender {
+func NewSender(queue QueueStorager, storage core.MessageStorager, id, smtpPort, prd int, smtpServer, smtpLogin, smtpPassword, from, fileName, domain string) *Sender {
 	s := Sender{
 		ID:          id,
 		queue:       queue,
@@ -47,7 +52,7 @@ func Start(config *cfg.Config, storage core.MessageStorager, wg *sync.WaitGroup,
 	for i := range config.SendWorkerCount {
 		// Асинхронно запускаем email сендеры
 		s := NewSender(
-			config.EmailQueue,
+			config.Queue,
 			storage,
 			i,
 			config.SMTPPort,

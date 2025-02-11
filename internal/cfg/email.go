@@ -1,6 +1,8 @@
 package cfg
 
-import "money/internal/core"
+import (
+	"money/internal/queue"
+)
 
 type EmailConfig struct {
 	//Количество наполнителей очереди на отправку
@@ -24,5 +26,5 @@ type EmailConfig struct {
 	// Файл-вложение
 	File string `yaml:"FILE"`
 
-	EmailQueue *core.Queue
+	Queue *queue.MessageQueue // Реализация очереди
 }

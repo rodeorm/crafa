@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"log"
 	"net/http"
 
 	"money/internal/core"
@@ -15,8 +14,6 @@ func (s *Server) loginPost(w http.ResponseWriter, r *http.Request) {
 
 	err := s.stgs.UserStorager.BaseAuthUser(ctx, user)
 	if err != nil {
-		log.Println("loginPost 1", err)
-
 		sign := make(map[string]string)
 		sign["Russ"] = "неправильное имя пользователя или пароль"
 		sign["Err"] = err.Error()
