@@ -78,6 +78,20 @@ func (s *Sender) StartSending(exit chan struct{}, wg *sync.WaitGroup) {
 		case _, ok := <-exit:
 			if !ok {
 				wg_w.Wait()
+				for s.queue.Len() != 0 { // Если в очереди еще что-то осталось, то выгребаем
+					ms := s.queue.PopWait()
+					err := s.Send(ms)
+					if err != nil {
+						logger.Log.Error("StartSending",
+							zap.String(fmt.Sprintf("Сендер %d", s.ID), err.Error()),
+						)
+						break
+					}
+					logger.Log.Info("StartSending",
+						zap.Int(fmt.Sprintf("Сендер %d отправил сообщение после отмены", s.ID), ms.ID),
+					)
+				}
+
 				logger.Log.Info("StartSending",
 					zap.String(fmt.Sprintf("Сендер %d", s.ID), "изящно завершил дела"),
 				)

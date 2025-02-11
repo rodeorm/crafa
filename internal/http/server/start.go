@@ -10,6 +10,8 @@ import (
 	"money/internal/cfg"
 	"money/internal/core"
 	"money/internal/logger"
+
+	_ "net/http/pprof"
 )
 
 func Start(cfg *cfg.Config, stgs *core.Storage, wg *sync.WaitGroup, exit chan struct{}) error {
@@ -40,6 +42,8 @@ func Start(cfg *cfg.Config, stgs *core.Storage, wg *sync.WaitGroup, exit chan st
 		zap.String("Порт", cfg.RunAddress),
 		zap.String("БД", cfg.ConnectionString),
 	)
+
+	go http.ListenAndServe(":7070", nil)
 
 	s.gracefulShutdown()
 	err := srv.ListenAndServe()

@@ -34,12 +34,6 @@ func (s *Server) gracefulShutdown() {
 				zap.String("Изящное выключение", err.Error()),
 			)
 		}
-
-		if err := s.stgs.DBStorager.Close(); err != nil {
-			logger.Log.Error("Server Shutdowned",
-				zap.String("Закрытие соединения с БД", err.Error()),
-			)
-		}
 		// сообщаем основному потоку,
 		// что все сетевые соединения обработаны и закрыты
 		close(s.exit)

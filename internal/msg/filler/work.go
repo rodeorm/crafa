@@ -2,7 +2,7 @@ package filler
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"sync"
 	"time"
 
@@ -48,28 +48,23 @@ func (f *Filler) StartFilling(exit chan struct{}, wg *sync.WaitGroup) {
 				return
 			}
 		default:
-			go func() {
-				msgs, err := f.msgStorager.SelectUnsendedMsgs(ctx)
+			msgs, err := f.msgStorager.SelectUnsendedMsgs(ctx)
 
-				if err != nil {
-					logger.Log.Error("StartFilling",
-						zap.String("ошибка при получении сообщений к отправке", err.Error()),
-					)
-				}
+			if err != nil {
+				logger.Log.Error("StartFilling",
+					zap.String("ошибка при получении сообщений к отправке", err.Error()),
+				)
+			}
 
-				for i, v := range msgs {
-					err = f.queue.Push(&v)
-					if err != nil {
-						logger.Log.Error("StartFilling",
-							zap.String(fmt.Sprintf("ошибка при заполнении очереди для сообщения %d", i), err.Error()),
-						)
-						return
-					}
-					v.Queued = true
-					f.msgStorager.UpdateMsg(ctx, &v)
-				}
-			}()
-			time.Sleep(time.Duration(f.period) * time.Second)
+			for _, v := range msgs {
+				log.Println("Филлер пишет сообщение", v.ID)
+				f.queue.Push(&v)
+				log.Println("Филлер записал сообщение", v.ID)
+				v.Queued = true
+				f.msgStorager.UpdateMsg(ctx, &v)
+				log.Println("Филлер обновил сообщение в БД", v.ID)
+			}
 		}
+		time.Sleep(time.Duration(f.period) * time.Second)
 	}
 }

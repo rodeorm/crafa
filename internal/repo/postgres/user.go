@@ -202,6 +202,7 @@ func (s *postgresStorage) UpdateUser(ctx context.Context, u *core.User) error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 

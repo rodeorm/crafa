@@ -1,32 +1,24 @@
 package core
 
-import (
-	"sync"
-)
-
 // Queue - очередь на отправку сообщений
 type Queue struct {
 	ch chan *Message // Канал для отправки сообщений
 }
 
 // Push помещает сообщение в очередь
-func (q *Queue) Push(m *Message) error {
-	var wg sync.WaitGroup
+func (q *Queue) Push(m *Message) {
+	q.ch <- m
+}
 
-	wg.Add(1)
-	go func() {
-		q.ch <- m
-		wg.Done()
-	}()
-
-	wg.Wait()
-	return nil
+// Len возвращает количество сообщений в очереди
+func (q *Queue) Len() int {
+	return len(q.ch)
 }
 
 // NewQueue создает новую очередь сообщений размером n
 func NewQueue(n int) *Queue {
 	q := &Queue{
-		ch: make(chan *Message, 2),
+		ch: make(chan *Message, n),
 	}
 	return q
 }
