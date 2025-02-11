@@ -35,7 +35,7 @@ func Start(cfg *cfg.Config, stgs *core.Storage, wg *sync.WaitGroup, exit chan st
 	s := &Server{srv: srv, exit: exit, cfg: cfg, stgs: stgs}
 
 	configMiddlewares(r, admin, auth, s)
-	configPrefixes(r, admin, auth)
+	configPrefixes(r)
 	configPaths(r, admin, auth, s)
 
 	logger.Log.Info("HTTP Server",

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    {{ template "header.html" . }}
+<body>
+    <div class="card text-left">
+        <div class="card-body">
+          <div>
+            <table id="users" class="table  table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
+                <thead>
+            <tr onclick="location.href = '/user/list'">
+                <th class="table-primary"  scope=" col">Имя пользователя</th>
+                <th class="table-primary"  scope=" col">Фамилия</th>
+                <th class="table-primary"  scope="col">Имя</th>
+                <th class="table-primary"  scope="col">Отчество</th>
+                <th class="table-primary"  scope="col">Электронная почта</th>
+                <th class="table-primary"  scope="col">Телефон</th>
+                <th class="table-primary"  scope="col">Роль</th>
+                <th class="table-primary"  scope="col">Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .Attributes.Users}}
+            <tr class=" = " onclick="location.href = '/user/update?id={{ .ID }}'" style="cursor: pointer;">
+                <td>{{ .Login}}</td>
+                <td>{{ .FamilyName }}</td>
+                <td>{{ .Name }}</td>
+                <td>{{ .PatronName }}</td>
+                <td>{{ .Email }}</td>
+                <td>{{ .Phone }}</td>
+                <td>{{ .Role.Name }}</td>
+                <td><a href="/user/delete?id={{ .ID }}" class="btn btn-outline-danger" role="button">Удалить</a>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td>Отсутствуют пользователи</td>
+            </tr>
+            {{ end }}
+        </tbody>
+    </table>
+    </div>
+</div>
+<script>
+    $(document).ready( function () {
+        $('#users').DataTable({language: {url:'../static/DataTables/language.json'}});
+    } );
+</script>
+</body>
+{{ template "footer.html" . }}
+</html>

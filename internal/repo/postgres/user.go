@@ -6,7 +6,10 @@ import (
 	"log"
 	"money/internal/core"
 	"money/internal/crypt"
+	"money/internal/logger"
 	"time"
+
+	"go.uber.org/zap"
 )
 
 // RegUser создает пользователя в БД
@@ -188,8 +191,10 @@ func (s *postgresStorage) SelectUser(ctx context.Context, u *core.User) error {
 // Возвращает данные всех пользователей
 func (s *postgresStorage) SelectAllUsers(ctx context.Context) ([]core.User, error) {
 	u := make([]core.User, 0)
-	err := s.preparedStatements["selectAllUsers"].SelectContext(ctx, u)
+	err := s.preparedStatements["selectAllUsers"].SelectContext(ctx, &u)
 	if err != nil {
+		logger.Log.Info("SelectAllUsers",
+			zap.Error(err))
 		return nil, err
 	}
 	return u, nil

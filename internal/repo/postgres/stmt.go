@@ -80,8 +80,9 @@ func (s *postgresStorage) prepareStatements() error {
 	}
 
 	selectAllUsers, err := s.DB.Preparex(`		SELECT 
-												id, roleid AS "role.id", login, name, familyname, patronname, email, phone
-												FROM cmn.Users;`)
+												u.id AS "user.id", roleid AS "role.id", r.Name AS "role.name", login, u.name, familyname, patronname, email, phone
+												FROM cmn.Users AS u
+													INNER JOIN cmn.Roles AS r ON r.ID = u.RoleID;`)
 	if err != nil {
 		return errors.Wrap(err, "selectAllUsers")
 	}
