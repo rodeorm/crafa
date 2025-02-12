@@ -48,9 +48,12 @@ func (s *Server) projectListGet(w http.ResponseWriter, r *http.Request) {
 
 	at["Projects"] = projects
 	pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
-	if session.User.Role.ID == core.RoleAdmin {
+	switch session.User.Role.ID {
+	case core.RoleAdmin:
 		page.Execute("project", "adminList", w, pg)
-	} else {
-		page.Execute("project", "list", w, pg)
+	case core.RoleEmployee:
+		page.Execute("project", "employeeList", w, pg)
+	case core.RoleAuth:
+		page.Execute("project", "authList", w, pg)
 	}
 }

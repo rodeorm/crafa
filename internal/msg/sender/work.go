@@ -15,7 +15,9 @@ func (s *Sender) Send(m *core.Message) error {
 	if m.Category.ID == core.MessageCategoryEmail {
 		email := core.NewEmail(*m,
 			core.WithHeader(s.from, m.Email),
-			core.WithBody(s.domain, m.Text, m.User.ID))
+			core.WithBody(s.domain, m.Text, m.User.ID),
+		//	core.WithAttachment("logo.jpg"),
+		)
 
 		logger.Log.Info("Send",
 			zap.String(fmt.Sprintf("Сендер %d получил сообщение для отправки %s", s.ID, m.Email), m.Text))

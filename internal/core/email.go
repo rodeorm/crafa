@@ -30,9 +30,8 @@ func WithAttachment(filePath string) func(*Email) {
 	return func(e *Email) {
 		attachPath, err := filepath.Abs(filepath.Join(".", "static", "img", filePath))
 		if err == nil {
-			return
+			e.GMS.Attach(attachPath)
 		}
-		e.GMS.Attach(attachPath)
 	}
 }
 
@@ -68,10 +67,12 @@ func WithBody(domain, sign string, userID int) func(*Email) {
 
 		case MessageTypeAuth:
 			templatePath, _ = filepath.Abs(fmt.Sprintf("./view/%s/%s.html", "email", "auth"))
+
 			mail, _ := template.ParseFiles(templatePath)
 			mail.Execute(&body, sign)
 		case MessageTypeNotify:
 			templatePath, _ = filepath.Abs(fmt.Sprintf("./view/%s/%s.html", "email", "notify"))
+
 			mail, _ := template.ParseFiles(templatePath)
 			mail.Execute(&body, sign)
 		}

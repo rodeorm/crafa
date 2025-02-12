@@ -6,6 +6,9 @@ type Project struct {
 	ID   int
 	Name string
 
+	IssueQty     int
+	OpenIssueQty int
+
 	Manager    User
 	Supporter  User
 	Maintainer User
