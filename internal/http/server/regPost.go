@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"log"
 	"money/internal/core"
 	"money/internal/http/cookie"
 	"money/internal/http/page"
@@ -30,7 +29,6 @@ func (s *Server) regPost(w http.ResponseWriter, r *http.Request) {
 		at := make(map[string]any)
 		at["User"] = user
 		pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at))
-		log.Println(pg)
 		w.WriteHeader(http.StatusUnauthorized)
 		page.Execute("user", "reg", w, pg)
 		return
@@ -41,7 +39,6 @@ func (s *Server) regPost(w http.ResponseWriter, r *http.Request) {
 		sign := make(map[string]string)
 		sign["russ"] = "Ошибка при регистрации"
 		sign["err"] = err.Error()
-
 		at := make(map[string]any)
 		at["User"] = user
 		pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at))

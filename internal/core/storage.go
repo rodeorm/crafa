@@ -5,6 +5,7 @@ type Storage struct {
 	MessageStorager
 	SessionStorager
 	DBStorager
+	RoleStorager
 }
 
 type DBStorager interface {

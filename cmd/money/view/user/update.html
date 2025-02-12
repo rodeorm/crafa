@@ -2,56 +2,101 @@
 <html lang="en">
 {{ template "header.html" . }}
 <div class="container">
-    <div class="card-body">
     <form action="/user/update" class="needs-validation" novalidate method="POST">
-        <h1>Редактирование информации о пользователе {{.Attribute.Login}} </h1>
-        <div class="mb-3">
-            <label class ="control-label"  for="surname">Фамилия</label>
-            <input  {{if .Attribute.Surname }}
-                            value={{ .Attribute.Surname }}
+        <h4>Редактирование информации о пользователе: {{.Attributes.User.Login}} </h4>
+        <div class="row align-items-start">
+            <div class="col">
+                <label class ="control-label"  for="login">Имя пользователя:</label>
+                <input  {{if .Attributes.User.Login }}
+                                value={{.Attributes.User.Login}} 
+                        {{end}} 
+                        type="text" class="form-control" placeholder="Логин" name ="login" required>
+                <div class="invalid-feedback">Пожалуйста укажите логин</div>
+            </div>
+            <div class="col">
+                <label for="password">Пароль:</label>
+                <input 
+                {{if .Attributes.User.Password }}
+                            value={{.Attributes.User.Password}} 
                     {{end}} 
-                    type="text" class="form-control" name ="surname" required>
-            <div id="help" class="form-text">Данные используются только для удобства идентификации и обращения к пользователю</div>
-            <div class="invalid-feedback">Пожалуйста укажите фамилию пользователя</div>
+                type="password" class="form-control" placeholder="Пароль" name ="password" required>
+        
+            <div class="invalid-feedback">Пожалуйста укажите пароль</div>
+            </div>
+          </div> 
+          <div class="row align-items-start">
+            <div class="col">
+                <label for="familyname">Фамилия:</label>
+                <input 
+                {{if .Attributes.User.FamilyName }}
+                            value={{.Attributes.User.FamilyName}} 
+                    {{end}}                  
+                type="text" class="form-control" placeholder="Иванов" name ="familyname" required>
+            <div class="invalid-feedback">Пожалуйста укажите фамилию</div>
+            </div>
+            <div class="col">
+                <label for="name">Имя:</label>
+                <input 
+                {{if .Attributes.User.Name }}
+                            value={{.Attributes.User.Name}} 
+                    {{end}}           
+                type="text" class="form-control" placeholder="Иван" name ="name" required>
+              <div class="invalid-feedback">Пожалуйста укажите имя</div> 
+            </div>
+            <div class="col">
+                <label for="patronname">Отчество:</label>
+                <input 
+                {{if .Attributes.User.PatronName }}
+                            value={{.Attributes.User.PatronName}} 
+                    {{end}} 
+                
+                type="text" class="form-control" placeholder="Иванович" name ="patronname" required>
+            <div class="invalid-feedback">Пожалуйста укажите отчество</div>    
         </div>
-        <div class="mb-3">
-            <label class ="control-label"  for="name">Имя</label>
-            <input  {{if .Attribute.Name }}
-                            value={{ .Attribute.Name }}
-                    {{end}} 
-                    type="text" class="form-control" name ="name" required>
-            <div id="help" class="form-text">Данные используются только для удобства идентификации и обращения к пользователю</div>
-            <div class="invalid-feedback">Пожалуйста укажите имя пользователя</div>
-        </div>
-        <div class="mb-3">
-            <label class ="control-label"  for="name">Отчество</label>
-            <input  {{if .Attribute.Patronymic }}
-                            value={{ .Attribute.Patronymic }}
-                    {{end}} 
-                    type="text" class="form-control" name ="patronymic" required>
-            <div id="help" class="form-text">Данные используются только для удобства идентификации и обращения к пользователю</div>
-            <div class="invalid-feedback">Пожалуйста укажите отчество пользователя</div>
+    </div> 
+    <div class="row align-items-start">
+        <div class="col">
+            <label for="email">Адрес электронной почты:</label>
+            <input 
+            {{if .Attributes.User.Email }}
+                        value={{.Attributes.User.Email }} 
+            {{end}}   
+          type="email" class="form-control" placeholder="priemn@dvec.ru" name ="email" required>
+        <div class="invalid-feedback">Пожалуйста укажите корректный адрес электронной почты</div>
         </div>
         <div class="col">
-            <label for="phonenumber">Контактный номер телефона:</label>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="phonenumber">+7</span>
-                <input 
-                    {{if .Attribute.Phone }}
-                                value={{.Attribute.Phone}} 
-                        {{end}} 
-                    type="number" class="form-control" placeholder="4232406845" name ="phonenumber" required>
-                <div class="invalid-feedback">Пожалуйста укажите корректный номер телефона (без +7 или 8)</div>
-            </div>  
-    </div>
-        <a href="/" class="btn btn-outline-danger">Отменить</a>
-                    <button type="submit" class="btn btn-outline-success">Применить</button>
-                    {{if .Signal }}
-                    <div class="alert alert-danger" role = "alert">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>Внимание! </strong>{{.Signal}}
-                    </div>            
-                    {{end}}    
+                <label for="phonenumber">Контактный номер телефона:</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="phonenumber">+7</span>
+                    <input 
+                        {{if .Attributes.User.Phone }}
+                                    value={{.Attributes.User.Phone}} 
+                            {{end}} 
+                        type="number" class="form-control" placeholder="4232406845" name ="phonenumber" required>
+                    <div class="invalid-feedback">Пожалуйста укажите корректный номер телефона (без +7 или 8)</div>
+                </div>  
+        </div>
+        <div class="col">
+        <div name="role" class="form-group" data-width='auto'>
+            Роль:
+            <select name="roleid" id="roleid" required class="form-select" data-live-search="true" 
+            noneResultsText="Нет совпадений" data-size="10" width="auto">
+                <option value = {{.Attributes.User.Role.ID}}>--Текущая роль: {{.Attributes.User.Role.Name}}--</option>
+                {{ range $role := index $.Attributes.PossibleRoles}}
+                <option value = {{ $role.ID}} >{{ $role.Name}} </option>
+                {{ end }}
+            </select>
+        </div>
+        </div>
+        <div class="d-flex flex-column flex-sm-row align-items-center">
+            <button type="submit" class="btn btn-outline-success mb-2 mb-sm-0 me-sm-2" style="min-width: 150px;">Сохранить изменения</button>
+            <a href="/" class="btn btn-outline-danger">Отменить</a>
+            {{if .Signals }}
+            <div class="alert alert-danger mb-0" role="alert" style="flex: 1; display: flex; align-items: center;">
+                <strong>{{.Signals.Russ}}:</strong>&nbsp;{{.Signals.Err}}
+            </div>
+            {{end}}
+        </div>
 </form>
 </div> 
 </form>       
