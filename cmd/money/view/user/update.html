@@ -19,9 +19,11 @@
                 {{if .Attributes.User.Password }}
                             value={{.Attributes.User.Password}} 
                     {{end}} 
-                type="password" class="form-control" placeholder="Пароль" name ="password" required>
-        
-            <div class="invalid-feedback">Пожалуйста укажите пароль</div>
+                type="password" disabled class="form-control" placeholder="Пароль" name ="password" required>
+            </div>
+            <div id="help" class="form-text">Для изменения пароля - перейдите по ссылке <a href="./user/password" class="close">"сбросить пароль"</a>. 
+                Никто не может получить доступ к чужому паролю. 
+                Он не хранится в Системе в явном виде.
             </div>
           </div> 
           <div class="row align-items-start">
