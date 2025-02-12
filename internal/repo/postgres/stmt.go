@@ -128,6 +128,16 @@ func (s *postgresStorage) prepareStatements() error {
 		return errors.Wrap(err, "selectAllProjects")
 	}
 
+	selectUserProjects, err := s.DB.Preparex(`		SELECT p.id, p.name 
+													FROM data.Projects AS p
+														INNER JOIN data.UserProjects AS up 
+															ON p.ID = up.ProjectID
+													WHERE up.UserID = $1
+													;`)
+	if err != nil {
+		return errors.Wrap(err, "selectUserProjects")
+	}
+
 	deleteProject, err := s.DB.Preparex(`	DELETE FROM data.Projects
 											WHERE ID = $1;`)
 	if err != nil {
@@ -152,6 +162,7 @@ func (s *postgresStorage) prepareStatements() error {
 	s.preparedStatements["selectProject"] = selectProject
 	s.preparedStatements["selectAllProjects"] = selectAllProjects
 	s.preparedStatements["deleteProject"] = deleteProject
+	s.preparedStatements["selectUserProjects"] = selectUserProjects
 
 	return nil
 }

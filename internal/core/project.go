@@ -12,9 +12,10 @@ type Project struct {
 }
 
 type ProjectStorager interface {
-	AddProject(context.Context, *Project, *User) error
-	EditProject(context.Context, *Project, *User) error
-	SelectProject(context.Context, *Project, *User) error
-	SelectAllProjects(context.Context, *User) ([]Project, error)
-	DeleteProject(context.Context, *Project, *User) error
+	InsertProject(context.Context, *Project) error
+	UpdateProject(context.Context, *Project) error
+	SelectProject(context.Context, *Project) error
+	SelectAllProjects(context.Context) ([]Project, error)
+	SelectUserProjects(context.Context, User) ([]Project, error)
+	DeleteProject(context.Context, *Project) error
 }

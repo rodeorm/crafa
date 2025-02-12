@@ -17,11 +17,14 @@ func (s *Server) main(w http.ResponseWriter, r *http.Request) {
 	switch session.User.Role.ID {
 	case core.RoleAdmin:
 		p := page.NewPage(page.WithSession(session))
-		page.Execute("admin", "index", w, p)
+		page.Execute("admin", "main", w, p)
 	case core.RoleReg:
 		http.Redirect(w, r, "/user/send", http.StatusTemporaryRedirect)
 	case core.RoleAuth:
 		p := page.NewPage(page.WithSession(session))
-		page.Execute("main", "auth", w, p)
+		page.Execute("auth", "main", w, p)
+	case core.RoleEmployee:
+		p := page.NewPage(page.WithSession(session))
+		page.Execute("employee", "main", w, p)
 	}
 }

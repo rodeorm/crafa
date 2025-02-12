@@ -11,7 +11,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *Server) userUpdateGet(w http.ResponseWriter, r *http.Request) {
+func (s *Server) projectUpdateGet(w http.ResponseWriter, r *http.Request) {
 	session, err := s.getSession(r)
 	if err != nil {
 		logger.Log.Error("session",

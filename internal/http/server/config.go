@@ -9,7 +9,7 @@ import (
 
 func configPaths(r, admin, auth *mux.Router, s *Server) {
 	r.HandleFunc("/forbidden", s.forbidden)
-	r.HandleFunc("/", s.index).Methods(http.MethodGet)
+	r.HandleFunc("/", s.index)
 	r.HandleFunc("/user/reg", s.regGet).Methods(http.MethodGet)
 	r.HandleFunc("/user/reg", s.regPost).Methods(http.MethodPost)
 	r.HandleFunc("/user/send", s.send)
@@ -17,9 +17,16 @@ func configPaths(r, admin, auth *mux.Router, s *Server) {
 	r.HandleFunc("/user/login", s.loginPost).Methods(http.MethodPost)
 	r.HandleFunc("/user/verify", s.verifyPost).Methods(http.MethodPost)
 	r.HandleFunc("/user/logout", s.logOut)
+
 	admin.HandleFunc("/user/list", s.userListGet).Methods(http.MethodGet)
 	auth.HandleFunc("/user/update", s.userUpdateGet).Methods(http.MethodGet)
 	auth.HandleFunc("/user/update", s.userUpdatePost).Methods(http.MethodPost)
+
+	auth.HandleFunc("/project/list", s.projectListGet).Methods(http.MethodGet)
+	auth.HandleFunc("/project/create", s.projectCreatePost).Methods(http.MethodPost)
+	auth.HandleFunc("/project/update", s.projectUpdateGet).Methods(http.MethodGet)
+	auth.HandleFunc("/project/update", s.projectUpdatePost).Methods(http.MethodPost)
+
 	//admin.HandleFunc("/admin/index", s.forbidden)
 	r.HandleFunc("/main", s.main)
 }

@@ -5,6 +5,8 @@
         {{ template "headerReg.html" . }}
     {{else if (eq .Session.User.Role.ID 3)}} 
         {{ template "headerAuth.html" . }}
+    {{else if (eq .Session.User.Role.ID 4)}} 
+        {{ template "headerEmployee.html" . }}
     {{else}} 
     <head>
         <title>CRAFA</title>

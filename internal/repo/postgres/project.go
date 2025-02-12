@@ -3,24 +3,60 @@ package postgres
 import (
 	"context"
 	"money/internal/core"
+	"money/internal/logger"
+
+	"go.uber.org/zap"
 )
 
-func (s *postgresStorage) AddProject(ctx context.Context, p *core.Project, u *core.User) error {
+func (s *postgresStorage) InsertProject(ctx context.Context, p *core.Project) error {
+	_, err := s.preparedStatements["insertProject"].ExecContext(ctx, p.Name)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
-func (s *postgresStorage) EditProject(ctx context.Context, p *core.Project, u *core.User) error {
+func (s *postgresStorage) UpdateProject(ctx context.Context, p *core.Project) error {
+	//SET Name = $2 WHERE ID = $1
+	_, err := s.preparedStatements["updateProject"].ExecContext(ctx, p.ID, p.Name)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
-func (s *postgresStorage) SelectProject(ctx context.Context, p *core.Project, u *core.User) error {
-	return nil
+func (s *postgresStorage) SelectProject(ctx context.Context, p *core.Project) error {
+	return s.preparedStatements["selectProject"].GetContext(ctx, p, p.ID)
 }
 
-func (s *postgresStorage) SelectAllProjects(ctx context.Context, u *core.User) ([]core.Project, error) {
-	return nil, nil
+func (s *postgresStorage) SelectAllProjects(ctx context.Context) ([]core.Project, error) {
+	p := make([]core.Project, 0)
+	err := s.preparedStatements["selectAllProjects"].SelectContext(ctx, &p)
+	if err != nil {
+		logger.Log.Info("selectAllProjects",
+			zap.Error(err))
+		return nil, err
+	}
+	return p, nil
 }
 
-func (s *postgresStorage) DeleteProject(ctx context.Context, p *core.Project, u *core.User) error {
+func (s *postgresStorage) SelectUserProjects(ctx context.Context, u core.User) ([]core.Project, error) {
+	p := make([]core.Project, 0)
+	err := s.preparedStatements["selectUserProjects"].SelectContext(ctx, &p, u.ID)
+	if err != nil {
+		logger.Log.Info("selectAllProjects",
+			zap.Error(err))
+		return nil, err
+	}
+	return p, nil
+}
+
+func (s *postgresStorage) DeleteProject(ctx context.Context, p *core.Project) error {
+	_, err := s.preparedStatements["deleteProject"].ExecContext(ctx, p.ID)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

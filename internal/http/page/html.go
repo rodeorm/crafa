@@ -16,7 +16,7 @@ func Execute(folder string, page string, w http.ResponseWriter, p *Page) error {
 		errors.Wrap(err, "ошибка при попытке получить абсолютный путь к шаблону")
 	}
 	paths := getCommonPaths()
-	html, err := template.ParseFiles(absPath, paths["footPath"], paths["headAuthPath"], paths["headPath"], paths["headAdminPath"], paths["headRegPath"])
+	html, err := template.ParseFiles(absPath, paths["footPath"], paths["headAuthPath"], paths["headPath"], paths["headAdminPath"], paths["headRegPath"], paths["headEmplPath"])
 	if err != nil {
 		log.Println("Execute 1", err)
 		return errors.Wrap(err, "ошибка при попытке разобрать шаблоны")

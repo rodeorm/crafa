@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-{{ template "header.html" . }}
-<div class="container">
-    <form action="/user/update" class="needs-validation" novalidate method="POST">
+    {{ template "header.html" . }}
+<body>
+    <div class="container">
+        <div class="card-body">
+    <form action="../user/update?id={{ .Attributes.User.ID }}" class="needs-validation" novalidate method="POST">
         <h4>Редактирование информации о пользователе: {{.Attributes.User.Login}} </h4>
         <div class="row align-items-start">
             <div class="col">
@@ -92,15 +94,16 @@
         </div>
         <div class="d-flex flex-column flex-sm-row align-items-center">
             <button type="submit" class="btn btn-outline-success mb-2 mb-sm-0 me-sm-2" style="min-width: 150px;">Сохранить изменения</button>
-            <a href="/" class="btn btn-outline-danger">Отменить</a>
+            <a href="./user/list" class="btn btn-outline-danger">Отменить</a>
             {{if .Signals }}
             <div class="alert alert-danger mb-0" role="alert" style="flex: 1; display: flex; align-items: center;">
                 <strong>{{.Signals.Russ}}:</strong>&nbsp;{{.Signals.Err}}
             </div>
             {{end}}
         </div>
-</form>
-</div> 
+        </form>
+        </div> 
+    </div>
 </form>       
     <script>
         (function () {
@@ -121,7 +124,6 @@
             }, false);
         })()
     </script>
- <script src="../static/js/bootstrap.bundle.min.js"></script>
 </body>
 {{ template "footer.html" . }}
 </html>
