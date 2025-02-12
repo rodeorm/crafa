@@ -37,5 +37,5 @@ func init() {
 		zap.InfoLevel,
 	)
 
-	Log = zap.New(core)
+	Log = zap.New(core).WithOptions(zap.AddCaller())
 }

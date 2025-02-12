@@ -35,9 +35,29 @@ func (s *Server) userUpdateGet(w http.ResponseWriter, r *http.Request) {
 	at := make(map[string]any)
 	ctx := context.TODO()
 
-	err = s.stgs.UserStorager.SelectUser(ctx, user)
+	err = s.stgs.UserStorager.SelectUser(ctx, user) // Получаем данные пользователя
 	if err != nil {
 		logger.Log.Error("User",
+			zap.Error(err),
+		)
+		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+		return
+	}
+
+	// Получаем текущие проекты пользователя
+	userProjects, err := s.stgs.ProjectStorager.SelectUserProjects(ctx, user)
+	if err != nil {
+		logger.Log.Error("userProjects",
+			zap.Error(err),
+		)
+		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+		return
+	}
+
+	// Получаем возможные проекты для пользователя
+	possibleProjects, err := s.stgs.ProjectStorager.SelectPossibleNewUserProjects(ctx, user)
+	if err != nil {
+		logger.Log.Error("possibleProjects",
 			zap.Error(err),
 		)
 		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
@@ -53,6 +73,7 @@ func (s *Server) userUpdateGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Получаем возможные роли для пользователя
 	possibleRoles, err := s.stgs.RoleStorager.SelectPossibleRoles(ctx)
 	if err != nil {
 		logger.Log.Error("possibleRoles",
@@ -64,6 +85,8 @@ func (s *Server) userUpdateGet(w http.ResponseWriter, r *http.Request) {
 
 	at["User"] = user
 	at["PossibleRoles"] = possibleRoles
+	at["PossibleProjects"] = possibleProjects
+	at["UserProjects"] = userProjects
 
 	pg := page.NewPage(page.WithAttrs(at), page.WithSession(session))
 	page.Execute("user", "update", w, pg)

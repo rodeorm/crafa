@@ -108,6 +108,13 @@ func (s *postgresStorage) prepareStatements() error {
 		return errors.Wrap(err, "insertProject")
 	}
 
+	insertUserProject, err := s.DB.Preparex(`		INSERT INTO data.UserProjects
+	(UserID, ProjectID)
+	SELECT $1, $2;`)
+	if err != nil {
+		return errors.Wrap(err, "insertUserProject")
+	}
+
 	updateProject, err := s.DB.Preparex(`		UPDATE data.Projects 
 												SET Name = $2
 												WHERE ID = $1;`)
@@ -144,6 +151,22 @@ func (s *postgresStorage) prepareStatements() error {
 		return errors.Wrap(err, "deleteProject")
 	}
 
+	deleteUserProject, err := s.DB.Preparex(`	DELETE FROM data.UserProjects
+											WHERE UserID = $1 AND ProjectID = $2;`)
+	if err != nil {
+		return errors.Wrap(err, "deleteUserProject")
+	}
+
+	selectPossibleUserProjects, err := s.DB.Preparex(`		SELECT p.id, p.name 
+															FROM data.Projects AS p
+															LEFT JOIN data.UserProjects AS up 
+															ON p.ID = up.ProjectID AND up.UserID = $1
+															WHERE up.ID IS NULL
+															;`)
+	if err != nil {
+		return errors.Wrap(err, "selectPossibleUserProjects")
+	}
+
 	s.preparedStatements["insertUser"] = insertUser
 	s.preparedStatements["insertMsg"] = insertMsg
 	s.preparedStatements["insertSession"] = insertSession
@@ -163,6 +186,9 @@ func (s *postgresStorage) prepareStatements() error {
 	s.preparedStatements["selectAllProjects"] = selectAllProjects
 	s.preparedStatements["deleteProject"] = deleteProject
 	s.preparedStatements["selectUserProjects"] = selectUserProjects
+	s.preparedStatements["deleteUserProject"] = deleteUserProject
+	s.preparedStatements["selectPossibleUserProjects"] = selectPossibleUserProjects
+	s.preparedStatements["insertUserProject"] = insertUserProject
 
 	return nil
 }

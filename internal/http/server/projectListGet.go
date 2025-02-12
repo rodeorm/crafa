@@ -36,7 +36,7 @@ func (s *Server) projectListGet(w http.ResponseWriter, r *http.Request) {
 		}
 
 	} else {
-		projects, err = s.stgs.SelectUserProjects(ctx, session.User)
+		projects, err = s.stgs.SelectUserProjects(ctx, &session.User)
 		if err != nil {
 			logger.Log.Error("projects user",
 				zap.Error(err))

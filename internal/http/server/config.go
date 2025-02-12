@@ -26,6 +26,7 @@ func configPaths(r, admin, auth *mux.Router, s *Server) {
 	auth.HandleFunc("/project/create", s.projectCreatePost).Methods(http.MethodPost)
 	auth.HandleFunc("/project/update", s.projectUpdateGet).Methods(http.MethodGet)
 	auth.HandleFunc("/project/update", s.projectUpdatePost).Methods(http.MethodPost)
+	admin.HandleFunc("/project/connect", s.projectConnectPost).Methods(http.MethodPost)
 
 	//admin.HandleFunc("/admin/index", s.forbidden)
 	r.HandleFunc("/main", s.main)
