@@ -22,7 +22,6 @@ jobs:  # Добавлено: необходимо указать jobs
         uses: vladopajic/go-test-coverage@v2
         with:
           config: ./.testcoverage.yml
-        with:
           profile: cover.out
           local-prefix: github.com/org/project
           threshold-total: 95
