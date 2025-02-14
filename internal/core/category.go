@@ -2,16 +2,18 @@ package core
 
 import "context"
 
-type Catergory struct {
-	Level
-	Name string
-	ID   int
+//Category
+type Category struct {
+	Level Level
+	Name  string
+	ID    int
 }
 
 type CategoryStorager interface {
-	AddCategory(context.Context, *Category, *User) error
-	EditCategory(context.Context, *Category, *User) error
-	SelectCategory(context.Context, *Category, *User) error
-	SelectAllCategories(context.Context, *User) ([]Category, error)
-	DeleteCategory(context.Context, *Category, *User) error
+	InsertCategory(ctx context.Context, c *Category) error
+	UpdateCategory(ctx context.Context, c *Category) error
+	SelectCategory(ctx context.Context, c *Category) error
+	SelectAllCategories(ctx context.Context) ([]Category, error)
+	SelectAllLevelCategories(ctx context.Context, l *Level) error
+	DeleteCategory(ctx context.Context, c *Category) error
 }

@@ -29,6 +29,8 @@ func configPaths(r, admin, auth *mux.Router, s *Server) {
 	admin.HandleFunc("/project/connect", s.projectConnectPost).Methods(http.MethodPost)
 	admin.HandleFunc("/project/disconnect", s.projectDisconnectGet).Methods(http.MethodGet)
 
+	admin.HandleFunc("/category/list", s.categoryListGet).Methods(http.MethodGet)
+
 	//admin.HandleFunc("/admin/index", s.forbidden)
 	r.HandleFunc("/main", s.main)
 }

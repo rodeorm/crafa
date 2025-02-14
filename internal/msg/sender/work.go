@@ -12,7 +12,7 @@ import (
 
 // Send отправляет сообщение
 func (s *Sender) Send(m *core.Message) error {
-	if m.Category.ID == core.MessageCategoryEmail {
+	if m.MessageCategory.ID == core.MessageCategoryEmail {
 		email := core.NewEmail(*m,
 			core.WithHeader(s.from, m.Email),
 			core.WithBody(s.domain, m.Text, m.User.ID),

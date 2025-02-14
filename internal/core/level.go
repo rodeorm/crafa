@@ -15,6 +15,8 @@ type Level struct {
 	Name  string
 	Const string
 	ID    int
+
+	PossibleCategories []Category
 }
 
 type LevelStorager interface {
@@ -29,7 +31,7 @@ type LevelCash struct {
 }
 
 func (lc *LevelCash) SelectAllLevels(ctx context.Context) ([]Level, error) {
-	ls := make([]Level, 3)
+	ls := make([]Level, 6)
 	ls[0] = Level{ID: LevelProject, Name: "Проект", Const: "LevelProject"}
 	ls[1] = Level{ID: LevelEpic, Name: "Эпик", Const: "LevelEpic"}
 	ls[2] = Level{ID: LevelReq, Name: "Требование", Const: "LevelReq"}

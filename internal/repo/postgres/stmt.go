@@ -3,15 +3,45 @@ package postgres
 import "github.com/pkg/errors"
 
 func (s *postgresStorage) prepareStmts() error {
-	s.userPrepareStmts()
-	s.sessionPrepareStmts()
-	s.msgPrepareStmts()
-	s.epicPrepareStmts()
-	s.issuePrepareStmts()
-	s.projectPrepareStmts()
-	s.areaPrepareStmts()
-	s.categoryPrepareStmts()
-	s.iterationPrepareStmts()
+	err := s.userPrepareStmts()
+	if err != nil {
+		return err
+	}
+	err = s.sessionPrepareStmts()
+	if err != nil {
+		return err
+	}
+	err = s.msgPrepareStmts()
+	if err != nil {
+		return err
+	}
+	/*
+		err = s.epicPrepareStmts()
+		if err != nil {
+			return err
+		}
+		err = s.issuePrepareStmts()
+		if err != nil {
+			return err
+		}*/
+	err = s.categoryPrepareStmts()
+	if err != nil {
+		return err
+	}
+	err = s.projectPrepareStmts()
+	if err != nil {
+		return err
+	}
+	/*
+		err = s.areaPrepareStmts()
+		if err != nil {
+			return err
+		}
+
+		err = s.iterationPrepareStmts()
+		if err != nil {
+			return err
+		}*/
 
 	return nil
 }
@@ -136,42 +166,28 @@ func (s *postgresStorage) msgPrepareStmts() error {
 	return nil
 }
 
-func (s *postgresStorage) epicPrepareStmts() error {
-	insertEpic, err := s.DB.Preparex(`	INSERT INTO data.Epic
-										(UserID, StatusID, AreaID, CategoryID, ProjectID, Name, Text) 
-										SELECT $1, $2, $3, $4, $5, $6, $7;`)
-	if err != nil {
-		return errors.Wrap(err, "insertEpic")
+/*
+	func (s *postgresStorage) issuePrepareStmts() error {
+		insertIssue, err := s.DB.Preparex(`	INSERT INTO data.Issues
+											()
+											SELECT $1, $2, $3, $4, $5, $6, $7, $8;`)
+		if err != nil {
+			return errors.Wrap(err, "insertUser")
+		}
+		/*
+			InsertIssue(context.Context, *Issue) error
+			SelectIssue(context.Context, *User) (*Issue, error)
+			UpdateIssue(context.Context, *Issue) error
+			DeleteIssue(context.Context, *Issue) error
+			InsertIssueComment(context.Context, *Issue, *Comment) error
+			DeleteIssueComment(context.Context, *Issue, *Comment) error
+			UpdateIssueComment(context.Context, *Issue, *Comment) error
+			SelectAllIssueComments(context.Context, *Issue) error
+			SelectAllProjectIssues(context.Context, *Project) ([]Issue, error)
+		s.preparedStatements["insertIssue"] = insertIssue
+		return nil
 	}
-
-	s.preparedStatements["insertEpic"] = insertEpic
-	return nil
-}
-
-func (s *postgresStorage) issuePrepareStmts() error {
-	insertIssue, err := s.DB.Preparex(`	INSERT INTO data.Issues
-										() 
-										SELECT $1, $2, $3, $4, $5, $6, $7, $8;`)
-	if err != nil {
-		return errors.Wrap(err, "insertUser")
-	}
-	/*
-		InsertIssue(context.Context, *Issue) error
-		SelectIssue(context.Context, *User) (*Issue, error)
-		UpdateIssue(context.Context, *Issue) error
-		DeleteIssue(context.Context, *Issue) error
-		InsertIssueComment(context.Context, *Issue, *Comment) error
-		DeleteIssueComment(context.Context, *Issue, *Comment) error
-		UpdateIssueComment(context.Context, *Issue, *Comment) error
-		SelectAllIssueComments(context.Context, *Issue) error
-		SelectAllProjectIssues(context.Context, *Project) ([]Issue, error)
-
-
-	*/
-	s.preparedStatements["insertIssue"] = insertIssue
-	return nil
-}
-
+*/
 func (s *postgresStorage) projectPrepareStmts() error {
 
 	insertProject, err := s.DB.Preparex(`		INSERT INTO data.Projects
@@ -189,7 +205,7 @@ func (s *postgresStorage) projectPrepareStmts() error {
 		return errors.Wrap(err, "insertUserProject")
 	}
 
-	updateProject, err := s.DB.Preparex(`		UPDATE data.Projects 
+	updateProject, err := s.DB.Preparex(`		UPDATE data.Projects
 												SET Name = $2
 												WHERE ID = $1;`)
 	if err != nil {
@@ -203,15 +219,15 @@ func (s *postgresStorage) projectPrepareStmts() error {
 		return errors.Wrap(err, "selectProject")
 	}
 
-	selectAllProjects, err := s.DB.Preparex(`		SELECT id, name 
+	selectAllProjects, err := s.DB.Preparex(`		SELECT id, name
 													FROM data.Projects;`)
 	if err != nil {
 		return errors.Wrap(err, "selectAllProjects")
 	}
 
-	selectUserProjects, err := s.DB.Preparex(`		SELECT p.id, p.name 
+	selectUserProjects, err := s.DB.Preparex(`		SELECT p.id, p.name
 													FROM data.Projects AS p
-														INNER JOIN data.UserProjects AS up 
+														INNER JOIN data.UserProjects AS up
 															ON p.ID = up.ProjectID
 													WHERE up.UserID = $1
 													;`)
@@ -231,9 +247,9 @@ func (s *postgresStorage) projectPrepareStmts() error {
 		return errors.Wrap(err, "deleteUserProject")
 	}
 
-	selectPossibleUserProjects, err := s.DB.Preparex(`		SELECT p.id, p.name 
+	selectPossibleUserProjects, err := s.DB.Preparex(`		SELECT p.id, p.name
 															FROM data.Projects AS p
-															LEFT JOIN data.UserProjects AS up 
+															LEFT JOIN data.UserProjects AS up
 															ON p.ID = up.ProjectID AND up.UserID = $1
 															WHERE up.ID IS NULL
 															;`)
@@ -254,14 +270,12 @@ func (s *postgresStorage) projectPrepareStmts() error {
 	return nil
 }
 
+/*
 func (s *postgresStorage) areaPrepareStmts() error {
-	return nil
-}
-
-func (s *postgresStorage) categoryPrepareStmts() error {
 	return nil
 }
 
 func (s *postgresStorage) iterationPrepareStmts() error {
 	return nil
 }
+*/

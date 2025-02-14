@@ -25,7 +25,7 @@ type MessageStorager interface {
 type Message struct {
 	User
 	Type
-	Category
+	MessageCategory
 
 	SendTime sql.NullTime // Время, когда сообщение было отправлено
 	Text     string       // Сообщение
@@ -40,7 +40,7 @@ type Type struct {
 	Const string
 }
 
-type Category struct {
+type MessageCategory struct {
 	ID    int `db:"category.id"`
 	Name  string
 	Const string

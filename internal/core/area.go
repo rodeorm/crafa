@@ -2,6 +2,7 @@ package core
 
 import "context"
 
+// Область
 type Area struct {
 	Level
 	Team
@@ -9,9 +10,9 @@ type Area struct {
 }
 
 type AreaStorager interface {
-	AddArea(context.Context, *Area, *User) error
-	EditArea(context.Context, *Area, *User) error
-	SelectArea(context.Context, *Area, *User) error
-	SelectAllAreas(context.Context, *User) ([]Area, error)
-	DeleteArea(context.Context, *Area, *User) error
+	AddArea(context.Context, *Area) error
+	EditArea(context.Context, *Area) error
+	SelectArea(context.Context, *Area) error
+	SelectAllAreas(context.Context) ([]Area, error)
+	DeleteArea(context.Context, *Area) error
 }
