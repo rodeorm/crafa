@@ -1,4 +1,12 @@
 name: Go test coverage check
+   
+on:
+  push:
+    branches:
+      - brave_new_world
+    pull_request:
+       branches:
+      - brave_new_world
 runs-on: ubuntu-latest
 steps:
   - uses: actions/checkout@v3
