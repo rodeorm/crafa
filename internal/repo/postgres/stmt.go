@@ -2,30 +2,40 @@ package postgres
 
 import "github.com/pkg/errors"
 
-func (s *postgresStorage) prepareStatements() error {
+func (s *postgresStorage) prepareStmts() error {
+	s.userPrepareStmts()
+	s.sessionPrepareStmts()
+	s.msgPrepareStmts()
+	s.epicPrepareStmts()
+	s.issuePrepareStmts()
+	s.projectPrepareStmts()
+	s.areaPrepareStmts()
+	s.categoryPrepareStmts()
+	s.iterationPrepareStmts()
 
-	insertUser, err := s.DB.Preparex(`	INSERT INTO cmn.Users 
-										(roleid, login, password, name, familyname, patronname, email, phone) 
-										SELECT $1, $2, $3, $4, $5, $6, $7, $8
-										RETURNING id;`)
-	if err != nil {
-		return errors.Wrap(err, "insertUser")
-	}
+	return nil
+}
 
-	insertMsg, err := s.DB.Preparex(`INSERT INTO msg.Messages
-									   (typeid, categoryid, userid, text, email) 
-										SELECT $1, $2, $3, $4, $5
-										RETURNING id;`)
-	if err != nil {
-		errors.Wrap(err, "insertMsg")
-	}
-
+func (s *postgresStorage) sessionPrepareStmts() error {
 	insertSession, err := s.DB.Preparex(`INSERT INTO cmn.Sessions
-									   (userid, logintime, actiontime) 
-										SELECT $1, $2, $3
-										RETURNING id;`)
+	(userid, logintime, actiontime) 
+	 SELECT $1, $2, $3
+	 RETURNING id;`)
 	if err != nil {
 		return errors.Wrap(err, "insertSession")
+	}
+
+	s.preparedStatements["insertSession"] = insertSession
+	return nil
+}
+
+func (s *postgresStorage) userPrepareStmts() error {
+	insertUser, err := s.DB.Preparex(`	INSERT INTO cmn.Users 
+	(roleid, login, password, name, familyname, patronname, email, phone) 
+	SELECT $1, $2, $3, $4, $5, $6, $7, $8
+	RETURNING id;`)
+	if err != nil {
+		return errors.Wrap(err, "insertUser")
 	}
 
 	selectUser, err := s.DB.Preparex(`SELECT 
@@ -35,30 +45,9 @@ func (s *postgresStorage) prepareStatements() error {
 	if err != nil {
 		return errors.Wrap(err, "selectUser")
 	}
-
-	updateMsg, err := s.DB.Preparex(`	UPDATE msg.Messages 
-										SET Used = $2, Queued = $3, SendTime = $4 
-										WHERE id = $1;`)
-	if err != nil {
-		return errors.Wrap(err, "updateMsg")
-	}
-	selectUnsendedMsgs, err := s.DB.Preparex(`	SELECT 
-												id, userid AS "user.id", typeid as "type.id", categoryid as "category.id", text, email 
-											    FROM msg.Messages  
-												WHERE SendTime IS NULL AND (Queued IS NULL OR Queued = false);`)
-	if err != nil {
-		return errors.Wrap(err, "selectUnsendedMsgs")
-	}
-	selectConfMsg, err := s.DB.Preparex(`	SELECT 
-											id, used, queued, sendtime
-											FROM msg.Messages  
-											WHERE Used = false AND UserID = $1 AND Text = $2;`)
-	if err != nil {
-		return errors.Wrap(err, "selectConfMsg")
-	}
 	updateUserRole, err := s.DB.Preparex(`	UPDATE cmn.Users
-											SET  RoleID = $2
-											WHERE ID = $1;`)
+	SET  RoleID = $2
+	WHERE ID = $1;`)
 	if err != nil {
 		return errors.Wrap(err, "updateUserRole")
 	}
@@ -69,14 +58,6 @@ func (s *postgresStorage) prepareStatements() error {
 											WHERE login = $1;`)
 	if err != nil {
 		return errors.Wrap(err, "baseAuthUser")
-	}
-
-	selectAuthMsg, err := s.DB.Preparex(`		SELECT 
-											id, used, queued, sendtime
-											FROM msg.Messages  
-											WHERE Used = false AND UserID = $1 AND Text = $2;`)
-	if err != nil {
-		return errors.Wrap(err, "selectAuthMsg")
 	}
 
 	selectAllUsers, err := s.DB.Preparex(`		SELECT 
@@ -99,6 +80,99 @@ func (s *postgresStorage) prepareStatements() error {
 	if err != nil {
 		return errors.Wrap(err, "changeUserPassword")
 	}
+	s.preparedStatements["insertUser"] = insertUser
+	s.preparedStatements["selectUser"] = selectUser
+	s.preparedStatements["updateUserRole"] = updateUserRole
+	s.preparedStatements["baseAuthUser"] = baseAuthUser
+	s.preparedStatements["selectAllUsers"] = selectAllUsers
+	s.preparedStatements["updateUser"] = updateUser
+	s.preparedStatements["changeUserPassword"] = changeUserPassword
+	return nil
+}
+
+func (s *postgresStorage) msgPrepareStmts() error {
+	insertMsg, err := s.DB.Preparex(`INSERT INTO msg.Messages
+	(typeid, categoryid, userid, text, email) 
+	 SELECT $1, $2, $3, $4, $5
+	 RETURNING id;`)
+	if err != nil {
+		errors.Wrap(err, "insertMsg")
+	}
+
+	updateMsg, err := s.DB.Preparex(`	UPDATE msg.Messages 
+										SET Used = $2, Queued = $3, SendTime = $4 
+										WHERE id = $1;`)
+	if err != nil {
+		return errors.Wrap(err, "updateMsg")
+	}
+	selectUnsendedMsgs, err := s.DB.Preparex(`	SELECT 
+												id, userid AS "user.id", typeid as "type.id", categoryid as "category.id", text, email 
+											    FROM msg.Messages  
+												WHERE SendTime IS NULL AND (Queued IS NULL OR Queued = false);`)
+	if err != nil {
+		return errors.Wrap(err, "selectUnsendedMsgs")
+	}
+	selectConfMsg, err := s.DB.Preparex(`	SELECT 
+											id, used, queued, sendtime
+											FROM msg.Messages  
+											WHERE Used = false AND UserID = $1 AND Text = $2;`)
+	if err != nil {
+		return errors.Wrap(err, "selectConfMsg")
+	}
+
+	selectAuthMsg, err := s.DB.Preparex(`		SELECT 
+											id, used, queued, sendtime
+											FROM msg.Messages  
+											WHERE Used = false AND UserID = $1 AND Text = $2;`)
+	if err != nil {
+		return errors.Wrap(err, "selectAuthMsg")
+	}
+
+	s.preparedStatements["insertMsg"] = insertMsg
+	s.preparedStatements["updateMsg"] = updateMsg
+	s.preparedStatements["selectUnsendedMsgs"] = selectUnsendedMsgs
+	s.preparedStatements["selectConfMsg"] = selectConfMsg
+	s.preparedStatements["selectAuthMsg"] = selectAuthMsg
+	return nil
+}
+
+func (s *postgresStorage) epicPrepareStmts() error {
+	insertEpic, err := s.DB.Preparex(`	INSERT INTO data.Epic
+										(UserID, StatusID, AreaID, CategoryID, ProjectID, Name, Text) 
+										SELECT $1, $2, $3, $4, $5, $6, $7;`)
+	if err != nil {
+		return errors.Wrap(err, "insertEpic")
+	}
+
+	s.preparedStatements["insertEpic"] = insertEpic
+	return nil
+}
+
+func (s *postgresStorage) issuePrepareStmts() error {
+	insertIssue, err := s.DB.Preparex(`	INSERT INTO data.Issues
+										() 
+										SELECT $1, $2, $3, $4, $5, $6, $7, $8;`)
+	if err != nil {
+		return errors.Wrap(err, "insertUser")
+	}
+	/*
+		InsertIssue(context.Context, *Issue) error
+		SelectIssue(context.Context, *User) (*Issue, error)
+		UpdateIssue(context.Context, *Issue) error
+		DeleteIssue(context.Context, *Issue) error
+		InsertIssueComment(context.Context, *Issue, *Comment) error
+		DeleteIssueComment(context.Context, *Issue, *Comment) error
+		UpdateIssueComment(context.Context, *Issue, *Comment) error
+		SelectAllIssueComments(context.Context, *Issue) error
+		SelectAllProjectIssues(context.Context, *Project) ([]Issue, error)
+
+
+	*/
+	s.preparedStatements["insertIssue"] = insertIssue
+	return nil
+}
+
+func (s *postgresStorage) projectPrepareStmts() error {
 
 	insertProject, err := s.DB.Preparex(`		INSERT INTO data.Projects
 												(Name)
@@ -152,7 +226,7 @@ func (s *postgresStorage) prepareStatements() error {
 	}
 
 	deleteUserProject, err := s.DB.Preparex(`	DELETE FROM data.UserProjects
-											WHERE UserID = $1 AND ProjectID = $2;`)
+												WHERE UserID = $1 AND ProjectID = $2;`)
 	if err != nil {
 		return errors.Wrap(err, "deleteUserProject")
 	}
@@ -167,19 +241,6 @@ func (s *postgresStorage) prepareStatements() error {
 		return errors.Wrap(err, "selectPossibleUserProjects")
 	}
 
-	s.preparedStatements["insertUser"] = insertUser
-	s.preparedStatements["insertMsg"] = insertMsg
-	s.preparedStatements["insertSession"] = insertSession
-	s.preparedStatements["selectUser"] = selectUser
-	s.preparedStatements["updateMsg"] = updateMsg
-	s.preparedStatements["selectUnsendedMsgs"] = selectUnsendedMsgs
-	s.preparedStatements["selectConfMsg"] = selectConfMsg
-	s.preparedStatements["updateUserRole"] = updateUserRole
-	s.preparedStatements["baseAuthUser"] = baseAuthUser
-	s.preparedStatements["selectAuthMsg"] = selectAuthMsg
-	s.preparedStatements["selectAllUsers"] = selectAllUsers
-	s.preparedStatements["updateUser"] = updateUser
-	s.preparedStatements["changeUserPassword"] = changeUserPassword
 	s.preparedStatements["insertProject"] = insertProject
 	s.preparedStatements["updateProject"] = updateProject
 	s.preparedStatements["selectProject"] = selectProject
@@ -190,5 +251,17 @@ func (s *postgresStorage) prepareStatements() error {
 	s.preparedStatements["selectPossibleUserProjects"] = selectPossibleUserProjects
 	s.preparedStatements["insertUserProject"] = insertUserProject
 
+	return nil
+}
+
+func (s *postgresStorage) areaPrepareStmts() error {
+	return nil
+}
+
+func (s *postgresStorage) categoryPrepareStmts() error {
+	return nil
+}
+
+func (s *postgresStorage) iterationPrepareStmts() error {
 	return nil
 }

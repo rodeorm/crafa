@@ -12,8 +12,8 @@ import (
 
 // Реализация хранилища в СУБД Postgres
 type postgresStorage struct {
-	DB                 *sqlx.DB              // 8 байт (только указатель). Драйвер подключения к СУБД
-	preparedStatements map[string]*sqlx.Stmt //8 байт (только указатель)
+	DB                 *sqlx.DB
+	preparedStatements map[string]*sqlx.Stmt
 }
 
 // GetPostgresStorage возвращает хранилище данных в Postgres (создает, если его не было ранее)
@@ -36,7 +36,7 @@ func GetPostgresStorage(connectionString, cryptKey string) (*postgresStorage, er
 				return
 			}
 			ps = &postgresStorage{DB: db, preparedStatements: map[string]*sqlx.Stmt{}}
-			dbErr = ps.prepareStatements()
+			dbErr = ps.prepareStmts()
 		})
 
 	if dbErr != nil {

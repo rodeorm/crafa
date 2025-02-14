@@ -24,4 +24,5 @@ type ProjectStorager interface {
 	DeleteProject(context.Context, *Project) error
 	DeleteUserProject(context.Context, *User, *Project) error
 	SelectPossibleNewUserProjects(context.Context, *User) ([]Project, error)
+	SelectAllProjectEpics(context.Context, *Project) ([]Epic, error)
 }

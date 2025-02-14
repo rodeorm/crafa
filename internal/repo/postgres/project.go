@@ -62,7 +62,7 @@ func (s *postgresStorage) DeleteProject(ctx context.Context, p *core.Project) er
 }
 
 func (s *postgresStorage) DeleteUserProject(ctx context.Context, u *core.User, p *core.Project) error {
-	_, err := s.preparedStatements["deleteProject"].ExecContext(ctx, u.ID, p.ID)
+	_, err := s.preparedStatements["deleteUserProject"].ExecContext(ctx, u.ID, p.ID)
 	if err != nil {
 		logger.Log.Error("DeleteUserProject",
 			zap.Error(err))
@@ -93,4 +93,8 @@ func (s *postgresStorage) SelectPossibleNewUserProjects(ctx context.Context, u *
 	}
 
 	return ps, nil
+}
+
+func (s *postgresStorage) SelectAllProjectEpics(ctx context.Context, c *core.Project) ([]core.Epic, error) {
+	return nil, nil
 }

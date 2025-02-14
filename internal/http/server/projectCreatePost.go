@@ -6,7 +6,6 @@ import (
 	"money/internal/http/page"
 	"money/internal/logger"
 	"net/http"
-	"strconv"
 
 	"go.uber.org/zap"
 )
@@ -21,49 +20,22 @@ func (s *Server) projectCreatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := strconv.Atoi(r.URL.Query().Get("id"))
-	// Редактировать пользователя может либо сам пользователь, либо администратор
-	if err != nil || (session.User.Role.ID != core.RoleAdmin && id != session.User.ID) {
-		logger.Log.Error("id",
-			zap.Error(err),
-		)
-		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
-		return
-	}
-
-	roleID, err := strconv.Atoi(r.FormValue("roleid"))
-	if err != nil {
-		logger.Log.Error("role",
-			zap.Error(err),
-		)
-		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
-		return
-	}
-	// Получаем данные из формы
-	user := &core.User{
-		ID:         id,
-		Login:      r.FormValue("login"),
-		Name:       r.FormValue("name"),
-		PatronName: r.FormValue("patronname"),
-		FamilyName: r.FormValue("familyname"),
-		Email:      r.FormValue("email"),
-		Phone:      r.FormValue("phonenumber"),
-		Role:       core.Role{ID: roleID},
+	project := &core.Project{
+		Name: r.FormValue("name"),
 	}
 	at := make(map[string]any)
-	err = s.stgs.UserStorager.UpdateUser(context.TODO(), user)
-	at["User"] = user
+	err = s.stgs.ProjectStorager.InsertProject(context.TODO(), project)
 
 	if err != nil {
-		logger.Log.Error("updateUser",
+		logger.Log.Error("InsertProject",
 			zap.Error(err),
 		)
 		sign := make(map[string]string)
-		sign["Russ"] = "Ошибка при обновлении"
+		sign["Russ"] = "Ошибка при создании проекта"
 		sign["Err"] = err.Error()
 		pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
-		page.Execute("user", "update", w, pg)
+		page.Execute("project", "list", w, pg)
 		return
 	}
-	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, "/project/list", http.StatusSeeOther)
 }

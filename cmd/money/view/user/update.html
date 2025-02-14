@@ -125,7 +125,7 @@
                 <tr class=" = " onclick="location.href = '/project/view?id={{ .ID }}'" style="cursor: pointer;">
                     <td>{{ .Name }}</td>
                     <td>
-                        <a href="/project/disconnect?id={{ .ID }}&userid= {{ $.Attributes.User.ID}}" class="btn btn-outline-danger" role="button">Исключить из проекта</a>
+                        <a href="/project/disconnect?projectid={{ .ID }}&userid={{ $.Attributes.User.ID}}" class="btn btn-outline-danger" role="button">Исключить из проекта</a>
                     </td>
                 </tr>
                 {{else}}

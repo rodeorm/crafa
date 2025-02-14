@@ -65,5 +65,5 @@ func (s *Server) userUpdatePost(w http.ResponseWriter, r *http.Request) {
 		page.Execute("user", "update", w, pg)
 		return
 	}
-	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, "/user/list", http.StatusSeeOther)
 }

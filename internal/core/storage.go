@@ -7,6 +7,7 @@ type Storage struct {
 	DBStorager
 	RoleStorager
 	ProjectStorager
+	LevelStorager
 }
 
 type DBStorager interface {
