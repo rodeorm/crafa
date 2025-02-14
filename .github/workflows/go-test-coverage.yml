@@ -23,6 +23,5 @@ jobs:  # Добавлено: необходимо указать jobs
         with:
           config: ./.testcoverage.yml
           profile: cover.out
-          local-prefix: github.com/org/project
-          threshold-total: 95
+          local-prefix: github.com/rodeomr/money
           badge-file-name: coverage.svg
