@@ -1,0 +1,3091 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>money: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">money/cmd/money/main.go (0.0%)</option>
+				
+				<option value="file1">money/internal/cfg/once.go (0.0%)</option>
+				
+				<option value="file2">money/internal/cfg/storage.go (0.0%)</option>
+				
+				<option value="file3">money/internal/core/email.go (0.0%)</option>
+				
+				<option value="file4">money/internal/core/level.go (0.0%)</option>
+				
+				<option value="file5">money/internal/core/role.go (0.0%)</option>
+				
+				<option value="file6">money/internal/core/session.go (81.8%)</option>
+				
+				<option value="file7">money/internal/crypt/claims.go (77.8%)</option>
+				
+				<option value="file8">money/internal/crypt/mail.go (0.0%)</option>
+				
+				<option value="file9">money/internal/crypt/password.go (0.0%)</option>
+				
+				<option value="file10">money/internal/crypt/token.go (0.0%)</option>
+				
+				<option value="file11">money/internal/http/cookie/session.go (0.0%)</option>
+				
+				<option value="file12">money/internal/http/cookie/token.go (0.0%)</option>
+				
+				<option value="file13">money/internal/http/middle/admin.go (0.0%)</option>
+				
+				<option value="file14">money/internal/http/middle/auth.go (0.0%)</option>
+				
+				<option value="file15">money/internal/http/middle/log.go (0.0%)</option>
+				
+				<option value="file16">money/internal/http/page/html.go (0.0%)</option>
+				
+				<option value="file17">money/internal/http/page/page.go (0.0%)</option>
+				
+				<option value="file18">money/internal/http/page/path.go (0.0%)</option>
+				
+				<option value="file19">money/internal/http/page/url.go (0.0%)</option>
+				
+				<option value="file20">money/internal/http/server/config.go (0.0%)</option>
+				
+				<option value="file21">money/internal/http/server/confirm.go (0.0%)</option>
+				
+				<option value="file22">money/internal/http/server/forbidden.go (0.0%)</option>
+				
+				<option value="file23">money/internal/http/server/index.go (0.0%)</option>
+				
+				<option value="file24">money/internal/http/server/login.go (0.0%)</option>
+				
+				<option value="file25">money/internal/http/server/logout.go (0.0%)</option>
+				
+				<option value="file26">money/internal/http/server/main.go (0.0%)</option>
+				
+				<option value="file27">money/internal/http/server/projectConnectPost.go (0.0%)</option>
+				
+				<option value="file28">money/internal/http/server/projectCreatePost.go (0.0%)</option>
+				
+				<option value="file29">money/internal/http/server/projectDisconnectGet.go (0.0%)</option>
+				
+				<option value="file30">money/internal/http/server/projectListGet.go (0.0%)</option>
+				
+				<option value="file31">money/internal/http/server/projectUpdateGet.go (0.0%)</option>
+				
+				<option value="file32">money/internal/http/server/projectUpdatePost.go (0.0%)</option>
+				
+				<option value="file33">money/internal/http/server/regGet.go (0.0%)</option>
+				
+				<option value="file34">money/internal/http/server/regPost.go (0.0%)</option>
+				
+				<option value="file35">money/internal/http/server/send.go (0.0%)</option>
+				
+				<option value="file36">money/internal/http/server/session.go (0.0%)</option>
+				
+				<option value="file37">money/internal/http/server/shutdown.go (0.0%)</option>
+				
+				<option value="file38">money/internal/http/server/start.go (0.0%)</option>
+				
+				<option value="file39">money/internal/http/server/userListGet.go (0.0%)</option>
+				
+				<option value="file40">money/internal/http/server/userUpdateGet.go (0.0%)</option>
+				
+				<option value="file41">money/internal/http/server/userUpdatePost.go (0.0%)</option>
+				
+				<option value="file42">money/internal/http/server/verifyPost.go (0.0%)</option>
+				
+				<option value="file43">money/internal/logger/init.go (80.0%)</option>
+				
+				<option value="file44">money/internal/msg/filler/filler.go (0.0%)</option>
+				
+				<option value="file45">money/internal/msg/filler/work.go (0.0%)</option>
+				
+				<option value="file46">money/internal/msg/sender/sender.go (0.0%)</option>
+				
+				<option value="file47">money/internal/msg/sender/work.go (0.0%)</option>
+				
+				<option value="file48">money/internal/queue/msg.go (0.0%)</option>
+				
+				<option value="file49">money/internal/repo/postgres/msg.go (0.0%)</option>
+				
+				<option value="file50">money/internal/repo/postgres/postgres.go (0.0%)</option>
+				
+				<option value="file51">money/internal/repo/postgres/project.go (0.0%)</option>
+				
+				<option value="file52">money/internal/repo/postgres/session.go (0.0%)</option>
+				
+				<option value="file53">money/internal/repo/postgres/stmt.go (0.0%)</option>
+				
+				<option value="file54">money/internal/repo/postgres/user.go (0.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">no coverage</span>
+				<span class="cov1">low coverage</span>
+				<span class="cov2">*</span>
+				<span class="cov3">*</span>
+				<span class="cov4">*</span>
+				<span class="cov5">*</span>
+				<span class="cov6">*</span>
+				<span class="cov7">*</span>
+				<span class="cov8">*</span>
+				<span class="cov9">*</span>
+				<span class="cov10">high coverage</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package main
+
+import (
+        "money/internal/cfg"
+        "money/internal/http/server"
+        "money/internal/logger"
+        "money/internal/msg/filler"
+        "money/internal/msg/sender"
+)
+
+func main() <span class="cov0" title="0">{
+        config, stgs, exit, wg := cfg.GetConfig()
+
+        defer logger.Log.Sync()
+        defer stgs.DBStorager.Close()
+
+        wg.Add(1 + config.EmailConfig.FillWorkerCount + config.EmailConfig.SendWorkerCount)
+
+        go server.Start(config, stgs, wg, exit)
+        go sender.Start(config, stgs.MessageStorager, wg, exit)
+        go filler.Start(config, stgs.MessageStorager, wg, exit)
+
+        wg.Wait()
+}</span>
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package cfg
+
+import (
+        "money/internal/core"
+        "money/internal/queue"
+        "os"
+        "strconv"
+        "sync"
+        "time"
+)
+
+type Config struct {
+        AppConfig
+        PostgresConfig
+        EmailConfig
+        SecurityConfig
+}
+
+var (
+        cfg  *Config
+        stgs *core.Storage
+        exit chan struct{} // Через этот канал основные горутины узнают, что надо закрываться для изящного завершения работы
+        wg   sync.WaitGroup
+        once sync.Once
+)
+
+func GetConfig() (*Config, *core.Storage, chan struct{}, *sync.WaitGroup) <span class="cov0" title="0">{
+        once.Do(
+                func() </span><span class="cov0" title="0">{
+                        cfg = &amp;Config{}
+
+                        cfg.AppConfig = AppConfig{
+                                RunAddress:      os.Getenv("RUN_ADDRESS"),
+                                Domain:          "crafa.ru", //os.Getenv("DOMAIN")
+                                SSLPath:         "ssl/certificate_ca.crt",
+                                SSLKey:          "ssl/certificate.key",
+                                ReadTimeout:     10 * time.Second,
+                                WriteTimeout:    10 * time.Second,
+                                ShutdownTimeout: 10 * time.Second,
+                        }
+
+                        smtpPort, err := strconv.Atoi(os.Getenv("SMTP_PORT"))
+                        if err != nil </span><span class="cov0" title="0">{
+                                smtpPort = 465
+                        }</span>
+
+                        <span class="cov0" title="0">cfg.EmailConfig = EmailConfig{
+                                FillWorkerCount:   1, //runtime.NumCPU() / 2,
+                                SendWorkerCount:   3, //runtime.NumCPU() / 2,
+                                SMTPServer:        os.Getenv("SMTP_SERVER"),
+                                SMTPPort:          smtpPort,
+                                SMTPLogin:         os.Getenv("SMTP_LOGIN"),
+                                SMTPPass:          os.Getenv("SMTP_PASS"),
+                                MessageSendPeriod: 1,
+                                QueueFillPeriod:   1,
+                                Queue:             queue.NewQueue(5),
+                                From:              "i@ilyinal.ru",
+                                File:              "",
+                        }
+
+                        cfg.PostgresConfig = PostgresConfig{
+                                ConnectionString: os.Getenv("POSTGRES_CONNECTION"),
+                        }
+
+                        cfg.SecurityConfig = SecurityConfig{
+                                TokenLiveTime: 1800000, // os.Getenv("TOKEN_LIVE_TIME")
+                                OTPLiveTime:   18000,
+                                JWTKey:        os.Getenv("JWK_KEY"),
+                        }
+
+                        exit = make(chan struct{})
+
+                        stgs, err = GetStorages(cfg.PostgresConfig, cfg.SecurityConfig)
+                        if err != nil </span><span class="cov0" title="0">{
+                                panic(err)</span>
+                        }
+                })
+
+        <span class="cov0" title="0">return cfg, stgs, exit, &amp;wg</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package cfg
+
+import (
+        "money/internal/core"
+        "money/internal/repo/postgres"
+)
+
+func GetStorages(p PostgresConfig, s SecurityConfig) (*core.Storage, error) <span class="cov0" title="0">{
+        ps, err := postgres.GetPostgresStorage(p.ConnectionString, s.JWTKey)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">cs := &amp;core.Storage{
+                UserStorager:    ps,
+                MessageStorager: ps,
+                DBStorager:      ps,
+                ProjectStorager: ps,
+                RoleStorager:    &amp;core.RoleCash{},
+                LevelStorager:   &amp;core.LevelCash{},
+        }
+
+        return cs, err</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package core
+
+import (
+        "bytes"
+        "fmt"
+        "path/filepath"
+        "text/template"
+
+        "gopkg.in/gomail.v2"
+)
+
+// Email сообщение
+type Email struct {
+        Message
+        GMS *gomail.Message
+}
+
+// NewEmail создает новое письмо с набором функц опций
+func NewEmail(m Message, opts ...func(*Email)) *Email <span class="cov0" title="0">{
+        e := &amp;Email{GMS: gomail.NewMessage(),
+                Message: m}
+        for _, opt := range opts </span><span class="cov0" title="0">{
+                opt(e)
+        }</span>
+        <span class="cov0" title="0">return e</span>
+}
+
+// WithAttachment добавляет к письму вложение
+func WithAttachment(filePath string) func(*Email) <span class="cov0" title="0">{
+        return func(e *Email) </span><span class="cov0" title="0">{
+                attachPath, err := filepath.Abs(filepath.Join(".", "static", "img", filePath))
+                if err == nil </span><span class="cov0" title="0">{
+                        e.GMS.Attach(attachPath)
+                }</span>
+        }
+}
+
+// WithHeader добавляет subject, from, to
+func WithHeader(from, to string) func(*Email) <span class="cov0" title="0">{
+        return func(e *Email) </span><span class="cov0" title="0">{
+                switch e.Type.ID </span>{
+                case MessageTypeConfirm:<span class="cov0" title="0">
+                        e.GMS.SetHeader("Subject", "Подтверждение адреса электронной почты")</span>
+                case MessageTypeAuth:<span class="cov0" title="0">
+                        e.GMS.SetHeader("Subject", "Одноразовый пароль")</span>
+                case MessageTypeNotify:<span class="cov0" title="0">
+                        e.GMS.SetHeader("Subject", "Уведомление")</span>
+                }
+                <span class="cov0" title="0">e.GMS.SetHeader("From", from)
+                e.GMS.SetHeader("To", to)</span>
+        }
+}
+
+// WithBody персонализирует текст email сообщения по шаблону (папка, страница)
+func WithBody(domain, sign string, userID int) func(*Email) <span class="cov0" title="0">{
+        return func(e *Email) </span><span class="cov0" title="0">{
+                var (
+                        templatePath string
+                        body         bytes.Buffer
+                )
+                switch e.Type.ID </span>{
+                case MessageTypeConfirm:<span class="cov0" title="0">
+                        templatePath, _ = filepath.Abs(fmt.Sprintf("./view/%s/%s.html", "email", "confirm"))
+                        mail, _ := template.ParseFiles(templatePath)
+                        url := fmt.Sprintf("https://%s/user/confirm?id=%d&amp;otp=%s", domain, userID, sign)
+                        mail.Execute(&amp;body, url)</span>
+
+                case MessageTypeAuth:<span class="cov0" title="0">
+                        templatePath, _ = filepath.Abs(fmt.Sprintf("./view/%s/%s.html", "email", "auth"))
+
+                        mail, _ := template.ParseFiles(templatePath)
+                        mail.Execute(&amp;body, sign)</span>
+                case MessageTypeNotify:<span class="cov0" title="0">
+                        templatePath, _ = filepath.Abs(fmt.Sprintf("./view/%s/%s.html", "email", "notify"))
+
+                        mail, _ := template.ParseFiles(templatePath)
+                        mail.Execute(&amp;body, sign)</span>
+                }
+                <span class="cov0" title="0">e.GMS.SetBody("text/html", body.String())</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package core
+
+import "context"
+
+const (
+        LevelProject = iota // Уровень "Проект"
+        LevelEpic           // Уровень "Эпик"
+        LevelReq            // Уровень "Требование"
+        LevelIssue          // Уровень "Проблема"
+        LevelFeature        // Уровень "Функциональность"
+        LevelTask           // Уровень "Задача"
+)
+
+type Level struct {
+        Name  string
+        Const string
+        ID    int
+}
+
+type LevelStorager interface {
+        //        AddLevel(context.Context, *Level, *User) error
+        //        EditLevel(context.Context, *Level, *User) error
+        SelectLevel(context.Context, *Level) error
+        SelectAllLevels(context.Context) ([]Level, error)
+        //        DeleteLevel(context.Context, *Level, *User) error
+}
+
+type LevelCash struct {
+}
+
+func (lc *LevelCash) SelectAllLevels(ctx context.Context) ([]Level, error) <span class="cov0" title="0">{
+        ls := make([]Level, 3)
+        ls[0] = Level{ID: LevelProject, Name: "Проект", Const: "LevelProject"}
+        ls[1] = Level{ID: LevelEpic, Name: "Эпик", Const: "LevelEpic"}
+        ls[2] = Level{ID: LevelReq, Name: "Требование", Const: "LevelReq"}
+        ls[3] = Level{ID: LevelIssue, Name: "Проблема", Const: "LevelIssue"}
+        ls[4] = Level{ID: LevelFeature, Name: "Функциональность", Const: "LevelFeature"}
+        ls[5] = Level{ID: LevelTask, Name: "Задача", Const: "LevelTask"}
+
+        return ls, nil
+}</span>
+
+func (lc *LevelCash) SelectLevel(ctx context.Context, l *Level) error <span class="cov0" title="0">{
+        switch l.ID </span>{
+        case 0:<span class="cov0" title="0">
+                l.Const = "LevelProject"
+                l.Name = "Проект"</span>
+        case 1:<span class="cov0" title="0">
+                l.Const = "LevelEpic"
+                l.Name = "Эпик"</span>
+        case 2:<span class="cov0" title="0">
+                l.Const = "LevelReq"
+                l.Name = "Требование"</span>
+        case 3:<span class="cov0" title="0">
+                l.Const = "LevelIssue"
+                l.Name = "Проблема"</span>
+        case 4:<span class="cov0" title="0">
+                l.Const = "LevelFeature"
+                l.Name = "Функциональность"</span>
+        case 5:<span class="cov0" title="0">
+                l.Const = "LevelTask"
+                l.Name = "Задача"</span>
+        }
+
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package core
+
+import (
+        "context"
+)
+
+const (
+        RoleGuest    = iota // Гость
+        RoleAdmin           // Администратор
+        RoleReg             // Зарегистрированный
+        RoleAuth            // Авторизованный
+        RoleEmployee        // Сотрудник
+)
+
+type Role struct {
+        ID    int
+        Name  string
+        Const string
+}
+
+type RoleStorager interface {
+        SelectPossibleRoles(context.Context) ([]Role, error)
+        SelectRole(context.Context, *Role) error
+}
+
+type RoleCash struct {
+}
+
+func (rc *RoleCash) SelectPossibleRoles(ctx context.Context) ([]Role, error) <span class="cov0" title="0">{
+        rs := make([]Role, 3)
+        rs[0] = Role{ID: RoleAdmin, Name: "Администратор", Const: "RoleAdmin"}
+        rs[1] = Role{ID: RoleAuth, Name: "Авторизованный пользователь", Const: "RoleAuth"}
+        rs[2] = Role{ID: RoleEmployee, Name: "Сотрудник", Const: "RoleEmployee"}
+
+        return rs, nil
+}</span>
+
+func (rc *RoleCash) SelectRole(ctx context.Context, r *Role) error <span class="cov0" title="0">{
+        switch r.ID </span>{
+        case 0:<span class="cov0" title="0">
+                r.Const = "RoleGuest"
+                r.Name = "Гость"</span>
+        case 1:<span class="cov0" title="0">
+                r.Const = "RoleAdmin"
+                r.Name = "Администратор"</span>
+        case 2:<span class="cov0" title="0">
+                r.Const = "RoleReg"
+                r.Name = "Зарегистрированный пользователь"</span>
+        case 3:<span class="cov0" title="0">
+                r.Const = "RoleAuth"
+                r.Name = "Авторизованный пользователь"</span>
+        case 4:<span class="cov0" title="0">
+                r.Const = "RoleEmployee"
+                r.Name = "Сотрудник"</span>
+        }
+
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package core
+
+import (
+        "context"
+        "database/sql"
+        "time"
+
+        "github.com/golang-jwt/jwt"
+
+        "money/internal/crypt"
+)
+
+type Session struct {
+        ID int
+        User
+
+        LoginTime      time.Time
+        LogoutTime     sql.NullTime
+        LastActionTime sql.NullTime
+
+        OTP string
+}
+
+type SessionStorager interface {
+        UpdateSession(context.Context, *Session) error // Обновление сессии (совмещенное с проверкой)
+}
+
+// CodeSession кодирует сессию в строку c использованием JWT
+// Для этого этой функции надо передать  данные сессии, ключ для кодирования, время жизни токена в миллисекундах
+func CodeSession(s *Session, jwtKey string, tokenLiveTime time.Duration) (string, error) <span class="cov8" title="1">{
+        key := []byte(jwtKey)
+        c := crypt.CreateClaims(s.Login, s.ID, s.Role.ID, s.User.ID, tokenLiveTime)
+        token := jwt.NewWithClaims(jwt.SigningMethodHS256, c)
+        tokenString, err := token.SignedString(key)
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov8" title="1">return tokenString, nil</span>
+
+}
+
+func GetSessionFromTkn(tknStr, jwtKey string) (*Session, error) <span class="cov8" title="1">{
+        cl, err := crypt.GetClaims(tknStr, jwtKey)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">return &amp;Session{ID: cl.SessionID, User: User{ID: cl.UserID, Login: cl.Login, Role: Role{ID: cl.RoleID}}}, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package crypt
+
+import (
+        "fmt"
+        "time"
+
+        "github.com/dgrijalva/jwt-go"
+)
+
+type Claims struct {
+        RoleID    int    `json:"roleid"`
+        UserID    int    `json:"userid"`
+        SessionID int    `json:"sessionid"`
+        Login     string `json:"login"`
+        jwt.StandardClaims
+}
+
+// createClaims создает jwt-claims. Время жизни токена в миллисекундах!
+func CreateClaims(login string, sessionID, roleID, userID int, liveTime time.Duration) *Claims <span class="cov8" title="1">{
+        return &amp;Claims{
+                Login:     login,
+                SessionID: sessionID,
+                UserID:    userID,
+                RoleID:    roleID,
+                StandardClaims: jwt.StandardClaims{
+                        ExpiresAt: time.Now().Add(liveTime * time.Millisecond).Unix(),
+                },
+        }
+}</span>
+
+func GetClaims(tknStr, jwtKey string) (*Claims, error) <span class="cov8" title="1">{
+        claims := &amp;Claims{}
+        tkn, err := jwt.ParseWithClaims(tknStr, claims, func(token *jwt.Token) (interface{}, error) </span><span class="cov8" title="1">{
+                // Проверка алгоритма токена по умолчанию и возврат ключа
+                if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("неверный метод подписи")
+                }</span>
+                <span class="cov8" title="1">return []byte(jwtKey), nil</span>
+        })
+
+        <span class="cov8" title="1">if err != nil || !tkn.Valid </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("невалидный токен: %v", err)
+        }</span>
+        <span class="cov8" title="1">return claims, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package crypt
+
+import (
+        "crypto/rand"
+        "encoding/base32"
+)
+
+// GetOneTimePassword возвращает одноразовый пароль
+func GetOneTimePassword() string <span class="cov0" title="0">{
+        // Создаем байтовый массив необходимой длины
+        length := 6
+        bytes := make([]byte, length)
+
+        // Генерируем криптостойкие случайные байты
+        _, err := rand.Read(bytes)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+
+        // Кодируем байты в строку Base32
+        <span class="cov0" title="0">otp := base32.StdEncoding.EncodeToString(bytes)
+        return otp[:length]</span>
+}
+
+func GetVerifyURL(url string) string <span class="cov0" title="0">{
+        // Создаем байтовый массив необходимой длины
+        length := 6
+        bytes := make([]byte, length)
+
+        // Генерируем криптостойкие случайные байты
+        _, err := rand.Read(bytes)
+        if err != nil </span><span class="cov0" title="0">{
+                return ""
+        }</span>
+
+        // Кодируем байты в строку Base32
+        <span class="cov0" title="0">otp := base32.StdEncoding.EncodeToString(bytes)
+
+        return url + "/" + otp[:length]</span>
+}
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package crypt
+
+import (
+        "golang.org/x/crypto/bcrypt"
+)
+
+// HashPassword хэширует пароль
+func HashPassword(password string) (string, error) <span class="cov0" title="0">{
+        bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+        return string(bytes), err
+}</span>
+
+// CheckPasswordHash проверят соответствие пароля и хэша
+func CheckPasswordHash(password, hash string) bool <span class="cov0" title="0">{
+        err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+        return err == nil
+}</span>
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package crypt
+
+func GetRoleIDFromTkn(tknStr, jwtKey string) (int, error) <span class="cov0" title="0">{
+        cl, err := GetClaims(tknStr, jwtKey)
+        if err != nil </span><span class="cov0" title="0">{
+                return 0, err
+        }</span>
+
+        <span class="cov0" title="0">return cl.RoleID, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">package cookie
+
+import (
+        "money/internal/core"
+        "net/http"
+        "time"
+)
+
+// NewCookieWithSession возвращает http.Cookie с данными сессии в jwt-токене
+func NewCookieWithSession(s *core.Session, key string, liveTime time.Duration) (*http.Cookie, error) <span class="cov0" title="0">{
+        token, err := core.CodeSession(s, key, liveTime)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">liveTimeInSecond := int(liveTime / 1000)
+        return NewCookieWithToken(token, liveTimeInSecond), nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">package cookie
+
+import (
+        "net/http"
+)
+
+// NewCookieWithToken создает cookie с переданным токеном
+func NewCookieWithToken(token string, maxAge int) *http.Cookie <span class="cov0" title="0">{
+        // log.Printf("NewCookieWithToken %d", maxAge)
+        return &amp;http.Cookie{
+                Name:   "token",
+                Value:  token,
+                MaxAge: maxAge,
+                Path:   "/",
+        }
+
+}</span>
+
+// RemoveTokenFromCookie удаляет cookie c именем "token"
+func RemoveTokenFromCookie() *http.Cookie <span class="cov0" title="0">{
+        return &amp;http.Cookie{
+                Name:   "token",
+                MaxAge: -100,
+        }
+}</span>
+
+// GetTokenFromRequest возвращает токен из request
+func GetTokenFromRequest(r *http.Request) (string, error) <span class="cov0" title="0">{
+        c, err := r.Cookie("token")
+
+        /*
+                log.Printf("Получили куки %s истекающие:%s\n ", c.Value, c.Expires)
+
+                if c.Expires.Before(time.Now()) {
+                        return "", err
+                }
+        */
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">return c.Value, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">package middle
+
+import (
+        "money/internal/core"
+        "money/internal/crypt"
+        "money/internal/http/cookie"
+        "net/http"
+)
+
+func WithAdmin(jwtKey string) func(http.Handler) http.Handler <span class="cov0" title="0">{
+        return func(next http.Handler) http.Handler </span><span class="cov0" title="0">{
+                return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) </span><span class="cov0" title="0">{
+                        tkn, err := cookie.GetTokenFromRequest(r)
+                        if err != nil </span><span class="cov0" title="0">{
+                                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                                return
+                        }</span>
+                        <span class="cov0" title="0">roleID, err := crypt.GetRoleIDFromTkn(tkn, jwtKey)
+                        if err != nil || roleID != core.RoleAdmin </span><span class="cov0" title="0">{
+                                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                                return
+                        }</span>
+                        <span class="cov0" title="0">next.ServeHTTP(w, r)</span>
+                })
+        }
+}
+</pre>
+		
+		<pre class="file" id="file14" style="display: none">package middle
+
+import (
+        "money/internal/core"
+        "money/internal/crypt"
+        "money/internal/http/cookie"
+        "net/http"
+)
+
+func WithAuth(jwtKey string) func(http.Handler) http.Handler <span class="cov0" title="0">{
+        return func(next http.Handler) http.Handler </span><span class="cov0" title="0">{
+                return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) </span><span class="cov0" title="0">{
+                        tkn, err := cookie.GetTokenFromRequest(r)
+                        if err != nil </span><span class="cov0" title="0">{
+                                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                                return
+                        }</span>
+                        <span class="cov0" title="0">roleID, err := crypt.GetRoleIDFromTkn(tkn, jwtKey)
+                        if err != nil || (roleID != core.RoleAuth &amp;&amp; roleID != core.RoleAdmin) </span><span class="cov0" title="0">{
+                                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                                return
+                        }</span>
+                        <span class="cov0" title="0">next.ServeHTTP(w, r)</span>
+                })
+        }
+}
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">package middle
+
+import (
+        "net/http"
+)
+
+func WithLog(next http.Handler) http.Handler <span class="cov0" title="0">{
+        return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) </span><span class="cov0" title="0">{
+                // log.Print(r.RequestURI, r.Method)
+                next.ServeHTTP(w, r)
+        }</span>)
+}
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">package page
+
+import (
+        "fmt"
+        "log"
+        "net/http"
+        "path/filepath"
+        "text/template"
+
+        "github.com/pkg/errors"
+)
+
+func Execute(folder string, page string, w http.ResponseWriter, p *Page) error <span class="cov0" title="0">{
+        absPath, err := filepath.Abs(filepath.Join(".", "view", folder, fmt.Sprintf("%s.html", page))) // fmt.Sprintf("./view/%s/%s.html", folder, page))
+        if err != nil </span><span class="cov0" title="0">{
+                errors.Wrap(err, "ошибка при попытке получить абсолютный путь к шаблону")
+        }</span>
+        <span class="cov0" title="0">paths := getCommonPaths()
+        html, err := template.ParseFiles(absPath, paths["footPath"], paths["headAuthPath"], paths["headPath"], paths["headAdminPath"], paths["headRegPath"], paths["headEmplPath"])
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println("Execute 1", err)
+                return errors.Wrap(err, "ошибка при попытке разобрать шаблоны")
+        }</span>
+
+        <span class="cov0" title="0">err = html.Execute(w, p)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println("Execute 2", err)
+                return errors.Wrap(err, "ошибка при попытке запустить шаблоны")
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">package page
+
+import "money/internal/core"
+
+//Page - набор атрибутов для страницы
+type Page struct {
+        Attributes map[string]any
+        Signals    map[string]string
+        Session    *core.Session
+}
+
+// NewPage создает новую страницу с набором функциональных опций
+func NewPage(opts ...func(*Page)) *Page <span class="cov0" title="0">{
+        p := &amp;Page{}
+        for _, opt := range opts </span><span class="cov0" title="0">{
+                opt(p)
+        }</span>
+        <span class="cov0" title="0">return p</span>
+}
+
+// WithAttrs добавляет к странице мап атрибутов через замыкание
+func WithAttrs(a map[string]any) func(*Page) <span class="cov0" title="0">{
+        return func(p *Page) </span><span class="cov0" title="0">{
+                p.Attributes = a
+        }</span>
+}
+
+// WithSignals добавляет к странице мап сигналов через замыкание
+func WithSignals(s map[string]string) func(*Page) <span class="cov0" title="0">{
+        return func(p *Page) </span><span class="cov0" title="0">{
+                p.Signals = s
+        }</span>
+}
+
+func WithSession(s *core.Session) func(*Page) <span class="cov0" title="0">{
+        return func(p *Page) </span><span class="cov0" title="0">{
+                p.Session = s
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">package page
+
+import (
+        "path/filepath"
+)
+
+func getCommonPaths() map[string]string <span class="cov0" title="0">{
+        commonPaths := make(map[string]string)
+        commonPaths["footPath"], _ = filepath.Abs(filepath.Join(".", "view", "common", "footer.html"))
+        commonPaths["headPath"], _ = filepath.Abs(filepath.Join(".", "view", "common", "header.html"))
+        commonPaths["headAuthPath"], _ = filepath.Abs(filepath.Join(".", "view", "common", "headerAuth.html"))
+        commonPaths["headAdminPath"], _ = filepath.Abs(filepath.Join(".", "view", "common", "headerAdmin.html"))
+        commonPaths["headEmplPath"], _ = filepath.Abs(filepath.Join(".", "view", "common", "headerEmployee.html"))
+        commonPaths["headRegPath"], _ = filepath.Abs(filepath.Join(".", "view", "common", "headerReg.html"))
+        return commonPaths
+}</span>
+</pre>
+		
+		<pre class="file" id="file19" style="display: none">package page
+
+func MakeURLWithAttributes(origin string, params map[string]string) string <span class="cov0" title="0">{
+        var paramPart string
+
+        for key, value := range params </span><span class="cov0" title="0">{
+                if value != "" </span><span class="cov0" title="0">{
+                        paramPart = paramPart + key + "=" + value + "&amp;"
+                }</span>
+        }
+        <span class="cov0" title="0">return "/" + origin + "?" + paramPart</span>
+}
+</pre>
+		
+		<pre class="file" id="file20" style="display: none">package server
+
+import (
+        "money/internal/http/middle"
+        "net/http"
+
+        "github.com/gorilla/mux"
+)
+
+func configPaths(r, admin, auth *mux.Router, s *Server) <span class="cov0" title="0">{
+        r.HandleFunc("/forbidden", s.forbidden)
+        r.HandleFunc("/", s.index)
+        r.HandleFunc("/user/reg", s.regGet).Methods(http.MethodGet)
+        r.HandleFunc("/user/reg", s.regPost).Methods(http.MethodPost)
+        r.HandleFunc("/user/send", s.send)
+        r.HandleFunc("/user/confirm", s.confirmGet).Methods(http.MethodGet)
+        r.HandleFunc("/user/login", s.loginPost).Methods(http.MethodPost)
+        r.HandleFunc("/user/verify", s.verifyPost).Methods(http.MethodPost)
+        r.HandleFunc("/user/logout", s.logOut)
+
+        admin.HandleFunc("/user/list", s.userListGet).Methods(http.MethodGet)
+        auth.HandleFunc("/user/update", s.userUpdateGet).Methods(http.MethodGet)
+        auth.HandleFunc("/user/update", s.userUpdatePost).Methods(http.MethodPost)
+
+        auth.HandleFunc("/project/list", s.projectListGet).Methods(http.MethodGet)
+        auth.HandleFunc("/project/create", s.projectCreatePost).Methods(http.MethodPost)
+        auth.HandleFunc("/project/update", s.projectUpdateGet).Methods(http.MethodGet)
+        auth.HandleFunc("/project/update", s.projectUpdatePost).Methods(http.MethodPost)
+        admin.HandleFunc("/project/connect", s.projectConnectPost).Methods(http.MethodPost)
+        admin.HandleFunc("/project/disconnect", s.projectDisconnectGet).Methods(http.MethodGet)
+
+        //admin.HandleFunc("/admin/index", s.forbidden)
+        r.HandleFunc("/main", s.main)
+}</span>
+
+func configMiddlewares(r, admin, auth *mux.Router, s *Server) <span class="cov0" title="0">{
+        r.Use(middle.WithLog)
+        admin.Use(middle.WithAdmin(s.cfg.JWTKey), middle.WithLog)
+        auth.Use(middle.WithAuth(s.cfg.JWTKey), middle.WithLog)
+}</span>
+
+func configPrefixes(r *mux.Router) <span class="cov0" title="0">{
+        // Обработка статичных файлов
+        staticDir := "/static/"
+        r.PathPrefix(staticDir).Handler(http.StripPrefix(staticDir, http.FileServer(http.Dir("./"+staticDir))))
+}</span>
+</pre>
+		
+		<pre class="file" id="file21" style="display: none">package server
+
+import (
+        "context"
+        "money/internal/core"
+        "money/internal/http/cookie"
+        "money/internal/http/page"
+        "net/http"
+        "strconv"
+)
+
+func (s *Server) confirmGet(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        // При подтверждении адреса электронной почты не обязательно быть авторизованным в системе
+        // поэтому ошибка получения сессии не обрабатывается
+        session, _ := s.getSession(r)
+        values := r.URL.Query()
+
+        id := values.Get("id")
+        userID, err := strconv.Atoi(id)
+
+        if err != nil </span><span class="cov0" title="0">{
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+        }</span>
+        <span class="cov0" title="0">otp := values.Get("otp")
+        err = s.stgs.UserStorager.ConfirmUserEmail(context.TODO(), userID, otp)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+        }</span>
+
+        <span class="cov0" title="0">at := make(map[string]any)
+        at["id"] = userID
+
+        if session != nil </span><span class="cov0" title="0">{
+                session.Role.ID = core.RoleAuth
+                // Создаем новый jwt-токен и сохраняем его в куках
+                ck, _ := cookie.NewCookieWithSession(session, s.cfg.JWTKey, s.cfg.TokenLiveTime)
+                http.SetCookie(w, ck)
+                page.Execute("user", "confirm", w, page.NewPage(page.WithAttrs(at), page.WithSession(session)))
+                return
+        }</span>
+        <span class="cov0" title="0">page.Execute("user", "confirm", w, page.NewPage(page.WithAttrs(at)))</span>
+}
+</pre>
+		
+		<pre class="file" id="file22" style="display: none">package server
+
+import (
+        "money/internal/http/page"
+        "net/http"
+)
+
+func (s *Server) forbidden(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        session, _ := s.getSession(r)
+        page.Execute("index", "forbidden", w, page.NewPage(page.WithSession(session)))
+}</span>
+</pre>
+		
+		<pre class="file" id="file23" style="display: none">package server
+
+import (
+        "money/internal/core"
+        "money/internal/http/page"
+        "net/http"
+)
+
+func (s *Server) index(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+
+        session, err := s.getSession(r)
+        if err != nil </span><span class="cov0" title="0">{
+                page.Execute("index", "index", w, page.NewPage())
+                return
+        }</span>
+
+        <span class="cov0" title="0">p := page.NewPage(page.WithSession(session))
+        switch session.User.Role.ID </span>{
+        case core.RoleGuest:<span class="cov0" title="0">
+                page.Execute("index", "index", w, p)</span>
+        case core.RoleReg:<span class="cov0" title="0">
+                http.Redirect(w, r, "/user/send", http.StatusTemporaryRedirect)</span>
+        case core.RoleAdmin:<span class="cov0" title="0">
+                http.Redirect(w, r, "/main", http.StatusTemporaryRedirect)</span>
+        case core.RoleAuth:<span class="cov0" title="0">
+                http.Redirect(w, r, "/main", http.StatusTemporaryRedirect)</span>
+        case core.RoleEmployee:<span class="cov0" title="0">
+                http.Redirect(w, r, "/main", http.StatusTemporaryRedirect)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file24" style="display: none">package server
+
+import (
+        "context"
+        "net/http"
+
+        "money/internal/core"
+        "money/internal/http/page"
+)
+
+func (s *Server) loginPost(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        user := &amp;core.User{Login: r.FormValue("login"), Password: r.FormValue("password")}
+        ctx := context.Background()
+
+        err := s.stgs.UserStorager.BaseAuthUser(ctx, user)
+        if err != nil </span><span class="cov0" title="0">{
+                sign := make(map[string]string)
+                sign["Russ"] = "неправильное имя пользователя или пароль"
+                sign["Err"] = err.Error()
+                pg := page.NewPage(page.WithSignals(sign))
+                w.WriteHeader(http.StatusUnauthorized)
+                page.Execute("index", "index", w, pg)
+                return
+        }</span>
+
+        <span class="cov0" title="0">at := make(map[string]any)
+        at["User"] = user
+
+        page.Execute("user", "verify", w, page.NewPage(page.WithAttrs(at)))</span>
+}
+</pre>
+		
+		<pre class="file" id="file25" style="display: none">package server
+
+import (
+        "net/http"
+        "time"
+)
+
+func (s *Server) logOut(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        session, _ := s.getSession(r)
+        session.LogoutTime.Time = time.Now()
+        session.LogoutTime.Valid = true
+
+        ck := &amp;http.Cookie{
+                Name:  "token",
+                Value: "",
+                Path:  "/",
+        }
+        http.SetCookie(w, ck)
+        http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+}</span>
+</pre>
+		
+		<pre class="file" id="file26" style="display: none">package server
+
+import (
+        "money/internal/core"
+        "money/internal/http/page"
+        "net/http"
+)
+
+func (s *Server) main(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+
+        session, err := s.getSession(r)
+        if err != nil </span><span class="cov0" title="0">{
+                page.Execute("index", "index", w, page.NewPage())
+                return
+        }</span>
+
+        <span class="cov0" title="0">switch session.User.Role.ID </span>{
+        case core.RoleAdmin:<span class="cov0" title="0">
+                p := page.NewPage(page.WithSession(session))
+                page.Execute("admin", "main", w, p)</span>
+        case core.RoleReg:<span class="cov0" title="0">
+                http.Redirect(w, r, "/user/send", http.StatusTemporaryRedirect)</span>
+        case core.RoleAuth:<span class="cov0" title="0">
+                p := page.NewPage(page.WithSession(session))
+                page.Execute("auth", "main", w, p)</span>
+        case core.RoleEmployee:<span class="cov0" title="0">
+                p := page.NewPage(page.WithSession(session))
+                page.Execute("employee", "main", w, p)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file27" style="display: none">package server
+
+import (
+        "context"
+        "fmt"
+        "money/internal/core"
+        "money/internal/logger"
+        "net/http"
+        "strconv"
+
+        "go.uber.org/zap"
+)
+
+func (s *Server) projectConnectPost(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        session, err := s.getSession(r)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("Session",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+        // Добавлять в проект может только администратор
+        <span class="cov0" title="0">if session.User.Role.ID != core.RoleAdmin </span><span class="cov0" title="0">{
+                logger.Log.Info("Role",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">userID, err := strconv.Atoi(r.URL.Query().Get("id"))
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("id",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">projectID, err := strconv.Atoi(r.FormValue("projectid"))
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("projectid",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">err = s.stgs.ProjectStorager.InsertUserProject(context.TODO(), userID, projectID)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("InsertUserProject",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+        <span class="cov0" title="0">http.Redirect(w, r, fmt.Sprintf("/user/update?id=%d", userID), http.StatusSeeOther)</span> // Редирект с сохранением метода StatusTemporaryRedirect
+}
+</pre>
+		
+		<pre class="file" id="file28" style="display: none">package server
+
+import (
+        "context"
+        "money/internal/core"
+        "money/internal/http/page"
+        "money/internal/logger"
+        "net/http"
+
+        "go.uber.org/zap"
+)
+
+func (s *Server) projectCreatePost(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        session, err := s.getSession(r)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("Session",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">project := &amp;core.Project{
+                Name: r.FormValue("name"),
+        }
+        at := make(map[string]any)
+        err = s.stgs.ProjectStorager.InsertProject(context.TODO(), project)
+
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("InsertProject",
+                        zap.Error(err),
+                )
+                sign := make(map[string]string)
+                sign["Russ"] = "Ошибка при создании проекта"
+                sign["Err"] = err.Error()
+                pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
+                page.Execute("project", "list", w, pg)
+                return
+        }</span>
+        <span class="cov0" title="0">http.Redirect(w, r, "/project/list", http.StatusSeeOther)</span>
+}
+</pre>
+		
+		<pre class="file" id="file29" style="display: none">package server
+
+import (
+        "context"
+        "fmt"
+        "log"
+        "money/internal/core"
+        "money/internal/logger"
+        "net/http"
+        "strconv"
+
+        "go.uber.org/zap"
+)
+
+func (s *Server) projectDisconnectGet(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        session, err := s.getSession(r)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("Session",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">userID, err := strconv.Atoi(r.URL.Query().Get("userid"))
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("userID",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+        <span class="cov0" title="0">projectID, err := strconv.Atoi(r.URL.Query().Get("projectid"))
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("projectid",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+        <span class="cov0" title="0">usr := &amp;core.User{ID: userID}
+        pr := &amp;core.Project{ID: projectID}
+        // Только сам пользователь или админ могут отвязать себя от проекта
+        if userID != session.User.ID &amp;&amp; session.Role.ID != core.RoleAdmin </span><span class="cov0" title="0">{
+                log.Println("HERE")
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+        }</span>
+        <span class="cov0" title="0">ctx := context.TODO()
+
+        err = s.stgs.DeleteUserProject(ctx, usr, pr)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("DeleteUserProject",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">http.Redirect(w, r, fmt.Sprintf("/user/update?id=%d", userID), http.StatusSeeOther)</span>
+
+}
+</pre>
+		
+		<pre class="file" id="file30" style="display: none">package server
+
+import (
+        "context"
+        "money/internal/core"
+        "money/internal/http/page"
+        "money/internal/logger"
+        "net/http"
+
+        "go.uber.org/zap"
+)
+
+func (s *Server) projectListGet(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        session, err := s.getSession(r)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("Session",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">sign := make(map[string]string)
+        at := make(map[string]any)
+        var projects []core.Project
+
+        ctx := context.TODO()
+
+        if session.User.Role.ID == core.RoleAdmin </span><span class="cov0" title="0">{
+                projects, err = s.stgs.SelectAllProjects(ctx)
+                if err != nil </span><span class="cov0" title="0">{
+                        logger.Log.Error("projects all",
+                                zap.Error(err))
+                        http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                        return
+                }</span>
+
+        } else<span class="cov0" title="0"> {
+                projects, err = s.stgs.SelectUserProjects(ctx, &amp;session.User)
+                if err != nil </span><span class="cov0" title="0">{
+                        logger.Log.Error("projects user",
+                                zap.Error(err))
+                        http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                        return
+                }</span>
+
+        }
+
+        <span class="cov0" title="0">at["Projects"] = projects
+        pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
+        switch session.User.Role.ID </span>{
+        case core.RoleAdmin:<span class="cov0" title="0">
+                page.Execute("project", "adminList", w, pg)</span>
+        case core.RoleEmployee:<span class="cov0" title="0">
+                page.Execute("project", "employeeList", w, pg)</span>
+        case core.RoleAuth:<span class="cov0" title="0">
+                page.Execute("project", "authList", w, pg)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file31" style="display: none">package server
+
+import (
+        "context"
+        "money/internal/core"
+        "money/internal/http/page"
+        "money/internal/logger"
+        "net/http"
+        "strconv"
+
+        "go.uber.org/zap"
+)
+
+func (s *Server) projectUpdateGet(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        session, err := s.getSession(r)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("session",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">id, err := strconv.Atoi(r.URL.Query().Get("id"))
+
+        // Редактировать пользователя может либо сам пользователь, либо администратор
+        if err != nil || (session.User.Role.ID != core.RoleAdmin &amp;&amp; id != session.User.ID) </span><span class="cov0" title="0">{
+                logger.Log.Error("id",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+        <span class="cov0" title="0">user := &amp;core.User{ID: id}
+        at := make(map[string]any)
+        ctx := context.TODO()
+
+        err = s.stgs.UserStorager.SelectUser(ctx, user)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("User",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">err = s.stgs.SelectRole(ctx, &amp;user.Role)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("Role",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">possibleRoles, err := s.stgs.RoleStorager.SelectPossibleRoles(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("possibleRoles",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">at["User"] = user
+        at["PossibleRoles"] = possibleRoles
+
+        pg := page.NewPage(page.WithAttrs(at), page.WithSession(session))
+        page.Execute("user", "update", w, pg)</span>
+
+}
+</pre>
+		
+		<pre class="file" id="file32" style="display: none">package server
+
+import (
+        "context"
+        "money/internal/core"
+        "money/internal/http/page"
+        "money/internal/logger"
+        "net/http"
+        "strconv"
+
+        "go.uber.org/zap"
+)
+
+func (s *Server) projectUpdatePost(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        session, err := s.getSession(r)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("Session",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">id, err := strconv.Atoi(r.URL.Query().Get("id"))
+        // Редактировать пользователя может либо сам пользователь, либо администратор
+        if err != nil || (session.User.Role.ID != core.RoleAdmin &amp;&amp; id != session.User.ID) </span><span class="cov0" title="0">{
+                logger.Log.Error("id",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">roleID, err := strconv.Atoi(r.FormValue("roleid"))
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("role",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+        // Получаем данные из формы
+        <span class="cov0" title="0">user := &amp;core.User{
+                ID:         id,
+                Login:      r.FormValue("login"),
+                Name:       r.FormValue("name"),
+                PatronName: r.FormValue("patronname"),
+                FamilyName: r.FormValue("familyname"),
+                Email:      r.FormValue("email"),
+                Phone:      r.FormValue("phonenumber"),
+                Role:       core.Role{ID: roleID},
+        }
+        at := make(map[string]any)
+        err = s.stgs.UserStorager.UpdateUser(context.TODO(), user)
+        at["User"] = user
+
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("updateUser",
+                        zap.Error(err),
+                )
+                sign := make(map[string]string)
+                sign["Russ"] = "Ошибка при обновлении"
+                sign["Err"] = err.Error()
+                pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
+                page.Execute("user", "update", w, pg)
+                return
+        }</span>
+        <span class="cov0" title="0">http.Redirect(w, r, "/", http.StatusTemporaryRedirect)</span>
+}
+</pre>
+		
+		<pre class="file" id="file33" style="display: none">package server
+
+import (
+        "money/internal/http/page"
+        "net/http"
+)
+
+func (s *Server) regGet(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        page.Execute("user", "reg", w, page.NewPage())
+}</span>
+</pre>
+		
+		<pre class="file" id="file34" style="display: none">package server
+
+import (
+        "context"
+        "money/internal/core"
+        "money/internal/http/cookie"
+        "money/internal/http/page"
+        "net/http"
+)
+
+func (s *Server) regPost(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+
+        // Получаем данные из формы
+        user := core.User{
+                Login:      r.FormValue("login"),
+                Password:   r.FormValue("password"),
+                Name:       r.FormValue("name"),
+                PatronName: r.FormValue("patronname"),
+                FamilyName: r.FormValue("familyname"),
+                Email:      r.FormValue("email"),
+                Phone:      r.FormValue("phonenumber"),
+        }
+        // Регистрируем пользователя. Получаем идентификатор пользователя и идентификатор сессии
+        session, err := s.stgs.RegUser(context.TODO(), &amp;user, s.cfg.Domain)
+        if err != nil </span><span class="cov0" title="0">{
+                sign := make(map[string]string)
+                sign["Russ"] = "Ошибка при регистрации"
+                sign["Err"] = err.Error()
+                at := make(map[string]any)
+                at["User"] = user
+                pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at))
+                w.WriteHeader(http.StatusUnauthorized)
+                page.Execute("user", "reg", w, pg)
+                return
+        }</span>
+        // Создаем jwt-токен и сохраняем его в куках
+        <span class="cov0" title="0">ck, err := cookie.NewCookieWithSession(session, s.cfg.JWTKey, s.cfg.TokenLiveTime)
+        if err != nil </span><span class="cov0" title="0">{
+                sign := make(map[string]string)
+                sign["russ"] = "Ошибка при регистрации"
+                sign["err"] = err.Error()
+                at := make(map[string]any)
+                at["User"] = user
+                pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at))
+                w.WriteHeader(http.StatusUnauthorized)
+                page.Execute("user", "reg", w, pg)
+                return
+        }</span>
+
+        <span class="cov0" title="0">http.SetCookie(w, ck)
+
+        http.Redirect(w, r, "/user/send", http.StatusTemporaryRedirect)</span>
+}
+</pre>
+		
+		<pre class="file" id="file35" style="display: none">package server
+
+import (
+        "context"
+        "money/internal/http/page"
+        "net/http"
+)
+
+func (s *Server) send(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        session, err := s.getSession(r)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">s.stgs.UserStorager.SelectUser(context.TODO(), &amp;session.User)
+        page.Execute("user", "send", w, page.NewPage(page.WithSession(session)))</span>
+}
+</pre>
+		
+		<pre class="file" id="file36" style="display: none">package server
+
+import (
+        "net/http"
+
+        "money/internal/core"
+        "money/internal/http/cookie"
+)
+
+func (s *Server) getSession(r *http.Request) (*core.Session, error) <span class="cov0" title="0">{
+        tkn, err := cookie.GetTokenFromRequest(r)
+        if err != nil </span><span class="cov0" title="0">{
+                //log.Println("getSession 1", err)
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">sn, err := core.GetSessionFromTkn(tkn, s.cfg.JWTKey)
+        if err != nil </span><span class="cov0" title="0">{
+                //log.Println("getSession 2", err)
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return sn, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file37" style="display: none">package server
+
+import (
+        "context"
+        "money/internal/logger"
+        "os"
+        "os/signal"
+        "syscall"
+        "time"
+
+        "go.uber.org/zap"
+)
+
+// gracefulShutDown реализует изящное выключение http сервера
+func (s *Server) gracefulShutdown() <span class="cov0" title="0">{
+        sigint := make(chan os.Signal, 1)
+        signal.Notify(sigint, os.Interrupt, syscall.SIGTERM, syscall.SIGQUIT)
+        go func() </span><span class="cov0" title="0">{
+                // читаем из канала прерываний
+                // поскольку нужно прочитать только одно прерывание,
+                // можно обойтись без цикла
+                &lt;-sigint
+
+                // создаем контекст с таймаутом
+                ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+                defer cancel()
+                logger.Log.Info("Server Shutdown",
+                        zap.String("Изященое выклюение", "Начато"),
+                )
+                // получили сигнал os.Interrupt, запускаем процедуру graceful shutdown
+                if err := s.srv.Shutdown(ctx); err != nil </span><span class="cov0" title="0">{
+                        // ошибки закрытия Listener
+                        logger.Log.Error("Server Shutdowned",
+                                zap.String("Изящное выключение", err.Error()),
+                        )
+                }</span>
+                // сообщаем основному потоку,
+                // что все сетевые соединения обработаны и закрыты
+                <span class="cov0" title="0">close(s.exit)</span>
+        }()
+}
+</pre>
+		
+		<pre class="file" id="file38" style="display: none">package server
+
+import (
+        "net/http"
+        "sync"
+
+        "github.com/gorilla/mux"
+        "go.uber.org/zap"
+
+        "money/internal/cfg"
+        "money/internal/core"
+        "money/internal/logger"
+
+        _ "net/http/pprof"
+)
+
+func Start(cfg *cfg.Config, stgs *core.Storage, wg *sync.WaitGroup, exit chan struct{}) error <span class="cov0" title="0">{
+        defer wg.Done()
+
+        // Маршрутизаторы
+        r := mux.NewRouter()
+        admin := r.PathPrefix("/").Subrouter() // То, что доступно только администратору, прошедшему аутентификацию
+        auth := r.PathPrefix("/").Subrouter()  // То, что доступно любому авторизованному пользователю, прошедшему аутентификацию
+
+        // Основной сервер для обработки http-запросов
+        srv := &amp;http.Server{
+                Handler:      r,
+                Addr:         cfg.RunAddress,
+                WriteTimeout: cfg.WriteTimeout,
+                ReadTimeout:  cfg.ReadTimeout,
+        }
+        defer srv.Close()
+
+        // Сервер с окружением
+        s := &amp;Server{srv: srv, exit: exit, cfg: cfg, stgs: stgs}
+
+        configMiddlewares(r, admin, auth, s)
+        configPrefixes(r)
+        configPaths(r, admin, auth, s)
+
+        logger.Log.Info("HTTP Server",
+                zap.String("Порт", cfg.RunAddress),
+                zap.String("БД", cfg.ConnectionString),
+        )
+
+        go http.ListenAndServe(":7070", nil)
+
+        s.gracefulShutdown()
+        err := srv.ListenAndServe()
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Info("HTTP Server",
+                        zap.String("Порт", err.Error()),
+                )
+        }</span>
+
+        <span class="cov0" title="0">logger.Log.Info("HTTP Server",
+                zap.String("Изящное выключение", "Завершено"),
+        )
+
+        return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file39" style="display: none">package server
+
+import (
+        "context"
+        "money/internal/core"
+        "money/internal/http/page"
+        "net/http"
+)
+
+func (s *Server) userListGet(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        session, err := s.getSession(r)
+        if err != nil || session.User.Role.ID != core.RoleAdmin </span><span class="cov0" title="0">{
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+        }</span>
+        <span class="cov0" title="0">sign := make(map[string]string)
+        at := make(map[string]any)
+        users, err := s.stgs.UserStorager.SelectAllUsers(context.TODO())
+        if err != nil </span><span class="cov0" title="0">{
+                sign["Russ"] = "внутренняя ошибка"
+                sign["Err"] = err.Error()
+        }</span>
+        <span class="cov0" title="0">at["Users"] = users
+        pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
+        page.Execute("user", "list", w, pg)</span>
+}
+</pre>
+		
+		<pre class="file" id="file40" style="display: none">package server
+
+import (
+        "context"
+        "money/internal/core"
+        "money/internal/http/page"
+        "money/internal/logger"
+        "net/http"
+        "strconv"
+
+        "go.uber.org/zap"
+)
+
+func (s *Server) userUpdateGet(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        session, err := s.getSession(r)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("session",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">id, err := strconv.Atoi(r.URL.Query().Get("id"))
+
+        // Редактировать пользователя может либо сам пользователь, либо администратор
+        if err != nil || (session.User.Role.ID != core.RoleAdmin &amp;&amp; id != session.User.ID) </span><span class="cov0" title="0">{
+                logger.Log.Error("id",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+        <span class="cov0" title="0">user := &amp;core.User{ID: id}
+        at := make(map[string]any)
+        ctx := context.TODO()
+
+        err = s.stgs.UserStorager.SelectUser(ctx, user) // Получаем данные пользователя
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("User",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        // Получаем текущие проекты пользователя
+        <span class="cov0" title="0">userProjects, err := s.stgs.ProjectStorager.SelectUserProjects(ctx, user)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("userProjects",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        // Получаем возможные проекты для пользователя
+        <span class="cov0" title="0">possibleProjects, err := s.stgs.ProjectStorager.SelectPossibleNewUserProjects(ctx, user)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("possibleProjects",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">err = s.stgs.SelectRole(ctx, &amp;user.Role)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("Role",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        // Получаем возможные роли для пользователя
+        <span class="cov0" title="0">possibleRoles, err := s.stgs.RoleStorager.SelectPossibleRoles(ctx)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("possibleRoles",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">at["User"] = user
+        at["PossibleRoles"] = possibleRoles
+        at["PossibleProjects"] = possibleProjects
+        at["UserProjects"] = userProjects
+
+        pg := page.NewPage(page.WithAttrs(at), page.WithSession(session))
+        page.Execute("user", "update", w, pg)</span>
+
+}
+</pre>
+		
+		<pre class="file" id="file41" style="display: none">package server
+
+import (
+        "context"
+        "money/internal/core"
+        "money/internal/http/page"
+        "money/internal/logger"
+        "net/http"
+        "strconv"
+
+        "go.uber.org/zap"
+)
+
+func (s *Server) userUpdatePost(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        session, err := s.getSession(r)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("Session",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">id, err := strconv.Atoi(r.URL.Query().Get("id"))
+        // Редактировать пользователя может либо сам пользователь, либо администратор
+        if err != nil || (session.User.Role.ID != core.RoleAdmin &amp;&amp; id != session.User.ID) </span><span class="cov0" title="0">{
+                logger.Log.Error("id",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">roleID, err := strconv.Atoi(r.FormValue("roleid"))
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("role",
+                        zap.Error(err),
+                )
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+        // Получаем данные из формы
+        <span class="cov0" title="0">user := &amp;core.User{
+                ID:         id,
+                Login:      r.FormValue("login"),
+                Name:       r.FormValue("name"),
+                PatronName: r.FormValue("patronname"),
+                FamilyName: r.FormValue("familyname"),
+                Email:      r.FormValue("email"),
+                Phone:      r.FormValue("phonenumber"),
+                Role:       core.Role{ID: roleID},
+        }
+        at := make(map[string]any)
+        err = s.stgs.UserStorager.UpdateUser(context.TODO(), user)
+        at["User"] = user
+
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("updateUser",
+                        zap.Error(err),
+                )
+                sign := make(map[string]string)
+                sign["Russ"] = "Ошибка при обновлении"
+                sign["Err"] = err.Error()
+                pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
+                page.Execute("user", "update", w, pg)
+                return
+        }</span>
+        <span class="cov0" title="0">http.Redirect(w, r, "/user/list", http.StatusSeeOther)</span>
+}
+</pre>
+		
+		<pre class="file" id="file42" style="display: none">package server
+
+import (
+        "context"
+        "money/internal/core"
+        "money/internal/http/cookie"
+        "money/internal/http/page"
+        "net/http"
+        "strconv"
+)
+
+func (s *Server) verifyPost(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+
+        id, err := strconv.Atoi(r.URL.Query().Get("id"))
+        if err != nil </span><span class="cov0" title="0">{
+                http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+                return
+        }</span>
+
+        <span class="cov0" title="0">otp := r.FormValue("otp")
+        usr := &amp;core.User{ID: id}
+        at := make(map[string]any)
+        at["User"] = usr
+
+        session, err := s.stgs.UserStorager.AdvAuthUser(context.TODO(), usr, otp, s.cfg.OTPLiveTime)
+        if err != nil </span><span class="cov0" title="0">{
+                sign := make(map[string]string)
+                sign["russ"] = "Неправильный код подтверждения"
+                sign["err"] = err.Error()
+                pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at))
+                w.WriteHeader(http.StatusUnauthorized)
+                page.Execute("user", "verify", w, pg)
+                return
+        }</span>
+
+        <span class="cov0" title="0">ck, err := cookie.NewCookieWithSession(session, s.cfg.JWTKey, s.cfg.TokenLiveTime)
+        if err != nil </span><span class="cov0" title="0">{
+                sign := make(map[string]string)
+                sign["russ"] = "Ошибка при аутентификации"
+                sign["err"] = err.Error()
+                pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at))
+                w.WriteHeader(http.StatusUnauthorized)
+                page.Execute("user", "verify", w, pg)
+                return
+        }</span>
+
+        <span class="cov0" title="0">http.SetCookie(w, ck)
+        http.Redirect(w, r, "/main", http.StatusTemporaryRedirect)</span>
+}
+</pre>
+		
+		<pre class="file" id="file43" style="display: none">package logger
+
+import (
+        "os"
+        "time"
+
+        "go.uber.org/zap"
+        "go.uber.org/zap/zapcore"
+)
+
+var Log *zap.Logger // Доступен всему коду как синглтон (потокобезопасно)
+
+func init() <span class="cov8" title="1">{
+
+        customTimeEncoder := func(t time.Time, enc zapcore.PrimitiveArrayEncoder) </span><span class="cov0" title="0">{
+                enc.AppendString(t.Format("02.01.2006 15:04:05"))
+        }</span>
+
+        // Define custom encoder configuration
+        <span class="cov8" title="1">encoderConfig := zapcore.EncoderConfig{
+                TimeKey:        "timestamp",
+                LevelKey:       "level",
+                NameKey:        "logger",
+                CallerKey:      "caller",
+                MessageKey:     "message",
+                StacktraceKey:  "stacktrace",
+                LineEnding:     zapcore.DefaultLineEnding,
+                EncodeLevel:    zapcore.CapitalLevelEncoder,
+                EncodeTime:     customTimeEncoder,
+                EncodeDuration: zapcore.SecondsDurationEncoder,
+                EncodeCaller:   zapcore.ShortCallerEncoder,
+        }
+
+        core := zapcore.NewCore(
+                zapcore.NewJSONEncoder(encoderConfig),
+                zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout)),
+                zap.InfoLevel,
+        )
+
+        Log = zap.New(core).WithOptions(zap.AddCaller())</span>
+}
+</pre>
+		
+		<pre class="file" id="file44" style="display: none">package filler
+
+import (
+        "money/internal/core"
+)
+
+// Filler - рабочий, заполняющий очередь сообщений
+type Filler struct {
+        msgStorager core.MessageStorager // Хранилище сообщений
+        queue       QueueStorager        // Очередь сообщений
+        ID          int                  // Идентификатор воркера
+        period      int                  // Периодичность наполнения сообщений
+}
+
+type QueueStorager interface {
+        Push(m *core.Message)
+}
+
+// NewFiller создает новый Filler
+// Каждый Filler может наполнять очередь
+func NewFiller(queue QueueStorager, storage core.MessageStorager, prd int) *Filler <span class="cov0" title="0">{
+        return &amp;Filler{
+                queue:       queue,
+                msgStorager: storage,
+                period:      prd,
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file45" style="display: none">package filler
+
+import (
+        "context"
+        "sync"
+        "time"
+
+        "money/internal/cfg"
+        "money/internal/core"
+        "money/internal/logger"
+
+        "go.uber.org/zap"
+)
+
+func Start(config *cfg.Config, es core.MessageStorager, wg *sync.WaitGroup, exit chan struct{}) <span class="cov0" title="0">{
+        // Асинхронно запускаем наполнитель очереди
+        s := NewFiller(
+                config.Queue,
+                es,
+                config.QueueFillPeriod,
+        )
+
+        go s.StartFilling(exit, wg)
+}</span>
+
+// StartFilling начинает наполнение очереди
+func (f *Filler) StartFilling(exit chan struct{}, wg *sync.WaitGroup) <span class="cov0" title="0">{
+        logger.Log.Info("StartFilling",
+                zap.String("Филлер стартовал", "Успешно"))
+        ctx := context.TODO()
+        for </span><span class="cov0" title="0">{
+                select </span>{
+                case _, ok := &lt;-exit:<span class="cov0" title="0">
+                        if !ok </span><span class="cov0" title="0">{
+                                //Нет смысла ждать наполнения очереди, поэтому дефолт не жду
+                                logger.Log.Info("StartFilling",
+                                        zap.String("Филлер изящно завершил дела", "Успешно"))
+                                wg.Done()
+                                return
+                        }</span>
+                default:<span class="cov0" title="0">
+                        msgs, err := f.msgStorager.SelectUnsendedMsgs(ctx)
+
+                        if err != nil </span><span class="cov0" title="0">{
+                                logger.Log.Error("StartFilling",
+                                        zap.String("ошибка при получении сообщений к отправке", err.Error()),
+                                )
+                        }</span>
+
+                        <span class="cov0" title="0">for _, v := range msgs </span><span class="cov0" title="0">{
+                                f.queue.Push(&amp;v)
+                                v.Queued = true
+                                f.msgStorager.UpdateMsg(ctx, &amp;v)
+                        }</span>
+                }
+                <span class="cov0" title="0">time.Sleep(time.Duration(f.period) * time.Second)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file46" style="display: none">package sender
+
+import (
+        "fmt"
+        "sync"
+        "time"
+
+        "money/internal/cfg"
+        "money/internal/core"
+        "money/internal/logger"
+
+        "go.uber.org/zap"
+        "gopkg.in/gomail.v2"
+)
+
+// Sender - рабочий, отправляющий сообщения
+type Sender struct {
+        msgStorager core.MessageStorager // Хранилище сообщений
+        domain      string               // Домен
+        from        string               // Отправитель
+        fileName    string               // Имя файла вложения
+        queue       QueueStorager        // Очередь сообщений
+        emailDialer *gomail.Dialer       // Отправитель
+        ID          int                  // Идентификатор воркера
+        period      int                  // Периодичность отправки сообщений
+}
+
+type QueueStorager interface {
+        PopWait() *core.Message
+        Len() int
+}
+
+// NewSender создает новый Sender
+// Каждый Sender может рассылать сообщения через свой собственный smtp сервер
+func NewSender(queue QueueStorager, storage core.MessageStorager, id, smtpPort, prd int, smtpServer, smtpLogin, smtpPassword, from, fileName, domain string) *Sender <span class="cov0" title="0">{
+        s := Sender{
+                ID:          id,
+                queue:       queue,
+                msgStorager: storage,
+                domain:      domain,
+                period:      prd,
+                from:        from,
+                fileName:    fileName,
+        }
+
+        s.emailDialer = gomail.NewDialer(smtpServer, smtpPort, smtpLogin, smtpPassword)
+
+        return &amp;s
+}</span>
+
+func Start(config *cfg.Config, storage core.MessageStorager, wg *sync.WaitGroup, exit chan struct{}) <span class="cov0" title="0">{
+        for i := range config.SendWorkerCount </span><span class="cov0" title="0">{
+                // Асинхронно запускаем email сендеры
+                s := NewSender(
+                        config.Queue,
+                        storage,
+                        i,
+                        config.SMTPPort,
+                        config.MessageSendPeriod,
+                        config.SMTPServer,
+                        config.SMTPLogin,
+                        config.SMTPPass,
+                        config.From,
+                        config.File,
+                        config.Domain,
+                )
+
+                go s.StartSending(exit, wg)
+        }</span>
+}
+
+// StartSending начинает отправку сообщений
+func (s *Sender) StartSending(exit chan struct{}, wg *sync.WaitGroup) <span class="cov0" title="0">{
+        logger.Log.Info("StartSending",
+                zap.String(fmt.Sprintf("Сендер %d", s.ID), "стартовал"),
+        )
+
+        var wg_w sync.WaitGroup
+
+        for </span><span class="cov0" title="0">{
+
+                select </span>{
+                case _, ok := &lt;-exit:<span class="cov0" title="0">
+                        if !ok </span><span class="cov0" title="0">{
+                                wg_w.Wait()
+                                for s.queue.Len() != 0 </span><span class="cov0" title="0">{ // Если в очереди еще что-то осталось, то выгребаем
+                                        ms := s.queue.PopWait()
+                                        err := s.Send(ms)
+                                        if err != nil </span><span class="cov0" title="0">{
+                                                logger.Log.Error("StartSending",
+                                                        zap.String(fmt.Sprintf("Сендер %d", s.ID), err.Error()),
+                                                )
+                                                break</span>
+                                        }
+                                        <span class="cov0" title="0">logger.Log.Info("StartSending",
+                                                zap.Int(fmt.Sprintf("Сендер %d отправил сообщение после отмены", s.ID), ms.ID),
+                                        )</span>
+                                }
+
+                                <span class="cov0" title="0">logger.Log.Info("StartSending",
+                                        zap.String(fmt.Sprintf("Сендер %d", s.ID), "изящно завершил дела"),
+                                )
+                                wg.Done()
+                                return</span>
+                        }
+                default:<span class="cov0" title="0">
+
+                        wg_w.Add(1)
+
+                        go func() </span><span class="cov0" title="0">{
+                                ms := s.queue.PopWait()
+
+                                if ms == nil </span><span class="cov0" title="0">{
+                                        wg_w.Done()
+                                        return
+                                }</span>
+                                <span class="cov0" title="0">err := s.Send(ms)
+                                if err != nil </span><span class="cov0" title="0">{
+                                        logger.Log.Error("StartSending",
+                                                zap.String(fmt.Sprintf("Сендер %d", s.ID), err.Error()),
+                                        )
+                                        wg_w.Done()
+                                        return
+                                }</span>
+                                <span class="cov0" title="0">logger.Log.Info("StartSending",
+                                        zap.String(fmt.Sprintf("Сендер %d", s.ID), fmt.Sprintf("отправил сообщение по адресу %s", ms.Email)),
+                                )
+                                wg_w.Done()</span>
+                        }()
+                        <span class="cov0" title="0">time.Sleep(time.Duration(s.period) * time.Second)</span>
+                }
+
+        }
+}
+</pre>
+		
+		<pre class="file" id="file47" style="display: none">package sender
+
+import (
+        "context"
+        "fmt"
+        "money/internal/core"
+        "money/internal/logger"
+        "time"
+
+        "go.uber.org/zap"
+)
+
+// Send отправляет сообщение
+func (s *Sender) Send(m *core.Message) error <span class="cov0" title="0">{
+        if m.Category.ID == core.MessageCategoryEmail </span><span class="cov0" title="0">{
+                email := core.NewEmail(*m,
+                        core.WithHeader(s.from, m.Email),
+                        core.WithBody(s.domain, m.Text, m.User.ID),
+                //        core.WithAttachment("logo.jpg"),
+                )
+
+                logger.Log.Info("Send",
+                        zap.String(fmt.Sprintf("Сендер %d получил сообщение для отправки %s", s.ID, m.Email), m.Text))
+
+                if err := s.emailDialer.DialAndSend(email.GMS); err != nil </span><span class="cov0" title="0">{
+                        logger.Log.Error("Send",
+                                zap.String(fmt.Sprintf("Сендер %d не отправил сообщение", s.ID), err.Error()),
+                        )
+                        return err
+                }</span>
+        }
+
+        <span class="cov0" title="0">m.SendTime.Time = time.Now()
+        m.SendTime.Valid = true
+        s.msgStorager.UpdateMsg(context.TODO(), m)
+
+        return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file48" style="display: none">package queue
+
+import "money/internal/core"
+
+// Queue - очередь на отправку сообщений
+type MessageQueue struct {
+        ch chan *core.Message // Канал для отправки сообщений
+}
+
+// Push помещает сообщение в очередь
+func (q *MessageQueue) Push(m *core.Message) <span class="cov0" title="0">{
+        q.ch &lt;- m
+}</span>
+
+// Len возвращает количество сообщений в очереди
+func (q *MessageQueue) Len() int <span class="cov0" title="0">{
+        return len(q.ch)
+}</span>
+
+// NewQueue создает новую очередь сообщений размером n
+func NewQueue(n int) *MessageQueue <span class="cov0" title="0">{
+        q := &amp;MessageQueue{
+                ch: make(chan *core.Message, n),
+        }
+        return q
+}</span>
+
+// PopWait извлекает сообщение из очереди на отправку
+func (q *MessageQueue) PopWait() *core.Message <span class="cov0" title="0">{
+        select </span>{
+        case val := &lt;-q.ch:<span class="cov0" title="0">
+                return val</span>
+        default:<span class="cov0" title="0">
+                return nil</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file49" style="display: none">package postgres
+
+import (
+        "context"
+        "log"
+
+        "money/internal/core"
+)
+
+func (s *postgresStorage) SelectUnsendedMsgs(ctx context.Context) ([]core.Message, error) <span class="cov0" title="0">{
+        ms := make([]core.Message, 0)
+
+        err := s.preparedStatements["selectUnsendedMsgs"].SelectContext(ctx, &amp;ms)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println(err)
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return ms, nil</span>
+}
+
+func (s *postgresStorage) UpdateMsg(ctx context.Context, e *core.Message) error <span class="cov0" title="0">{
+        //Used = $2, Queued = $3, SendTime = $4 WHERE id = $1;
+        _, err := s.preparedStatements["updateMsg"].ExecContext(ctx, e.ID, e.Used, e.Queued, e.SendTime)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println(err)
+                return err
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file50" style="display: none">package postgres
+
+import (
+        "money/internal/logger"
+        "sync"
+        "time"
+
+        _ "github.com/jackc/pgx/v5/stdlib"
+        "github.com/jmoiron/sqlx"
+        "go.uber.org/zap"
+)
+
+// Реализация хранилища в СУБД Postgres
+type postgresStorage struct {
+        DB                 *sqlx.DB
+        preparedStatements map[string]*sqlx.Stmt
+}
+
+// GetPostgresStorage возвращает хранилище данных в Postgres (создает, если его не было ранее)
+func GetPostgresStorage(connectionString, cryptKey string) (*postgresStorage, error) <span class="cov0" title="0">{
+        var (
+                dbErr error
+                db    *sqlx.DB
+                ps    *postgresStorage
+                once  sync.Once
+        )
+        once.Do(
+                func() </span><span class="cov0" title="0">{
+                        db, dbErr = sqlx.Open("pgx", connectionString)
+                        db.SetMaxOpenConns(50) // Подобрать оптимальное значение
+                        db.SetMaxIdleConns(2)  // Подобрать оптимальное значение
+                        db.SetConnMaxLifetime(10 * time.Second)
+
+                        if dbErr != nil </span><span class="cov0" title="0">{
+
+                                return
+                        }</span>
+                        <span class="cov0" title="0">ps = &amp;postgresStorage{DB: db, preparedStatements: map[string]*sqlx.Stmt{}}
+                        dbErr = ps.prepareStmts()</span>
+                })
+
+        <span class="cov0" title="0">if dbErr != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("GetPostgresStorage",
+                        zap.String("ошибка при инициализации подключения к БД", dbErr.Error()),
+                )
+                return nil, dbErr
+        }</span>
+
+        <span class="cov0" title="0">return ps, nil</span>
+}
+
+func (s postgresStorage) Close() error <span class="cov0" title="0">{
+        return s.DB.Close()
+}</span>
+
+func (s postgresStorage) Ping() error <span class="cov0" title="0">{
+        return s.DB.Ping()
+}</span>
+</pre>
+		
+		<pre class="file" id="file51" style="display: none">package postgres
+
+import (
+        "context"
+        "money/internal/core"
+        "money/internal/logger"
+
+        "go.uber.org/zap"
+)
+
+func (s *postgresStorage) InsertProject(ctx context.Context, p *core.Project) error <span class="cov0" title="0">{
+        _, err := s.preparedStatements["insertProject"].ExecContext(ctx, p.Name)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (s *postgresStorage) UpdateProject(ctx context.Context, p *core.Project) error <span class="cov0" title="0">{
+        //SET Name = $2 WHERE ID = $1
+        _, err := s.preparedStatements["updateProject"].ExecContext(ctx, p.ID, p.Name)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (s *postgresStorage) SelectProject(ctx context.Context, p *core.Project) error <span class="cov0" title="0">{
+        return s.preparedStatements["selectProject"].GetContext(ctx, p, p.ID)
+}</span>
+
+func (s *postgresStorage) SelectAllProjects(ctx context.Context) ([]core.Project, error) <span class="cov0" title="0">{
+        p := make([]core.Project, 0)
+        err := s.preparedStatements["selectAllProjects"].SelectContext(ctx, &amp;p)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("selectAllProjects",
+                        zap.Error(err))
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return p, nil</span>
+}
+
+func (s *postgresStorage) SelectUserProjects(ctx context.Context, u *core.User) ([]core.Project, error) <span class="cov0" title="0">{
+        p := make([]core.Project, 0)
+        err := s.preparedStatements["selectUserProjects"].SelectContext(ctx, &amp;p, u.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("selectAllProjects",
+                        zap.Error(err))
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return p, nil</span>
+}
+
+func (s *postgresStorage) DeleteProject(ctx context.Context, p *core.Project) error <span class="cov0" title="0">{
+        _, err := s.preparedStatements["deleteProject"].ExecContext(ctx, p.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (s *postgresStorage) DeleteUserProject(ctx context.Context, u *core.User, p *core.Project) error <span class="cov0" title="0">{
+        _, err := s.preparedStatements["deleteUserProject"].ExecContext(ctx, u.ID, p.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("DeleteUserProject",
+                        zap.Error(err))
+                return err
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (s *postgresStorage) InsertUserProject(ctx context.Context, userID, projectID int) error <span class="cov0" title="0">{
+        _, err := s.preparedStatements["insertUserProject"].ExecContext(ctx, userID, projectID)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("InsertUserProject",
+                        zap.Error(err))
+                return err
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func (s *postgresStorage) SelectPossibleNewUserProjects(ctx context.Context, u *core.User) ([]core.Project, error) <span class="cov0" title="0">{
+        var ps []core.Project
+        err := s.preparedStatements["selectPossibleUserProjects"].SelectContext(ctx, &amp;ps, u.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Error("selectPossibleUserProjects",
+                        zap.Error(err))
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return ps, nil</span>
+}
+
+func (s *postgresStorage) SelectAllProjectEpics(ctx context.Context, c *core.Project) ([]core.Epic, error) <span class="cov0" title="0">{
+        return nil, nil
+}</span>
+</pre>
+		
+		<pre class="file" id="file52" style="display: none">package postgres
+
+import (
+        "context"
+        "money/internal/core"
+)
+
+// StartSession начинает новую сессию
+func (s *postgresStorage) StartSession(context.Context, *core.User) (*core.Session, error) <span class="cov0" title="0">{
+        return nil, nil
+}</span>
+
+// UpdateSession обновляет данные сессии
+func (s *postgresStorage) UpdateSession(context.Context, *core.Session) error <span class="cov0" title="0">{
+        return nil
+}</span>
+
+// EndSession закрывает сессию
+func (s *postgresStorage) EndSession(context.Context, *core.Session) error <span class="cov0" title="0">{
+        return nil
+}</span>
+</pre>
+		
+		<pre class="file" id="file53" style="display: none">package postgres
+
+import "github.com/pkg/errors"
+
+func (s *postgresStorage) prepareStmts() error <span class="cov0" title="0">{
+        s.userPrepareStmts()
+        s.sessionPrepareStmts()
+        s.msgPrepareStmts()
+        s.epicPrepareStmts()
+        s.issuePrepareStmts()
+        s.projectPrepareStmts()
+        s.areaPrepareStmts()
+        s.categoryPrepareStmts()
+        s.iterationPrepareStmts()
+
+        return nil
+}</span>
+
+func (s *postgresStorage) sessionPrepareStmts() error <span class="cov0" title="0">{
+        insertSession, err := s.DB.Preparex(`INSERT INTO cmn.Sessions
+        (userid, logintime, actiontime) 
+         SELECT $1, $2, $3
+         RETURNING id;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "insertSession")
+        }</span>
+
+        <span class="cov0" title="0">s.preparedStatements["insertSession"] = insertSession
+        return nil</span>
+}
+
+func (s *postgresStorage) userPrepareStmts() error <span class="cov0" title="0">{
+        insertUser, err := s.DB.Preparex(`        INSERT INTO cmn.Users 
+        (roleid, login, password, name, familyname, patronname, email, phone) 
+        SELECT $1, $2, $3, $4, $5, $6, $7, $8
+        RETURNING id;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "insertUser")
+        }</span>
+
+        <span class="cov0" title="0">selectUser, err := s.DB.Preparex(`SELECT 
+                                                                          roleid AS "role.id", login, name, familyname, patronname, email, phone
+                                                                          FROM cmn.Users
+                                                                          WHERE id = $1;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "selectUser")
+        }</span>
+        <span class="cov0" title="0">updateUserRole, err := s.DB.Preparex(`        UPDATE cmn.Users
+        SET  RoleID = $2
+        WHERE ID = $1;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "updateUserRole")
+        }</span>
+
+        <span class="cov0" title="0">baseAuthUser, err := s.DB.Preparex(`
+                                                                                        SELECT id as "user.id", password, roleid AS "role.id", name, familyname, patronname, email, phone
+                                                                                        FROM cmn.Users
+                                                                                        WHERE login = $1;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "baseAuthUser")
+        }</span>
+
+        <span class="cov0" title="0">selectAllUsers, err := s.DB.Preparex(`                SELECT 
+                                                                                                u.id AS "user.id", roleid AS "role.id", r.Name AS "role.name", login, u.name, familyname, patronname, email, phone
+                                                                                                FROM cmn.Users AS u
+                                                                                                        INNER JOIN cmn.Roles AS r ON r.ID = u.RoleID;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "selectAllUsers")
+        }</span>
+
+        <span class="cov0" title="0">updateUser, err := s.DB.Preparex(`                UPDATE cmn.Users 
+                                                                                        SET roleid = $2, login = $3, name = $4, familyname = $5, patronname = $6, email = $7, phone = $8
+                                                                                        WHERE ID = $1;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "updateUser")
+        }</span>
+        <span class="cov0" title="0">changeUserPassword, err := s.DB.Preparex(`        UPDATE cmn.Users 
+                                                                                                SET password = $2
+                                                                                                WHERE ID = $1;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "changeUserPassword")
+        }</span>
+        <span class="cov0" title="0">s.preparedStatements["insertUser"] = insertUser
+        s.preparedStatements["selectUser"] = selectUser
+        s.preparedStatements["updateUserRole"] = updateUserRole
+        s.preparedStatements["baseAuthUser"] = baseAuthUser
+        s.preparedStatements["selectAllUsers"] = selectAllUsers
+        s.preparedStatements["updateUser"] = updateUser
+        s.preparedStatements["changeUserPassword"] = changeUserPassword
+        return nil</span>
+}
+
+func (s *postgresStorage) msgPrepareStmts() error <span class="cov0" title="0">{
+        insertMsg, err := s.DB.Preparex(`INSERT INTO msg.Messages
+        (typeid, categoryid, userid, text, email) 
+         SELECT $1, $2, $3, $4, $5
+         RETURNING id;`)
+        if err != nil </span><span class="cov0" title="0">{
+                errors.Wrap(err, "insertMsg")
+        }</span>
+
+        <span class="cov0" title="0">updateMsg, err := s.DB.Preparex(`        UPDATE msg.Messages 
+                                                                                SET Used = $2, Queued = $3, SendTime = $4 
+                                                                                WHERE id = $1;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "updateMsg")
+        }</span>
+        <span class="cov0" title="0">selectUnsendedMsgs, err := s.DB.Preparex(`        SELECT 
+                                                                                                id, userid AS "user.id", typeid as "type.id", categoryid as "category.id", text, email 
+                                                                                            FROM msg.Messages  
+                                                                                                WHERE SendTime IS NULL AND (Queued IS NULL OR Queued = false);`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "selectUnsendedMsgs")
+        }</span>
+        <span class="cov0" title="0">selectConfMsg, err := s.DB.Preparex(`        SELECT 
+                                                                                        id, used, queued, sendtime
+                                                                                        FROM msg.Messages  
+                                                                                        WHERE Used = false AND UserID = $1 AND Text = $2;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "selectConfMsg")
+        }</span>
+
+        <span class="cov0" title="0">selectAuthMsg, err := s.DB.Preparex(`                SELECT 
+                                                                                        id, used, queued, sendtime
+                                                                                        FROM msg.Messages  
+                                                                                        WHERE Used = false AND UserID = $1 AND Text = $2;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "selectAuthMsg")
+        }</span>
+
+        <span class="cov0" title="0">s.preparedStatements["insertMsg"] = insertMsg
+        s.preparedStatements["updateMsg"] = updateMsg
+        s.preparedStatements["selectUnsendedMsgs"] = selectUnsendedMsgs
+        s.preparedStatements["selectConfMsg"] = selectConfMsg
+        s.preparedStatements["selectAuthMsg"] = selectAuthMsg
+        return nil</span>
+}
+
+func (s *postgresStorage) epicPrepareStmts() error <span class="cov0" title="0">{
+        insertEpic, err := s.DB.Preparex(`        INSERT INTO data.Epic
+                                                                                (UserID, StatusID, AreaID, CategoryID, ProjectID, Name, Text) 
+                                                                                SELECT $1, $2, $3, $4, $5, $6, $7;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "insertEpic")
+        }</span>
+
+        <span class="cov0" title="0">s.preparedStatements["insertEpic"] = insertEpic
+        return nil</span>
+}
+
+func (s *postgresStorage) issuePrepareStmts() error <span class="cov0" title="0">{
+        insertIssue, err := s.DB.Preparex(`        INSERT INTO data.Issues
+                                                                                () 
+                                                                                SELECT $1, $2, $3, $4, $5, $6, $7, $8;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "insertUser")
+        }</span>
+        /*
+                InsertIssue(context.Context, *Issue) error
+                SelectIssue(context.Context, *User) (*Issue, error)
+                UpdateIssue(context.Context, *Issue) error
+                DeleteIssue(context.Context, *Issue) error
+                InsertIssueComment(context.Context, *Issue, *Comment) error
+                DeleteIssueComment(context.Context, *Issue, *Comment) error
+                UpdateIssueComment(context.Context, *Issue, *Comment) error
+                SelectAllIssueComments(context.Context, *Issue) error
+                SelectAllProjectIssues(context.Context, *Project) ([]Issue, error)
+
+
+        */
+        <span class="cov0" title="0">s.preparedStatements["insertIssue"] = insertIssue
+        return nil</span>
+}
+
+func (s *postgresStorage) projectPrepareStmts() error <span class="cov0" title="0">{
+
+        insertProject, err := s.DB.Preparex(`                INSERT INTO data.Projects
+                                                                                                (Name)
+                                                                                                SELECT $1
+                                                                                                RETURNING id;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "insertProject")
+        }</span>
+
+        <span class="cov0" title="0">insertUserProject, err := s.DB.Preparex(`                INSERT INTO data.UserProjects
+        (UserID, ProjectID)
+        SELECT $1, $2;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "insertUserProject")
+        }</span>
+
+        <span class="cov0" title="0">updateProject, err := s.DB.Preparex(`                UPDATE data.Projects 
+                                                                                                SET Name = $2
+                                                                                                WHERE ID = $1;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "updateProject")
+        }</span>
+
+        <span class="cov0" title="0">selectProject, err := s.DB.Preparex(`                SELECT id, name
+                                                                                                FROM data.Projects
+                                                                                                WHERE ID = $1;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "selectProject")
+        }</span>
+
+        <span class="cov0" title="0">selectAllProjects, err := s.DB.Preparex(`                SELECT id, name 
+                                                                                                        FROM data.Projects;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "selectAllProjects")
+        }</span>
+
+        <span class="cov0" title="0">selectUserProjects, err := s.DB.Preparex(`                SELECT p.id, p.name 
+                                                                                                        FROM data.Projects AS p
+                                                                                                                INNER JOIN data.UserProjects AS up 
+                                                                                                                        ON p.ID = up.ProjectID
+                                                                                                        WHERE up.UserID = $1
+                                                                                                        ;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "selectUserProjects")
+        }</span>
+
+        <span class="cov0" title="0">deleteProject, err := s.DB.Preparex(`        DELETE FROM data.Projects
+                                                                                        WHERE ID = $1;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "deleteProject")
+        }</span>
+
+        <span class="cov0" title="0">deleteUserProject, err := s.DB.Preparex(`        DELETE FROM data.UserProjects
+                                                                                                WHERE UserID = $1 AND ProjectID = $2;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "deleteUserProject")
+        }</span>
+
+        <span class="cov0" title="0">selectPossibleUserProjects, err := s.DB.Preparex(`                SELECT p.id, p.name 
+                                                                                                                        FROM data.Projects AS p
+                                                                                                                        LEFT JOIN data.UserProjects AS up 
+                                                                                                                        ON p.ID = up.ProjectID AND up.UserID = $1
+                                                                                                                        WHERE up.ID IS NULL
+                                                                                                                        ;`)
+        if err != nil </span><span class="cov0" title="0">{
+                return errors.Wrap(err, "selectPossibleUserProjects")
+        }</span>
+
+        <span class="cov0" title="0">s.preparedStatements["insertProject"] = insertProject
+        s.preparedStatements["updateProject"] = updateProject
+        s.preparedStatements["selectProject"] = selectProject
+        s.preparedStatements["selectAllProjects"] = selectAllProjects
+        s.preparedStatements["deleteProject"] = deleteProject
+        s.preparedStatements["selectUserProjects"] = selectUserProjects
+        s.preparedStatements["deleteUserProject"] = deleteUserProject
+        s.preparedStatements["selectPossibleUserProjects"] = selectPossibleUserProjects
+        s.preparedStatements["insertUserProject"] = insertUserProject
+
+        return nil</span>
+}
+
+func (s *postgresStorage) areaPrepareStmts() error <span class="cov0" title="0">{
+        return nil
+}</span>
+
+func (s *postgresStorage) categoryPrepareStmts() error <span class="cov0" title="0">{
+        return nil
+}</span>
+
+func (s *postgresStorage) iterationPrepareStmts() error <span class="cov0" title="0">{
+        return nil
+}</span>
+</pre>
+		
+		<pre class="file" id="file54" style="display: none">package postgres
+
+import (
+        "context"
+        "fmt"
+        "log"
+        "money/internal/core"
+        "money/internal/crypt"
+        "money/internal/logger"
+        "time"
+
+        "go.uber.org/zap"
+)
+
+// RegUser создает пользователя в БД
+func (s *postgresStorage) RegUser(ctx context.Context, u *core.User, domain string) (*core.Session, error) <span class="cov0" title="0">{
+        if u.Login == "" </span><span class="cov0" title="0">{ //TODO: проверку на сложность логина
+                return nil, fmt.Errorf("логин не может быть пустым")
+        }</span>
+        <span class="cov0" title="0">if u.Password == "" </span><span class="cov0" title="0">{ //TODO: проверку на сложность пароля
+                return nil, fmt.Errorf("пароль не может быть пустым")
+        }</span>
+
+        <span class="cov0" title="0">passwordHash, err := crypt.HashPassword(u.Password)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println("RegUser 1", err)
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">tx, err := s.DB.BeginTxx(ctx, nil)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println("RegUser 2", err)
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">err = tx.Stmtx(s.preparedStatements["insertUser"]).GetContext(ctx, &amp;u.ID, core.RoleReg, u.Login, passwordHash, u.Name, u.FamilyName, u.PatronName, u.Email, u.Phone)
+
+        if err != nil </span><span class="cov0" title="0">{
+                switch err.Error() </span>{
+                case `ERROR: duplicate key value violates unique constraint "users_login_key" (SQLSTATE 23505)`:<span class="cov0" title="0">
+                        tx.Rollback()
+                        return nil, fmt.Errorf("такой логин уже используется")</span>
+                case `ERROR: duplicate key value violates unique constraint "users_email_key" (SQLSTATE 23505)`:<span class="cov0" title="0">
+                        tx.Rollback()
+                        return nil, fmt.Errorf("такой адрес электронной почты уже используется")</span>
+                }
+                <span class="cov0" title="0">log.Println("RegUser 3", err)
+                tx.Rollback()
+                return nil, err</span>
+        }
+
+        <span class="cov0" title="0">_, err = tx.Stmtx(s.preparedStatements["insertMsg"]).ExecContext(ctx, core.MessageTypeConfirm, core.MessageCategoryEmail, u.ID, crypt.GetOneTimePassword(), u.Email)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println("RegUser 4", err)
+                tx.Rollback()
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">u.Role = core.Role{ID: core.RoleReg}
+
+        session := &amp;core.Session{User: *u}
+        err = tx.Stmtx(s.preparedStatements["insertSession"]).GetContext(ctx, &amp;session.ID, u.ID, time.Now(), time.Now())
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println("RegUser 5", err)
+                tx.Rollback()
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">tx.Commit()
+
+        return session, nil</span>
+}
+
+func (s *postgresStorage) ConfirmUserEmail(ctx context.Context, userID int, otp string) error <span class="cov0" title="0">{
+        tx, err := s.DB.BeginTxx(ctx, nil)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println("ConfirmUserEmail 1", err)
+                return err
+        }</span>
+        <span class="cov0" title="0">msg := core.Message{}
+        // Проверяем переданный код  UserID = $1 AND Text = $2 AND Email = $3
+        err = tx.Stmtx(s.preparedStatements["selectConfMsg"]).GetContext(ctx, &amp;msg, userID, otp)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println("ConfirmUserEmail 2", err)
+                tx.Rollback()
+                return err
+        }</span>
+
+        <span class="cov0" title="0">if msg.ID == 0 </span><span class="cov0" title="0">{
+                tx.Rollback()
+                return fmt.Errorf("переданные данные невалидны. нет сообщения для такого пользователя с таким адресом и кодом подтверждения")
+        }</span>
+        <span class="cov0" title="0">msg.Used = true
+
+        // Обновляем сообщение, что оно было использовано
+        _, err = tx.Stmtx(s.preparedStatements["updateMsg"]).ExecContext(ctx, msg.ID, msg.Used, msg.Queued, msg.SendTime)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println("ConfirmUserEmail 2", err)
+                tx.Rollback()
+                return err
+        }</span>
+
+        // Обновляем роль пользователя
+        <span class="cov0" title="0">_, err = tx.Stmtx(s.preparedStatements["updateUserRole"]).ExecContext(ctx, userID, core.RoleAuth)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println("ConfirmUserEmail 3", err)
+                tx.Rollback()
+                return err
+        }</span>
+        <span class="cov0" title="0">tx.Commit()
+        return nil</span>
+}
+
+// Аутентифицирует пользователя на основании данных в БД и возвращает все его данные
+func (s *postgresStorage) BaseAuthUser(ctx context.Context, u *core.User) error <span class="cov0" title="0">{
+        // Сохраняем введенный пароль
+        pass := u.Password
+
+        // Получаем данные пользователя, включая хэш пароля
+        err := s.preparedStatements["baseAuthUser"].Get(u, u.Login)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        //Сравнить полученный хэш с паролем
+        <span class="cov0" title="0">if !crypt.CheckPasswordHash(pass, u.Password) </span><span class="cov0" title="0">{
+                return fmt.Errorf("некорректный пароль")
+        }</span>
+
+        //Добавляем сообщение с одноразовым паролем
+        <span class="cov0" title="0">s.preparedStatements["insertMsg"].ExecContext(ctx, core.MessageTypeAuth, core.MessageCategoryEmail, u.ID, crypt.GetOneTimePassword(), u.Email)
+
+        return nil</span>
+}
+
+// /AdvAuthUser авторизует пользователя, прошедшего базовую аутентификацию по одноразовому паролю
+func (s *postgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp string, otpLiveTime time.Duration) (*core.Session, error) <span class="cov0" title="0">{
+        msg := core.Message{}
+        // Проверяем переданный код  UserID = $1 AND Text = $2
+        err := s.preparedStatements["selectAuthMsg"].GetContext(ctx, &amp;msg, u.ID, otp)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("неправильный одноразовый пароль")
+        }</span>
+
+        <span class="cov0" title="0">if time.Since(msg.SendTime.Time) &gt; otpLiveTime </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("срок действия одноразового пароля истек")
+        }</span>
+
+        // Если всё хорошо с паролем, то получаем данные пользователя, включая роль
+        <span class="cov0" title="0">err = s.preparedStatements["selectUser"].GetContext(ctx, u, u.ID)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println("AdvAuthUser 3", err)
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">sn := core.Session{User: *u}
+
+        tx, err := s.DB.BeginTxx(ctx, nil)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println("ConfirmUserEmail 1", err)
+                return nil, err
+        }</span>
+
+        // Затем создаем для него новую сессию и возвращаем её
+        <span class="cov0" title="0">err = tx.Stmtx(s.preparedStatements["insertSession"]).GetContext(ctx, &amp;sn.ID, u.ID, time.Now(), time.Now())
+        if err != nil </span><span class="cov0" title="0">{
+                tx.Rollback()
+                return nil, err
+        }</span>
+
+        // Обновляем сообщение, проставляем признак, что было использовано
+        <span class="cov0" title="0">msg.Used = true
+
+        // Обновляем сообщение, что оно было использовано
+        _, err = tx.Stmtx(s.preparedStatements["updateMsg"]).ExecContext(ctx, msg.ID, msg.Used, msg.Queued, msg.SendTime)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println("ConfirmUserEmail 2", err)
+                tx.Rollback()
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">tx.Commit()
+
+        return &amp;sn, nil</span>
+}
+
+// Возвращает данные пользователя
+func (s *postgresStorage) SelectUser(ctx context.Context, u *core.User) error <span class="cov0" title="0">{
+        return s.preparedStatements["selectUser"].GetContext(ctx, u, u.ID)
+}</span>
+
+// Возвращает данные всех пользователей
+func (s *postgresStorage) SelectAllUsers(ctx context.Context) ([]core.User, error) <span class="cov0" title="0">{
+        u := make([]core.User, 0)
+        err := s.preparedStatements["selectAllUsers"].SelectContext(ctx, &amp;u)
+        if err != nil </span><span class="cov0" title="0">{
+                logger.Log.Info("SelectAllUsers",
+                        zap.Error(err))
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return u, nil</span>
+}
+
+// Обновляет данные пользователя
+func (s *postgresStorage) UpdateUser(ctx context.Context, u *core.User) error <span class="cov0" title="0">{
+        //roleid = $2, login = $3, name = $4, familyname = $5, patronname = $6, email = $7, phone = $8
+        _, err := s.preparedStatements["updateUser"].ExecContext(ctx, u.ID, u.Role.ID, u.Login, u.Name, u.FamilyName, u.PatronName, u.Email, u.Phone)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// Меняет пароль пользователю
+func (s *postgresStorage) ChangeUserPassword(ctx context.Context, u *core.User) error <span class="cov0" title="0">{
+        // Хэшируем пароль
+        pwdHash, err := crypt.HashPassword(u.Password)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">_, err = s.preparedStatements["changeUserPassword"].ExecContext(ctx, u.ID, pwdHash)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
