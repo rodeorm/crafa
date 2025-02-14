@@ -26,5 +26,4 @@ jobs:  # Добавлено: необходимо указать jobs
           profile: cover.out
           local-prefix: github.com/org/project
           threshold-total: 95
-          # badge will be generated and store on file system with `coverage.svg` name
-        badge-file-name: coverage.svg
+          badge-file-name: coverage.svg
