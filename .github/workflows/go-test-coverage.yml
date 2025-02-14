@@ -1,34 +1,13 @@
-name: Go Test Coverage
+name: Go test coverage check
+runs-on: ubuntu-latest
+steps:
+  - uses: actions/checkout@v3
+  - uses: actions/setup-go@v3
+  
+  - name: generate test coverage
+    run: go test ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
 
-   on:
-     push:
-       branches:
-         - main
-     pull_request:
-       branches:
-         - main
-
-   jobs:
-     test:
-       runs-on: ubuntu-latest
-
-       steps:
-         - name: Checkout code
-           uses: actions/checkout@v2
-
-         - name: Set up Go
-           uses: actions/setup-go@v2
-           with:
-             go-version: '1.23'
-
-         - name: Install dependencies
-           run: go get -v ./...
-
-         - name: Run tests with coverage
-           run: go test -coverprofile=coverage.out ./...
-
-         - name: Upload coverage report
-           uses: coverallsapp/github-action@v1.0.0
-           with:
-             github-token: ${{ secrets.GITHUB_TOKEN }}
-             path-to-lcov: coverage.out
+  - name: check test coverage
+    uses: vladopajic/go-test-coverage@v2
+    with:
+      config: ./.testcoverage.yml
