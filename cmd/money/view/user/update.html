@@ -8,7 +8,8 @@
             <div class="card-body">
                 <form action="../user/update?id={{ .Attributes.User.ID }}" class="needs-validation" novalidate
                     method="POST">
-                    <h4>Редактирование информации о пользователе: {{.Attributes.User.Login}} </h4>
+                    <h4>Редактирование информации о пользователе <span
+                            class="text-primary">{{.Attributes.User.Login}}</span>: </h4>
                     <div class="row align-items-start">
                         <div class="col">
                             <label class="control-label" for="login">Имя пользователя:</label>
@@ -82,8 +83,9 @@
                     </div>
                     <div class="d-flex flex-column flex-sm-row align-items-center">
                         <button type="submit" class="btn btn-outline-success mb-2 mb-sm-0 me-sm-2"
-                            style="min-width: 150px;">Сохранить изменения</button>
-                        <a href="./user/list" class="btn btn-outline-danger">Отменить</a>
+                            style="min-width: 150px;">Сохранить информацию о пользователе</button>
+                        <a href="./user/list" class="btn btn-outline-danger">Отменить изменение информации о
+                            пользователе</a>
                         {{if .Signals }}
                         <div class="alert alert-danger mb-0" role="alert"
                             style="flex: 1; display: flex; align-items: center;">
@@ -98,12 +100,8 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <div class="d-flex flex-column flex-sm-row align-items-center">
-                            <button type="button" class="btn btn-outline-success mb-2 mb-sm-0 me-sm-2"
-                                style="min-width: 150px;" data-bs-toggle="modal" data-bs-target="#addProject">Добавить в
-                                новый проект</button>
-                        </div>
-                        <h4>Проекты пользователя: </h4>
+
+                        <h5>Проекты <span class="text-primary">{{.Attributes.User.Login}}</span>:</h5>
                         <div>
                             <table id="projects"
                                 class="table table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
@@ -132,6 +130,11 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="d-flex flex-column flex-sm-row align-items-center">
+                            <button type="button" class="btn btn-outline-primary mb-2 mb-sm-0 me-sm-2"
+                                style="min-width: 150px;" data-bs-toggle="modal" data-bs-target="#addProject">Добавить в
+                                новый проект</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -139,19 +142,15 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <div class="d-flex flex-column flex-sm-row align-items-center">
-                            <button type="button" class="btn btn-outline-success mb-2 mb-sm-0 me-sm-2"
-                                style="min-width: 150px;" data-bs-toggle="modal" data-bs-target="#addTeam">Добавить
-                                в новую команду</button>
-                        </div>
-                        <h4>Команды пользователя: </h4>
+
+                        <h5>Команды <span class="text-success">{{.Attributes.User.Login}}</span>:</h5>
                         <div>
                             <table id="teams"
                                 class="table table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
                                 <thead>
                                     <tr onclick="location.href = '/project/list'">
-                                        <th class="table-primary" scope="col">Наименование</th>
-                                        <th class="table-primary" scope="col">Действия</th>
+                                        <th class="table-success" scope="col">Наименование</th>
+                                        <th class="table-success" scope="col">Действия</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -159,7 +158,7 @@
                                     <tr onclick="location.href = '/team/view?id={{ .ID }}'" style="cursor: pointer;">
                                         <td>{{ .Name }}</td>
                                         <td>
-                                            <a href="/team/disconnect?projectid={{ .ID }}&userid={{ $.Attributes.User.ID}}"
+                                            <a href="/team/disconnect?teamid={{ .ID }}&userid={{ $.Attributes.User.ID}}"
                                                 class="btn btn-outline-danger" role="button">Исключить из
                                                 команды</a>
                                         </td>
@@ -172,6 +171,11 @@
                                     {{ end }}
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="d-flex flex-column flex-sm-row align-items-center">
+                            <button type="button" class="btn btn-outline-success mb-2 mb-sm-0 me-sm-2"
+                                style="min-width: 150px;" data-bs-toggle="modal" data-bs-target="#addTeam">Добавить
+                                в новую команду</button>
                         </div>
                     </div>
                 </div>

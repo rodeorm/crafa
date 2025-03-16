@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-	"log"
 	"money/internal/core"
 	"money/internal/logger"
 	"net/http"
@@ -30,9 +29,9 @@ func (s *Server) teamDisconnectGet(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 		return
 	}
-	TeamID, err := strconv.Atoi(r.URL.Query().Get("Teamid"))
+	TeamID, err := strconv.Atoi(r.URL.Query().Get("teamid"))
 	if err != nil {
-		logger.Log.Error("Teamid",
+		logger.Log.Error("teamid",
 			zap.Error(err),
 		)
 		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
@@ -40,9 +39,8 @@ func (s *Server) teamDisconnectGet(w http.ResponseWriter, r *http.Request) {
 	}
 	usr := &core.User{ID: userID}
 	pr := &core.Team{ID: TeamID}
-	// Только сам пользователь или админ могут отвязать себя от проекта
+	// Только сам пользователь или админ могут отвязать себя от команды
 	if userID != session.User.ID && session.Role.ID != core.RoleAdmin {
-		log.Println("HERE")
 		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 	}
 	ctx := context.TODO()

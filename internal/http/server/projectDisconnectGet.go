@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-	"log"
 	"money/internal/core"
 	"money/internal/logger"
 	"net/http"
@@ -42,7 +41,6 @@ func (s *Server) projectDisconnectGet(w http.ResponseWriter, r *http.Request) {
 	pr := &core.Project{ID: projectID}
 	// Только сам пользователь или админ могут отвязать себя от проекта
 	if userID != session.User.ID && session.Role.ID != core.RoleAdmin {
-		log.Println("HERE")
 		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 	}
 	ctx := context.TODO()
