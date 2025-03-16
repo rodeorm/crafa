@@ -11,7 +11,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *Server) projectUpdatePost(w http.ResponseWriter, r *http.Request) {
+func (s *Server) teamUpdatePost(w http.ResponseWriter, r *http.Request) {
 	session, err := s.getSession(r)
 	if err != nil {
 		logger.Log.Error("Session",
@@ -32,24 +32,24 @@ func (s *Server) projectUpdatePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Получаем данные из формы
-	prjct := &core.Project{
+	prjct := &core.Team{
 		ID:   id,
 		Name: r.FormValue("name"),
 	}
 	at := make(map[string]any)
-	err = s.stgs.ProjectStorager.UpdateProject(context.TODO(), prjct)
-	at["Project"] = prjct
+	err = s.stgs.TeamStorager.UpdateTeam(context.TODO(), prjct)
+	at["Team"] = prjct
 
 	if err != nil {
-		logger.Log.Error("updateProject",
+		logger.Log.Error("updateTeam",
 			zap.Error(err),
 		)
 		sign := make(map[string]string)
 		sign["Russ"] = "Ошибка при обновлении"
 		sign["Err"] = err.Error()
 		pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
-		page.Execute("project", "update", w, pg)
+		page.Execute("team", "update", w, pg)
 		return
 	}
-	http.Redirect(w, r, "/project/list", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, "/team/list", http.StatusTemporaryRedirect)
 }

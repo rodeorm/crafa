@@ -54,11 +54,30 @@ func (s *Server) userUpdateGet(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 		return
 	}
+	// Получаем текущие команды пользователя
+	userTeams, err := s.stgs.TeamStorager.SelectUserTeams(ctx, user)
+	if err != nil {
+		logger.Log.Error("userTeams",
+			zap.Error(err),
+		)
+		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+		return
+	}
 
 	// Получаем возможные проекты для пользователя
 	possibleProjects, err := s.stgs.ProjectStorager.SelectPossibleNewUserProjects(ctx, user)
 	if err != nil {
 		logger.Log.Error("possibleProjects",
+			zap.Error(err),
+		)
+		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+		return
+	}
+
+	// Получаем возможные команды для пользователя
+	possibleTeams, err := s.stgs.TeamStorager.SelectPossibleNewUserTeams(ctx, user)
+	if err != nil {
+		logger.Log.Error("possibleTeams",
 			zap.Error(err),
 		)
 		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
@@ -87,7 +106,9 @@ func (s *Server) userUpdateGet(w http.ResponseWriter, r *http.Request) {
 	at["User"] = user
 	at["PossibleRoles"] = possibleRoles
 	at["PossibleProjects"] = possibleProjects
+	at["PossibleTeams"] = possibleTeams
 	at["UserProjects"] = userProjects
+	at["UserTeams"] = userTeams
 
 	pg := page.NewPage(page.WithAttrs(at), page.WithSession(session))
 	page.Execute("user", "update", w, pg)

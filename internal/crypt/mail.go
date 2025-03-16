@@ -22,6 +22,7 @@ func GetOneTimePassword() string {
 	return otp[:length]
 }
 
+// GetVerifyURL создет верификационный url для подтверждения адреса электронной почты, сброса пароля и т.п.
 func GetVerifyURL(url string) string {
 	// Создаем байтовый массив необходимой длины
 	length := 6

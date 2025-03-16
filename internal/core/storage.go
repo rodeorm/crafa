@@ -9,6 +9,7 @@ type Storage struct {
 	ProjectStorager
 	LevelStorager
 	CategoryStorager
+	TeamStorager
 }
 
 type DBStorager interface {

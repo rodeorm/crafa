@@ -17,6 +17,7 @@ func GetStorages(p PostgresConfig, s SecurityConfig) (*core.Storage, error) {
 		DBStorager:       ps,
 		ProjectStorager:  ps,
 		CategoryStorager: ps,
+		TeamStorager:     ps,
 		RoleStorager:     &core.RoleCash{},
 		LevelStorager:    &core.LevelCash{},
 	}

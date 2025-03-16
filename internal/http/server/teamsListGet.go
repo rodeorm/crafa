@@ -1,0 +1,59 @@
+package server
+
+import (
+	"context"
+	"money/internal/core"
+	"money/internal/http/page"
+	"money/internal/logger"
+	"net/http"
+
+	"go.uber.org/zap"
+)
+
+func (s *Server) teamListGet(w http.ResponseWriter, r *http.Request) {
+	session, err := s.getSession(r)
+	if err != nil {
+		logger.Log.Error("Session",
+			zap.Error(err),
+		)
+		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+		return
+	}
+
+	sign := make(map[string]string)
+	at := make(map[string]any)
+	var Teams []core.Team
+
+	ctx := context.TODO()
+
+	if session.User.Role.ID == core.RoleAdmin {
+		Teams, err = s.stgs.SelectAllTeams(ctx)
+		if err != nil {
+			logger.Log.Error("Teams all",
+				zap.Error(err))
+			http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+			return
+		}
+
+	} else {
+		Teams, err = s.stgs.SelectUserTeams(ctx, &session.User)
+		if err != nil {
+			logger.Log.Error("Teams user",
+				zap.Error(err))
+			http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+			return
+		}
+
+	}
+
+	at["Teams"] = Teams
+	pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
+	switch session.User.Role.ID {
+	case core.RoleAdmin:
+		page.Execute("Team", "adminList", w, pg)
+	case core.RoleEmployee:
+		page.Execute("Team", "employeeList", w, pg)
+	case core.RoleAuth:
+		page.Execute("Team", "authList", w, pg)
+	}
+}

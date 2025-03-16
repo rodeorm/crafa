@@ -4,9 +4,9 @@ import "context"
 
 // Область
 type Area struct {
-	Level
-	Team
-	ID int
+	Level Level
+	Team  Team
+	ID    int
 }
 
 type AreaStorager interface {

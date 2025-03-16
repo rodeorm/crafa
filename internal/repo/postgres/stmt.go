@@ -15,6 +15,20 @@ func (s *postgresStorage) prepareStmts() error {
 	if err != nil {
 		return err
 	}
+
+	err = s.issuePrepareStmts()
+	if err != nil {
+		return err
+	}
+	err = s.areaPrepareStmts()
+	if err != nil {
+		return err
+	}
+
+	err = s.teamPrepareStmts()
+	if err != nil {
+		return err
+	}
 	/*
 		err = s.epicPrepareStmts()
 		if err != nil {
@@ -61,9 +75,9 @@ func (s *postgresStorage) sessionPrepareStmts() error {
 
 func (s *postgresStorage) userPrepareStmts() error {
 	insertUser, err := s.DB.Preparex(`	INSERT INTO cmn.Users 
-	(roleid, login, password, name, familyname, patronname, email, phone) 
-	SELECT $1, $2, $3, $4, $5, $6, $7, $8
-	RETURNING id;`)
+	                                   (roleid, login, password, name, familyname, patronname, email, phone) 
+	                                   SELECT $1, $2, $3, $4, $5, $6, $7, $8
+	                                    RETURNING id;`)
 	if err != nil {
 		return errors.Wrap(err, "insertUser")
 	}
@@ -166,28 +180,27 @@ func (s *postgresStorage) msgPrepareStmts() error {
 	return nil
 }
 
-/*
-	func (s *postgresStorage) issuePrepareStmts() error {
-		insertIssue, err := s.DB.Preparex(`	INSERT INTO data.Issues
-											()
-											SELECT $1, $2, $3, $4, $5, $6, $7, $8;`)
-		if err != nil {
-			return errors.Wrap(err, "insertUser")
-		}
-		/*
-			InsertIssue(context.Context, *Issue) error
-			SelectIssue(context.Context, *User) (*Issue, error)
-			UpdateIssue(context.Context, *Issue) error
-			DeleteIssue(context.Context, *Issue) error
-			InsertIssueComment(context.Context, *Issue, *Comment) error
-			DeleteIssueComment(context.Context, *Issue, *Comment) error
-			UpdateIssueComment(context.Context, *Issue, *Comment) error
-			SelectAllIssueComments(context.Context, *Issue) error
-			SelectAllProjectIssues(context.Context, *Project) ([]Issue, error)
-		s.preparedStatements["insertIssue"] = insertIssue
-		return nil
+func (s *postgresStorage) issuePrepareStmts() error {
+	insertIssue, err := s.DB.Preparex(`	INSERT INTO data.Issues
+											(userid, statusid, areaid, categoryid, iterationid, epicid, text)
+											SELECT $1, $2, $3, $4, $5, $6, $7;`)
+	if err != nil {
+		return errors.Wrap(err, "insertIssue")
 	}
-*/
+	/*
+		SelectIssue(context.Context, *User) (*Issue, error)
+		UpdateIssue(context.Context, *Issue) error
+		DeleteIssue(context.Context, *Issue) error
+		InsertIssueComment(context.Context, *Issue, *Comment) error
+		DeleteIssueComment(context.Context, *Issue, *Comment) error
+		UpdateIssueComment(context.Context, *Issue, *Comment) error
+		SelectAllIssueComments(context.Context, *Issue) error
+		SelectAllProjectIssues(context.Context, *Project) ([]Issue, error)
+	*/
+	s.preparedStatements["insertIssue"] = insertIssue
+	return nil
+}
+
 func (s *postgresStorage) projectPrepareStmts() error {
 
 	insertProject, err := s.DB.Preparex(`		INSERT INTO data.Projects
@@ -271,11 +284,17 @@ func (s *postgresStorage) projectPrepareStmts() error {
 }
 
 /*
-func (s *postgresStorage) areaPrepareStmts() error {
+
+
+func (s *postgresStorage) iterationPrepareStmts() error {
 	return nil
 }
 
-func (s *postgresStorage) iterationPrepareStmts() error {
+func (s *postgresStorage) statusPrepareStmts() error {
+	return nil
+}
+
+func (s *postgresStorage) categoryPrepareStmts() error {
 	return nil
 }
 */

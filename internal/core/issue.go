@@ -4,18 +4,20 @@ import (
 	"context"
 )
 
+// Issue - это проблема или запрос на портале тех.поддержки
 type Issue struct {
-	User
-	Area
-	Status
-	Category
-	Iteration
-	Epic
-
-	Name string
-	ID   int
-
-	Comments []Comment
+	Author    User
+	Supporter User
+	Area      Area
+	Status    Status
+	Category  Category
+	Iteration Iteration
+	Epic      Epic
+	Project   Project
+	Name      string
+	Text      string
+	ID        int
+	Comments  []Comment
 }
 
 type IssueStorager interface {

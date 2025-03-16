@@ -11,7 +11,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *Server) projectUpdateGet(w http.ResponseWriter, r *http.Request) {
+func (s *Server) teamUpdateGet(w http.ResponseWriter, r *http.Request) {
 	session, err := s.getSession(r)
 	if err != nil {
 		logger.Log.Error("session",
@@ -23,7 +23,7 @@ func (s *Server) projectUpdateGet(w http.ResponseWriter, r *http.Request) {
 
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 
-	// Редактировать проект может только администратор (уже проверяется в middle, на всякий случай и здесь)
+	// Редактировать команду может только администратор (уже проверяется в middle, на всякий случай и здесь)
 	if err != nil || (session.User.Role.ID != core.RoleAdmin) {
 		logger.Log.Error("id",
 			zap.Error(err),
@@ -31,22 +31,22 @@ func (s *Server) projectUpdateGet(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 		return
 	}
-	prjct := &core.Project{ID: id}
+	prjct := &core.Team{ID: id}
 	at := make(map[string]any)
 	ctx := context.TODO()
 
-	err = s.stgs.ProjectStorager.SelectProject(ctx, prjct)
+	err = s.stgs.TeamStorager.SelectTeam(ctx, prjct)
 	if err != nil {
-		logger.Log.Error("Project",
+		logger.Log.Error("Team",
 			zap.Error(err),
 		)
 		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 		return
 	}
 
-	at["Project"] = prjct
+	at["Team"] = prjct
 
 	pg := page.NewPage(page.WithAttrs(at), page.WithSession(session))
-	page.Execute("project", "update", w, pg)
+	page.Execute("user", "update", w, pg)
 
 }

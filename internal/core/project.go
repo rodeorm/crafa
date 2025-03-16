@@ -12,6 +12,9 @@ type Project struct {
 	Manager    User
 	Supporter  User
 	Maintainer User
+
+	Epics []Epic
+	Users []User
 }
 
 type ProjectStorager interface {

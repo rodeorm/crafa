@@ -6,7 +6,7 @@ import (
 )
 
 type Comment struct {
-	User
+	User User
 
 	CreateTime time.Time
 	UpdateTime sql.NullTime
