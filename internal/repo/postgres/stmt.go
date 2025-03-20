@@ -29,15 +29,17 @@ func (s *postgresStorage) prepareStmts() error {
 	if err != nil {
 		return err
 	}
-	/*
-		err = s.epicPrepareStmts()
-		if err != nil {
-			return err
-		}
-		err = s.issuePrepareStmts()
-		if err != nil {
-			return err
-		}*/
+
+	err = s.iterationPrepareStmts()
+	if err != nil {
+		return err
+	}
+
+	err = s.areaPrepareStmts()
+	if err != nil {
+		return err
+	}
+
 	err = s.categoryPrepareStmts()
 	if err != nil {
 		return err
@@ -46,16 +48,17 @@ func (s *postgresStorage) prepareStmts() error {
 	if err != nil {
 		return err
 	}
+
 	/*
-		err = s.areaPrepareStmts()
+		err = s.epicPrepareStmts()
 		if err != nil {
 			return err
 		}
-
-		err = s.iterationPrepareStmts()
+		err = s.issuePrepareStmts()
 		if err != nil {
 			return err
-		}*/
+		}
+	*/
 
 	return nil
 }

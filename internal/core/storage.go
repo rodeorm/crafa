@@ -10,6 +10,8 @@ type Storage struct {
 	LevelStorager
 	CategoryStorager
 	TeamStorager
+	IterationStorager
+	StatusStorager
 }
 
 type DBStorager interface {

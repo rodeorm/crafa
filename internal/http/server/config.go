@@ -29,7 +29,13 @@ func configPaths(r, admin, auth *mux.Router, s *Server) {
 	admin.HandleFunc("/project/connect", s.projectConnectPost).Methods(http.MethodPost)
 	admin.HandleFunc("/project/disconnect", s.projectDisconnectGet).Methods(http.MethodGet)
 
+	auth.HandleFunc("/iteration/list", s.iterationListGet).Methods(http.MethodGet)
+	admin.HandleFunc("/iteration/create", s.iterationCreatePost).Methods(http.MethodPost)
+	admin.HandleFunc("/iteration/update", s.iterationUpdateGet).Methods(http.MethodGet)
+	admin.HandleFunc("/iteration/update", s.iterationUpdatePost).Methods(http.MethodPost)
+
 	admin.HandleFunc("/category/list", s.categoryListGet).Methods(http.MethodGet)
+	admin.HandleFunc("/category/create", s.categoryCreatePost).Methods(http.MethodPost)
 
 	admin.HandleFunc("/team/list", s.teamListGet).Methods(http.MethodGet)
 	admin.HandleFunc("/team/create", s.teamCreatePost).Methods(http.MethodPost)

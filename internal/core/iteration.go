@@ -1,21 +1,27 @@
 package core
 
-import "context"
+import (
+	"context"
+	"database/sql"
+)
 
 type Iteration struct {
-	Level
-	Name   string
-	ID     int
-	Year   int
-	Month  int
+	Level Level
+	Name  string
+
+	ID    int
+	Year  int
+	Month sql.NullInt32
+
 	Parent *Iteration
-	Child  *Iteration
+	Child  []Iteration
 }
 
 type IterationStorager interface {
-	AddIteration(context.Context, *Iteration, *User) error
-	EditIteration(context.Context, *Iteration, *User) error
-	SelectIteration(context.Context, *Iteration, *User) error
-	SelectAllIterations(context.Context, *User) ([]Iteration, error)
-	DeleteIteration(context.Context, *Iteration, *User) error
+	InsertIteration(ctx context.Context, p *Iteration) error
+	UpdateIteration(ctx context.Context, p *Iteration) error
+	SelectIteration(ctx context.Context, p *Iteration) error
+	SelectAllIterations(ctx context.Context) ([]Iteration, error)
+	DeleteIteration(ctx context.Context, p *Iteration) error
+	SelectPossibleLevelIterations(ctx context.Context, l *Level) ([]Iteration, error)
 }

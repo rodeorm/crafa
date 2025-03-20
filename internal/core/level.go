@@ -1,6 +1,9 @@
 package core
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 const (
 	LevelProject = iota // Уровень "Проект"
@@ -17,6 +20,7 @@ type Level struct {
 	ID    int
 
 	PossibleCategories []Category
+	PossibleAreas      []Area
 }
 
 type LevelStorager interface {
@@ -62,6 +66,8 @@ func (lc *LevelCash) SelectLevel(ctx context.Context, l *Level) error {
 	case 5:
 		l.Const = "LevelTask"
 		l.Name = "Задача"
+	default:
+		return fmt.Errorf("некорректный уровень")
 	}
 
 	return nil

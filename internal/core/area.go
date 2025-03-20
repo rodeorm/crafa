@@ -4,15 +4,18 @@ import "context"
 
 // Область
 type Area struct {
-	Level Level
-	Team  Team
-	ID    int
+	Level  Level
+	ID     int
+	Name   string
+	Parent *Area
+	Child  []Area
 }
 
 type AreaStorager interface {
-	AddArea(context.Context, *Area) error
-	EditArea(context.Context, *Area) error
+	InsertArea(context.Context, *Area) error
+	UpdateArea(context.Context, *Area) error
 	SelectArea(context.Context, *Area) error
 	SelectAllAreas(context.Context) ([]Area, error)
+	SelectAllLevelAreas(context.Context) ([]Area, error)
 	DeleteArea(context.Context, *Area) error
 }

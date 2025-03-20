@@ -2,56 +2,69 @@
 <html lang="en">
 {{ template "header.html" . }}
 <style>
-  .card {
-      max-width: 600px;
-      margin: auto;
-      margin-top: 50px;
-  }
-  .form-control {
-      width: 100%; /* Поле ввода занимает 25% ширины родительского элемента */
-      margin-bottom: 15px;
-      display: block; /* Убедимся, что элементы занимают всю доступную ширину */
-  }
-  .btn {
-      width: 100%; /* Кнопка занимает всю ширину родительского элемента */
-  }
-  .alert {
-      margin-top: 20px;
-  }
-  @media (max-width: 768px) {
-      .form-control {
-          width: 100%; /* На мобильных устройствах поля ввода будут занимать всю ширину */
-      }
-  }
+    .card {
+        max-width: 600px;
+        margin: auto;
+        margin-top: 50px;
+    }
+
+    .form-control {
+        width: 100%;
+        /* Поле ввода занимает 25% ширины родительского элемента */
+        margin-bottom: 15px;
+        display: block;
+        /* Убедимся, что элементы занимают всю доступную ширину */
+    }
+
+    .btn {
+        width: 100%;
+        /* Кнопка занимает всю ширину родительского элемента */
+    }
+
+    .alert {
+        margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .form-control {
+            width: 100%;
+            /* На мобильных устройствах поля ввода будут занимать всю ширину */
+        }
+    }
 </style>
+
 <body style="background-color: #f8f9fa; height: 100vh; overflow: visible;">
-  <div class="container mt-5">
-      <form action="/user/login" method="POST">
-              <div class="card text-center mt-4">
-                  <div class="card-body">
-                      <h5 class="height" style="font-size: 1.5rem; color: rgb(22, 14, 95);">Авторизация в системе</h5>
-                      <form>
-                          <div class="mb-3">
-                              <label class="label">Имя пользователя</label>
-                              <input type="text" class="form-control" id="login" placeholder="Введите имя пользователя" name="login" required>
-                          </div>
-                          <div class="mb-3">
+    <div class="container mt-5">
+        <form action="/user/login" method="POST">
+            <div class="card text-center mt-4">
+                <div class="card-body">
+                    <h5 class="height" style="font-size: 1.5rem; color: rgb(22, 14, 95);">Авторизация в системе</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label class="label">Имя пользователя</label>
+                            <input type="text" class="form-control" id="login" placeholder="Введите имя пользователя"
+                                name="login" required>
+                        </div>
+                        <div class="mb-3">
                             <label class="label">Пароль</label>
-                              <input type="password" class="form-control" id="password" placeholder="Введите пароль" name="password" required>
-                          </div>
-                          <button type="submit" class="btn btn-lg btn-outline-primary"; color: white;">Войти</button>
-                      </form>
-                      {{if .Signals }}
-                      <div class="alert alert-danger mt-3" role="alert">
-                          <strong>{{.Signals.Russ}}</strong>
-                      </div>
-                      {{end}}  
-                      <div class="text-center mt-3">Нет учетной записи? <a href="/user/reg">Зарегистрироваться</a></div>
-                      <div class="text-center">Забыли имя пользователя или пароль? <a href="/user/restore">Восстановить</a></div>
-                  </div>
-              </div>
-      </form>
-  </div>
+                            <input type="password" class="form-control" id="password" placeholder="Введите пароль"
+                                name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-lg btn-outline-primary" ; color: white;">Войти</button>
+                    </form>
+                    {{if .Signals }}
+                    <div class="alert alert-danger mt-3" role="alert">
+                        <strong>{{.Signals.Russ}}</strong>
+                    </div>
+                    {{end}}
+                    <div class="text-center mt-3">Нет учетной записи? <a href="/user/reg">Зарегистрироваться</a></div>
+                    <div class="text-center">Забыли имя пользователя или пароль? <a
+                            href="/user/restore">Восстановить</a></div>
+                </div>
+            </div>
+        </form>
+    </div>
 </body>
 {{ template "footer.html" . }}
+
 </html>

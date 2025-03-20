@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+{{ template "header.html" . }}
+
+<body>
+    <div class="card text-left">
+        <div class="card-body">
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addModal">
+                Добавить</button>
+        </div>
+    </div>
+    <div class="card text-left">
+        <div class="card-body">
+            <div>
+                <table id="Iterations"
+                    class="table  table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
+                    <thead>
+                        <tr>
+                            <th class="table-primary" scope=" col">Наименование</th>
+                            <th class="table-primary" scope=" col">Год</th>
+                            <th class="table-primary" scope=" col">Месяц</th>
+                            <th class="table-primary" scope=" col">Уровень</th>
+                            <th class="table-primary" scope=" col">Вышестоящая итерация</th>
+                            <th class="table-primary" scope="col">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{range .Attributes.Iterations}}
+                        <tr class=" = " onclick="location.href = '/Team/view?id={{ .ID }}'" style="cursor: pointer;">
+                            <td>{{ .Name }}</td>
+                            <td>{{ .Year }}</td>
+                            <td> {{ .Month.Int32 }}</td>
+                            <td>{{ .Level.Name }}</td>
+                            <td>{{ .Parent.Name }}</td>
+                            <td>
+                                <a href="/iteration/delete?id={{ .ID }}" class="btn btn-outline-danger"
+                                    role="button">Удалить</a>
+                            </td>
+                        </tr>
+                        {{else}}
+                        <tr>
+                            <td>Отсутствуют команды</td>
+                            <td>-</td>
+                        </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalLabel">Добавить новую команду</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/team/create" method="POST">
+                            <div class="form-group">
+                                Наименование:<input type="text" class="form-control" placeholder="Наименование команды"
+                                    name="name">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                <button type="submit" class="btn btn-outline-success">Добавить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $('#Iterations').DataTable({
+                    language: { url: '../static/DataTables/language.json' },
+                    order: [[1, 'desc']],
+                });
+            });
+        </script>
+        <!--  
+            var groupColumn = 3;
+            var table = $('#Iterations').DataTable({
+                columnDefs: [{ visible: false, targets: groupColumn }],
+                language: { url: '../static/DataTables/language.json' },
+                order: [[groupColumn, 'asc']],
+                displayLength: 25,
+                drawCallback: function (settings) {
+                    var api = this.api();
+                    var rows = api.rows({ page: 'current' }).nodes();
+                    var last = null;
+
+                    api.column(groupColumn, { page: 'current' })
+                        .data()
+                        .each(function (group, i) {
+                            if (last !== group) {
+                                $(rows)
+                                    .eq(i)
+                                    .before(
+                                        '<tr class="group"><td colspan="5">' +
+                                        group +
+                                        '</td></tr>'
+                                    );
+
+                                last = group;
+                            }
+                        });
+                }
+            });
+
+            // Order by the grouping
+            $('#Iterations tbody').on('click', 'tr.group', function () {
+                var currentOrder = table.order()[0];
+                if (currentOrder[0] === groupColumn && currentOrder[1] === 'asc') {
+                    table.order([groupColumn, 'desc']).draw();
+                }
+                else {
+                    table.order([groupColumn, 'asc']).draw();
+                }
+            });
+        </script>
+        -->
+
+</body>
+{{ template "footer.html" . }}
+
+</html>
