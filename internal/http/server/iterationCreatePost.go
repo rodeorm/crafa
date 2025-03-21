@@ -103,5 +103,5 @@ func (s *Server) iterationCreatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, "/iteration/list", http.StatusSeeOther)
+	http.Redirect(w, r, r.Referer(), http.StatusSeeOther)
 }

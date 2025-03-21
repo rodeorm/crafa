@@ -37,5 +37,5 @@ func (s *Server) teamCreatePost(w http.ResponseWriter, r *http.Request) {
 		page.Execute("team", "list", w, pg)
 		return
 	}
-	http.Redirect(w, r, "/team/list", http.StatusSeeOther)
+	http.Redirect(w, r, r.Referer(), http.StatusSeeOther)
 }

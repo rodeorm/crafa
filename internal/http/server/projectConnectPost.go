@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"fmt"
 	"money/internal/core"
 	"money/internal/logger"
 	"net/http"
@@ -55,5 +54,5 @@ func (s *Server) projectConnectPost(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 		return
 	}
-	http.Redirect(w, r, fmt.Sprintf("/user/update?id=%d", userID), http.StatusSeeOther) // Редирект с сохранением метода StatusTemporaryRedirect
+	http.Redirect(w, r, r.Referer(), http.StatusSeeOther) // Редирект с сохранением метода StatusTemporaryRedirect
 }

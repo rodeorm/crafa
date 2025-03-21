@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"fmt"
 	"money/internal/core"
 	"money/internal/logger"
 	"net/http"
@@ -54,6 +53,5 @@ func (s *Server) projectDisconnectGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("/user/update?id=%d", userID), http.StatusSeeOther)
-
+	http.Redirect(w, r, r.Referer(), http.StatusSeeOther)
 }
