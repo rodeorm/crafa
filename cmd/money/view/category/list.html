@@ -12,10 +12,10 @@
     <div class="card text-left">
         <div class="card-body">
             <div>
-                <table id="categories"
+                <table id="Categories"
                     class="table  table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
                     <thead>
-                        <tr onclick="location.href = '/category/list'">
+                        <tr>
                             <th class="table-primary" scope=" col">Наименование</th>
                             <th class="table-primary" scope=" col">Уровень</th>
                             <th class="table-primary" scope="col">Действия</th>
@@ -34,7 +34,7 @@
                         </tr>
                         {{else}}
                         <tr>
-                            <td>Отсутствуют категории</td>
+                            <td>Отсутствуют команды</td>
                             <td>-</td>
                         </tr>
                         {{ end }}
@@ -51,20 +51,22 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="/category/add" method="POST">
+                        <form action="/area/create" method="POST">
                             <div class="form-group">
-                                Наименование:<input type="text" class="form-control"
-                                    placeholder="Наименование категории" name="name">
+                                Наименование:<input type="text" class="form-control" placeholder="Наименование команды"
+                                    name="name">
                             </div>
-                            <div name="category" class="form-group" data-width='auto'>
-                                Уровень:
-                                <select name="levelid" id="levelid" required class="form-select" data-live-search="true"
-                                    noneResultsText="Нет совпадений" data-size="10" width="auto">
-                                    <option> </option>
-                                    {{ range $level := index $.Attributes.PossibleLevels}}
-                                    <option value={{ $level.ID}}>{{ $level.Name}} </option>
-                                    {{ end }}
-                                </select>
+                            <div class="col">
+                                <div name="level" class="form-group" data-width='auto'>
+                                    Уровень:
+                                    <select name="levelid" id="levelid" required class="form-select"
+                                        data-live-search="true" noneResultsText="Нет совпадений" data-size="10"
+                                        width="auto">
+                                        {{ range $level := index $.Attributes.PossibleLevels}}
+                                        <option value={{ $level.ID}}>{{ $level.Name}} </option>
+                                        {{ end }}
+                                    </select>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
@@ -75,9 +77,10 @@
                 </div>
             </div>
         </div>
+
         <script>
             $(document).ready(function () {
-                $('#categories').DataTable({
+                $('#Iterations').DataTable({
                     language: { url: '../static/DataTables/language.json' },
                     order: [[1, 'desc']],
                 });

@@ -21,6 +21,7 @@ type Level struct {
 
 	PossibleCategories []Category
 	PossibleAreas      []Area
+	PossibleStatuses   []Status
 }
 
 type LevelStorager interface {

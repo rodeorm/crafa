@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+{{ template "header.html" . }}
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <form action="../team/delete?id={{ .Attributes.Team.ID }}" class="needs-validation" novalidate
+                    method="POST">
+                    <h4>Вы удаляете команду <span class="text-primary">{{.Attributes.Team.Name}}</span>: </h4>
+                    <div class="d-flex flex-column flex-sm-row align-items-center">
+                        {{if .Attributes.Team.Users }}
+                        <div>
+                            Сначала из команды нужно исключить всех членов (пользователей)
+                            <button type="submit" class="btn btn-outline-success mb-2 mb-sm-0 me-sm-2" disabled
+                                style="min-width: 150px;">Удалить команду</button>
+                        </div>
+                        {{else}}
+                        <div>
+                            <button type="submit" class="btn btn-outline-success mb-2 mb-sm-0 me-sm-2"
+                                style="min-width: 150px;">Удалить команду</button>
+                        </div>
+                        {{end}}
+                        <a href="./user/list" class="btn btn-outline-danger">Отменить</a>
+                        {{if .Signals }}
+                        <div class="alert alert-danger mb-0" role="alert"
+                            style="flex: 1; display: flex; align-items: center;">
+                            <strong>{{.Signals.Russ}}:</strong>&nbsp;{{.Signals.Err}}
+                        </div>
+                        {{end}}
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row g-0">
+            <div class="card">
+                <h5>Члены команды <span class="text-primary">{{ .Attributes.Team.Name }}</span>:</h5>
+                <div>
+                    <table id="users"
+                        class="table table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
+                        <thead>
+                            <tr onclick="location.href = '/project/list'">
+                                <th class="table-primary" scope="col">Логин</th>
+                                <th class="table-primary" scope="col">Адрес электронной почты</th>
+                                <th class="table-primary" scope="col">Фамилия</th>
+                                <th class="table-primary" scope="col">Имя</th>
+                                <th class="table-primary" scope="col">Отчество</th>
+                                <th class="table-primary" scope="col">Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .Attributes.Team.Users}}
+                            <tr onclick="location.href = '/project/view?id={{ .ID }}'" style="cursor: pointer;">
+                                <td>{{ .Login }}</td>
+                                <td>{{ .Email }}</td>
+                                <td>{{ .FamilyName }}</td>
+                                <td>{{ .Name }}</td>
+                                <td>{{ .PatronName }}</td>
+                                <td>
+                                    <a href="/project/disconnect?userid={{ .ID }}&projectid={{ $.Attributes.Team.ID}}"
+                                        class="btn btn-outline-danger" role="button">Исключить из команды</a>
+                                </td>
+                            </tr>
+                            {{else}}
+                            <tr>
+                                <td>В команде нет пользователей</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            {{ end }}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#users').DataTable({
+                language: { url: '../static/DataTables/language.json' },
+                order: [[1, 'desc']],
+            });
+        });
+    </script>
+</body>
+{{ template "footer.html" . }}
+
+</html>

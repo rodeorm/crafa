@@ -16,6 +16,6 @@ type AreaStorager interface {
 	UpdateArea(context.Context, *Area) error
 	SelectArea(context.Context, *Area) error
 	SelectAllAreas(context.Context) ([]Area, error)
-	SelectAllLevelAreas(context.Context) ([]Area, error)
+	SelectAllLevelAreas(context.Context, *Level) error
 	DeleteArea(context.Context, *Area) error
 }

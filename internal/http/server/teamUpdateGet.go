@@ -47,6 +47,5 @@ func (s *Server) teamUpdateGet(w http.ResponseWriter, r *http.Request) {
 	at["Team"] = prjct
 
 	pg := page.NewPage(page.WithAttrs(at), page.WithSession(session))
-	page.Execute("user", "update", w, pg)
-
+	page.Execute("team", "update", w, pg)
 }

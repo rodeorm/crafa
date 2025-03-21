@@ -65,6 +65,18 @@
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                                 <button type="submit" class="btn btn-outline-success">Добавить</button>
                             </div>
+                            <div class="col">
+                                <div name="level" class="form-group" data-width='auto'>
+                                    Вышестоящая итерация:
+                                    <select name="categoryid" id="categoryid" required class="form-select"
+                                        data-live-search="true" noneResultsText="Нет совпадений" data-size="10"
+                                        width="auto">
+                                        {{ range $category := index $.Attributes.Categories}}
+                                        <option value={{ $category.ID}}>{{ $category.Name}} </option>
+                                        {{ end }}
+                                    </select>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

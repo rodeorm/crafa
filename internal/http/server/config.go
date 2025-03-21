@@ -41,11 +41,16 @@ func configPaths(r, admin, auth *mux.Router, s *Server) {
 	admin.HandleFunc("/team/create", s.teamCreatePost).Methods(http.MethodPost)
 	admin.HandleFunc("/team/update", s.teamUpdateGet).Methods(http.MethodGet)
 	admin.HandleFunc("/team/update", s.teamUpdatePost).Methods(http.MethodPost)
+	admin.HandleFunc("/team/delete", s.teamDeleteGet).Methods(http.MethodGet)
+	admin.HandleFunc("/team/delete", s.teamDeletePost).Methods(http.MethodPost)
 	admin.HandleFunc("/team/connect", s.teamConnectPost).Methods(http.MethodPost)
 	admin.HandleFunc("/team/disconnect", s.teamDisconnectGet).Methods(http.MethodGet)
 
 	admin.HandleFunc("/category/list", s.categoryListGet).Methods(http.MethodGet)
-	admin.HandleFunc("/category/add", s.categoryCreatePost).Methods(http.MethodPost)
+	admin.HandleFunc("/category/create", s.categoryCreatePost).Methods(http.MethodPost)
+
+	admin.HandleFunc("/area/list", s.areaListGet).Methods(http.MethodGet)
+	admin.HandleFunc("/area/create", s.areaCreatePost).Methods(http.MethodPost)
 
 	//admin.HandleFunc("/admin/index", s.forbidden)
 	r.HandleFunc("/main", s.main)

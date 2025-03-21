@@ -7,6 +7,8 @@ import (
 type Team struct {
 	Name string
 	ID   int
+
+	Users []User
 }
 
 type TeamStorager interface {

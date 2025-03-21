@@ -19,10 +19,11 @@ func GetStorages(p PostgresConfig, s SecurityConfig) (*core.Storage, error) {
 		CategoryStorager:  ps,
 		TeamStorager:      ps,
 		IterationStorager: ps,
+		AreaStorager:      ps,
+		StatusStorager:    ps,
 		// Константные значения
-		StatusStorager: &core.StatusCash{},
-		RoleStorager:   &core.RoleCash{},
-		LevelStorager:  &core.LevelCash{},
+		RoleStorager:  &core.RoleCash{},
+		LevelStorager: &core.LevelCash{},
 	}
 
 	return cs, err

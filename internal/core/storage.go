@@ -1,10 +1,10 @@
 package core
 
 type Storage struct {
+	DBStorager
 	UserStorager
 	MessageStorager
 	SessionStorager
-	DBStorager
 	RoleStorager
 	ProjectStorager
 	LevelStorager
@@ -12,6 +12,7 @@ type Storage struct {
 	TeamStorager
 	IterationStorager
 	StatusStorager
+	AreaStorager
 }
 
 type DBStorager interface {

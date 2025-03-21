@@ -27,7 +27,7 @@ func (s *postgresStorage) iterationPrepareStmts() error {
 
 	selectIteration, err := s.DB.Preparex(`		SELECT i.id, i.name, i.year, i.month,
 														l.id AS "level.id", l.name AS "level.name", 
-													COALESCE(p.id,0) AS "parent.id", COALESCE(p.name,'-') AS "parent.name"
+														COALESCE(p.id,0) AS "parent.id", COALESCE(p.name,'-') AS "parent.name"
 												FROM ref.Iterations AS i
 													LEFT JOIN ref.Iterations AS p ON p.ID = i.ParentID
 													INNER JOIN ref.Levels AS l ON l.ID = i.levelID

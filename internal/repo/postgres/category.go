@@ -59,9 +59,10 @@ func (s *postgresStorage) categoryPrepareStmts() error {
 		return errors.Wrap(err, "updateCategory")
 	}
 
-	selectCategory, err := s.DB.Preparex(`		SELECT id, name, levelid
-												FROM ref.Categories
-												WHERE ID = $1;`)
+	selectCategory, err := s.DB.Preparex(`		SELECT c.id, c.name, l.ID AS "level.id", l.name AS "level.name"
+												FROM ref.Categories AS c
+													INNER JOIN ref.Levels AS l ON l.ID = c.LevelID
+												WHERE c.ID = $1;`)
 	if err != nil {
 		return errors.Wrap(err, "selectCategory")
 	}

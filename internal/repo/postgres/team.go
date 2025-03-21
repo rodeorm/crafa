@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"context"
+	"log"
 	"money/internal/core"
 	"money/internal/logger"
 
@@ -77,6 +78,15 @@ func (s *postgresStorage) teamPrepareStmts() error {
 		return errors.Wrap(err, "selectPossibleUserTeams")
 	}
 
+	selectTeamUsers, err := s.DB.Preparex(`			SELECT u.ID AS "user.id", u.Login, u.Name, u.FamilyName, u.PatronName, u.Email
+													FROM cmn.UserTeams AS ut
+															INNER JOIN cmn.Users AS u 
+																ON u.ID  = ut.UserID
+													WHERE ut.TeamID = $1;`)
+	if err != nil {
+		return errors.Wrap(err, "selectTeamUsers")
+	}
+
 	s.preparedStatements["insertTeam"] = insertTeam
 	s.preparedStatements["updateTeam"] = updateTeam
 	s.preparedStatements["selectTeam"] = selectTeam
@@ -86,6 +96,7 @@ func (s *postgresStorage) teamPrepareStmts() error {
 	s.preparedStatements["deleteUserTeam"] = deleteUserTeam
 	s.preparedStatements["selectPossibleUserTeams"] = selectPossibleUserTeams
 	s.preparedStatements["insertUserTeams"] = insertUserTeams
+	s.preparedStatements["selectTeamUsers"] = selectTeamUsers
 
 	return nil
 }
@@ -108,8 +119,30 @@ func (s *postgresStorage) UpdateTeam(ctx context.Context, p *core.Team) error {
 	return nil
 }
 
-func (s *postgresStorage) SelectTeam(ctx context.Context, p *core.Team) error {
-	return s.preparedStatements["selectTeam"].GetContext(ctx, p, p.ID)
+func (s *postgresStorage) SelectTeam(ctx context.Context, t *core.Team) error {
+	tx, err := s.DB.BeginTxx(ctx, nil)
+	if err != nil {
+		log.Println("SelectTeam 1", err)
+		return err
+	}
+	err = tx.Stmtx(s.preparedStatements["selectTeam"]).GetContext(ctx, t, t.ID)
+	if err != nil {
+		log.Println("SelectTeam 2", err)
+		tx.Rollback()
+		return err
+	}
+
+	teamUsers := make([]core.User, 0)
+	err = tx.Stmtx(s.preparedStatements["selectTeamUsers"]).SelectContext(ctx, &teamUsers, t.ID)
+	if err != nil {
+		log.Println("SelectTeam 3", err)
+		tx.Rollback()
+		return err
+	}
+	t.Users = teamUsers
+	tx.Commit()
+
+	return nil
 }
 
 func (s *postgresStorage) SelectAllTeams(ctx context.Context) ([]core.Team, error) {

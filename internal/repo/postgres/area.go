@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"context"
+	"log"
 	"money/internal/core"
 
 	"github.com/pkg/errors"
@@ -9,7 +10,7 @@ import (
 
 func (s *postgresStorage) areaPrepareStmts() error {
 	insertArea, err := s.DB.Preparex(`	INSERT INTO ref.Areas
-										(levelid, name) 
+										(name, levelid) 
 	 									SELECT $1, $2
 	 									RETURNING id;`)
 	if err != nil {
@@ -17,7 +18,7 @@ func (s *postgresStorage) areaPrepareStmts() error {
 	}
 
 	updateArea, err := s.DB.Preparex(`	UPDATE ref.Areas
-										SET levelid = $2, name = $3 
+										SET name = $2, levelid = $3 
 	 									WHERE ID = $1;`)
 	if err != nil {
 		return errors.Wrap(err, "updateArea")
@@ -30,16 +31,18 @@ func (s *postgresStorage) areaPrepareStmts() error {
 	}
 
 	selectArea, err := s.DB.Preparex(`	SELECT  
-	 									Name, LevelID AS "level.id"
-										FROM ref.Areas
-	 									WHERE ID = $1;`)
+	 									a.Name, l.id AS "level.id", l.name AS "level.name" 
+										FROM ref.Areas AS a
+												INNER JOIN ref.Levels AS l ON l.ID = a.LevelID
+	 									WHERE a.ID = $1;`)
 	if err != nil {
 		return errors.Wrap(err, "selectArea")
 	}
 
 	selectAllAreas, err := s.DB.Preparex(`	SELECT  
-	 										ID, Name, LevelID AS "level.id"
-											FROM ref.Areas;`)
+	 										a.ID, a.Name, l.ID AS "level.id", l.Name AS "level.name"
+											FROM ref.Areas AS a
+												INNER JOIN ref.Levels AS l ON l.ID = a.LevelID;`)
 	if err != nil {
 		return errors.Wrap(err, "selectAllAreas")
 	}
@@ -61,6 +64,7 @@ func (s *postgresStorage) areaPrepareStmts() error {
 }
 
 func (s *postgresStorage) InsertArea(ctx context.Context, a *core.Area) error {
+	log.Println("InsertArea", a.Name, a.Level.ID)
 	return s.preparedStatements["insertArea"].GetContext(ctx, a, a.Name, a.Level.ID)
 }
 func (s *postgresStorage) UpdateArea(ctx context.Context, a *core.Area) error {

@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *Server) categoryListGet(w http.ResponseWriter, r *http.Request) {
+func (s *Server) areaListGet(w http.ResponseWriter, r *http.Request) {
 	session, err := s.getSession(r)
 	if err != nil {
 		logger.Log.Error("Session",
@@ -24,7 +24,7 @@ func (s *Server) categoryListGet(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.TODO()
 
-	categories, err := s.stgs.SelectAllCategories(ctx)
+	areas, err := s.stgs.SelectAllAreas(ctx)
 	if err != nil {
 		logger.Log.Error("categories all",
 			zap.Error(err))
@@ -39,8 +39,9 @@ func (s *Server) categoryListGet(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 		return
 	}
+
 	at["PossibleLevels"] = possibleLevels
-	at["Categories"] = categories
+	at["Areas"] = areas
 	pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
-	page.Execute("category", "list", w, pg)
+	page.Execute("Area", "list", w, pg)
 }
