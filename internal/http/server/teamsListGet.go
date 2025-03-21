@@ -50,10 +50,10 @@ func (s *Server) teamListGet(w http.ResponseWriter, r *http.Request) {
 	pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
 	switch session.User.Role.ID {
 	case core.RoleAdmin:
-		page.Execute("Team", "adminList", w, pg)
+		page.Execute("team", "adminList", w, pg)
 	case core.RoleEmployee:
-		page.Execute("Team", "employeeList", w, pg)
+		page.Execute("team", "employeeList", w, pg)
 	case core.RoleAuth:
-		page.Execute("Team", "authList", w, pg)
+		page.Execute("team", "authList", w, pg)
 	}
 }
