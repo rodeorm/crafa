@@ -43,5 +43,5 @@ func (s *Server) areaListGet(w http.ResponseWriter, r *http.Request) {
 	at["PossibleLevels"] = possibleLevels
 	at["Areas"] = areas
 	pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
-	page.Execute("Area", "list", w, pg)
+	page.Execute("area", "list", w, pg)
 }
