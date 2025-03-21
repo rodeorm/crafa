@@ -13,7 +13,7 @@
                     <div class="row align-items-start">
                         <div class="col">
                             <label class="control-label" for="login">Имя пользователя:</label>
-                            <input {{if .Attributes.User.Login }} value={{.Attributes.User.Login}} {{end}} type="text"
+                            <input {{if .Attributes.User.Login }} value="{{.Attributes.User.Login}}" {{end}} type="text"
                                 class="form-control" placeholder="Логин" name="login" required>
                             <div class="invalid-feedback">Пожалуйста укажите логин</div>
                         </div>
@@ -32,35 +32,35 @@
                     <div class="row align-items-start">
                         <div class="col">
                             <label for="familyname">Фамилия:</label>
-                            <input {{if .Attributes.User.FamilyName }} value={{.Attributes.User.FamilyName}} {{end}}
-                                type="text" class="form-control" placeholder="Иванов" name="familyname" required>
+                            <input {{if .Attributes.User.FamilyName }} value="{{.Attributes.User.FamilyName}}" {{end}}
+                                type=" text" class="form-control" placeholder="Иванов" name="familyname" required>
                             <div class="invalid-feedback">Пожалуйста укажите фамилию</div>
                         </div>
                         <div class="col">
                             <label for="name">Имя:</label>
-                            <input {{if .Attributes.User.Name }} value={{.Attributes.User.Name}} {{end}} type="text"
+                            <input {{if .Attributes.User.Name }} value="{{.Attributes.User.Name}}" {{end}} type="text"
                                 class="form-control" placeholder="Иван" name="name" required>
                             <div class="invalid-feedback">Пожалуйста укажите имя</div>
                         </div>
                         <div class="col">
                             <label for="patronname">Отчество:</label>
-                            <input {{if .Attributes.User.PatronName }} value={{.Attributes.User.PatronName}} {{end}}
-                                type="text" class="form-control" placeholder="Иванович" name="patronname" required>
+                            <input {{if .Attributes.User.PatronName }} value="{{.Attributes.User.PatronName}}" {{end}}
+                                type=" text" class="form-control" placeholder="Иванович" name="patronname" required>
                             <div class="invalid-feedback">Пожалуйста укажите отчество</div>
                         </div>
                     </div>
                     <div class="row align-items-start">
                         <div class="col">
                             <label for="email">Адрес электронной почты:</label>
-                            <input {{if .Attributes.User.Email }} value={{.Attributes.User.Email }} {{end}} type="email"
-                                class="form-control" placeholder="priemn@dvec.ru" name="email" required>
+                            <input {{if .Attributes.User.Email }} value="{{.Attributes.User.Email }}" {{end}}
+                                type="email" class="form-control" placeholder="priemn@dvec.ru" name="email" required>
                             <div class="invalid-feedback">Пожалуйста укажите корректный адрес электронной почты</div>
                         </div>
                         <div class="col">
                             <label for="phonenumber">Контактный номер телефона:</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="phonenumber">+7</span>
-                                <input {{if .Attributes.User.Phone }} value={{.Attributes.User.Phone}} {{end}}
+                                <input {{if .Attributes.User.Phone }} value="{{.Attributes.User.Phone}}" {{end}}
                                     type="number" class="form-control" placeholder="4232406845" name="phonenumber"
                                     required>
                                 <div class="invalid-feedback">Пожалуйста укажите корректный номер телефона (без +7 или

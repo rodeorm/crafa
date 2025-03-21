@@ -50,5 +50,5 @@ func (s *Server) teamDeletePost(w http.ResponseWriter, r *http.Request) {
 		page.Execute("team", "update", w, pg)
 		return
 	}
-	http.Redirect(w, r, r.Referer(), http.StatusSeeOther)
+	http.Redirect(w, r, "/team/list", http.StatusSeeOther)
 }

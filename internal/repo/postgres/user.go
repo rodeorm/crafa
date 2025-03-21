@@ -185,7 +185,9 @@ func (s *postgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp str
 
 // Возвращает данные пользователя
 func (s *postgresStorage) SelectUser(ctx context.Context, u *core.User) error {
-	return s.preparedStatements["selectUser"].GetContext(ctx, u, u.ID)
+	err := s.preparedStatements["selectUser"].GetContext(ctx, u, u.ID)
+	log.Println(u)
+	return err
 }
 
 // Возвращает данные всех пользователей
