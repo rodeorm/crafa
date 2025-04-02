@@ -132,17 +132,15 @@ func (s *postgresStorage) SelectTeam(ctx context.Context, t *core.Team) error {
 		return err
 	}
 
-	teamUsers := make([]core.User, 0)
-	err = tx.Stmtx(s.preparedStatements["selectTeamUsers"]).SelectContext(ctx, &teamUsers, t.ID)
+	t.Users = make([]core.User, 0)
+	err = tx.Stmtx(s.preparedStatements["selectTeamUsers"]).SelectContext(ctx, &t.Users, t.ID)
 	if err != nil {
 		log.Println("SelectTeam 3", err)
 		tx.Rollback()
 		return err
 	}
-	t.Users = teamUsers
-	tx.Commit()
 
-	return nil
+	return tx.Commit()
 }
 
 func (s *postgresStorage) SelectAllTeams(ctx context.Context) ([]core.Team, error) {

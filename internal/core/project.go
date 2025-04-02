@@ -9,10 +9,6 @@ type Project struct {
 	IssueQty     int
 	OpenIssueQty int
 
-	Manager    User
-	Supporter  User
-	Maintainer User
-
 	Epics []Epic
 	Users []User
 }

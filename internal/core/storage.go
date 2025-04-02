@@ -13,6 +13,7 @@ type Storage struct {
 	IterationStorager
 	StatusStorager
 	AreaStorager
+	PriorityStorager
 }
 
 type DBStorager interface {

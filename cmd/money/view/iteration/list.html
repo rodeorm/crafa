@@ -52,30 +52,48 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="ModalLabel">Добавить новую команду</h5>
+                        <h5 class="modal-title" id="ModalLabel">Добавить новую итерацию</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="/team/create" method="POST">
+                        <form action="/iteration/create" method="POST">
                             <div class="form-group">
-                                Наименование:<input type="text" class="form-control" placeholder="Наименование команды"
-                                    name="name">
+                                Наименование:<input type="text" required class="form-control"
+                                    placeholder="Наименование итерации" name="name">
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                                <button type="submit" class="btn btn-outline-success">Добавить</button>
+                            <div class="form-group">
+                                Год:<input type="text" class="form-control" required placeholder="Год" name="year">
+                            </div>
+                            <div class="form-group">
+                                Месяц:<input type="text" class="form-control" placeholder="Месяц" name="year">
+                            </div>
+                            <div class="col">
+                                <div name="level" class="form-group" data-width='auto'>
+                                    Уровень:
+                                    <select name="iterationid" id="iterationid" required class="form-select"
+                                        data-live-search="true" noneResultsText="Нет совпадений" data-size="10"
+                                        width="auto">
+                                        {{ range $level := index $.Attributes.PossibleLevels}}
+                                        <option value={{ $level.ID}}>{{ $level.Name}} </option>
+                                        {{ end }}
+                                    </select>
+                                </div>
                             </div>
                             <div class="col">
                                 <div name="level" class="form-group" data-width='auto'>
                                     Вышестоящая итерация:
-                                    <select name="categoryid" id="categoryid" required class="form-select"
+                                    <select name="iterationid" id="iterationid" class="form-select"
                                         data-live-search="true" noneResultsText="Нет совпадений" data-size="10"
                                         width="auto">
-                                        {{ range $category := index $.Attributes.Categories}}
-                                        <option value={{ $category.ID}}>{{ $category.Name}} </option>
+                                        {{ range $iteration := index $.Attributes.Iterations}}
+                                        <option value={{ $iteration.ID}}>{{ $iteration.Name}} </option>
                                         {{ end }}
                                     </select>
                                 </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                <button type="submit" class="btn btn-outline-success">Добавить</button>
                             </div>
                         </form>
                     </div>

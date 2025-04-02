@@ -17,7 +17,9 @@ type Issue struct {
 	Name      string
 	Text      string
 	ID        int
-	Comments  []Comment
+
+	Comments []Comment
+	Features []Feature
 }
 
 type IssueStorager interface {

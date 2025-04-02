@@ -49,6 +49,12 @@ func configPaths(r, admin, auth *mux.Router, s *Server) {
 	admin.HandleFunc("/category/list", s.categoryListGet).Methods(http.MethodGet)
 	admin.HandleFunc("/category/create", s.categoryCreatePost).Methods(http.MethodPost)
 
+	admin.HandleFunc("/priority/list", s.priorityListGet).Methods(http.MethodGet)
+	admin.HandleFunc("/priority/create", s.priorityCreatePost).Methods(http.MethodPost)
+
+	admin.HandleFunc("/status/list", s.statusListGet).Methods(http.MethodGet)
+	admin.HandleFunc("/status/create", s.statusCreatePost).Methods(http.MethodPost)
+
 	admin.HandleFunc("/area/list", s.areaListGet).Methods(http.MethodGet)
 	admin.HandleFunc("/area/create", s.areaCreatePost).Methods(http.MethodPost)
 

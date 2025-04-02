@@ -12,7 +12,7 @@
     <div class="card text-left">
         <div class="card-body">
             <div>
-                <table id="statuses"
+                <table id="priorities"
                     class="table  table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
                     <thead>
                         <tr>
@@ -22,19 +22,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{range .Attributes.Statuses}}
-                        <tr class=" = " onclick="location.href = '/status/update?id={{ .ID }}'"
+                        {{range .Attributes.Priorities}}
+                        <tr class=" = " onclick="location.href = '/priority/update?id={{ .ID }}'"
                             style="cursor: pointer;">
                             <td>{{ .Name }}</td>
                             <td>{{ .Level.Name }}</td>
                             <td>
-                                <a href="/status/delete?id={{ .ID }}" class="btn btn-outline-danger"
+                                <a href="/priority/delete?id={{ .ID }}" class="btn btn-outline-danger"
                                     role="button">Удалить</a>
                             </td>
                         </tr>
                         {{else}}
                         <tr>
-                            <td>Отсутствуют команды</td>
+                            <td>Отсутствуют приоритеты</td>
+                            <td>-</td>
                             <td>-</td>
                         </tr>
                         {{ end }}
@@ -47,11 +48,11 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="ModalLabel">Добавить новый статус</h5>
+                        <h5 class="modal-title" id="ModalLabel">Добавить новый приоритет</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="/area/create" method="POST">
+                        <form action="/priority/create" method="POST">
                             <div class="form-group">
                                 Наименование:<input type="text" class="form-control" placeholder="Наименование команды"
                                     name="name">
@@ -80,7 +81,7 @@
 
         <script>
             $(document).ready(function () {
-                $('#statuses').DataTable({
+                $('#priorities').DataTable({
                     language: { url: '../static/DataTables/language.json' },
                     order: [[1, 'desc']],
                 });

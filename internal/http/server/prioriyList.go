@@ -9,8 +9,9 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *Server) statusListGet(w http.ResponseWriter, r *http.Request) {
+func (s *Server) priorityListGet(w http.ResponseWriter, r *http.Request) {
 	session, err := s.getSession(r)
+
 	if err != nil {
 		logger.Log.Error("Session",
 			zap.Error(err),
@@ -23,10 +24,9 @@ func (s *Server) statusListGet(w http.ResponseWriter, r *http.Request) {
 	at := make(map[string]any)
 
 	ctx := context.TODO()
-
-	Statuses, err := s.stgs.SelectAllStatuses(ctx)
+	priorities, err := s.stgs.SelectAllPriorities(ctx)
 	if err != nil {
-		logger.Log.Error("categories all",
+		logger.Log.Error("Priorities all",
 			zap.Error(err))
 		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 		return
@@ -41,7 +41,8 @@ func (s *Server) statusListGet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	at["PossibleLevels"] = possibleLevels
-	at["Statuses"] = Statuses
+	at["Priorities"] = priorities
+
 	pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
-	page.Execute("status", "list", w, pg)
+	page.Execute("priority", "list", w, pg)
 }

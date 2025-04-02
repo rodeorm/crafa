@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"context"
+	"log"
 	"money/internal/core"
 	"money/internal/logger"
 
@@ -27,7 +28,29 @@ func (s *postgresStorage) UpdateProject(ctx context.Context, p *core.Project) er
 }
 
 func (s *postgresStorage) SelectProject(ctx context.Context, p *core.Project) error {
-	return s.preparedStatements["selectProject"].GetContext(ctx, p, p.ID)
+
+	tx, err := s.DB.BeginTxx(ctx, nil)
+	if err != nil {
+		log.Println("selectProject 1", err)
+		return err
+	}
+	err = tx.Stmtx(s.preparedStatements["selectProject"]).GetContext(ctx, p, p.ID)
+	if err != nil {
+		log.Println("selectProject 2", err)
+		tx.Rollback()
+		return err
+	}
+
+	p.Epics = make([]core.Epic, 0)
+	err = tx.Stmtx(s.preparedStatements["selectProjectEpics"]).SelectContext(ctx, &p.Epics, p.ID)
+	if err != nil {
+		log.Println("selectProject 2", err)
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit()
+
 }
 
 func (s *postgresStorage) SelectAllProjects(ctx context.Context) ([]core.Project, error) {
@@ -48,6 +71,7 @@ func (s *postgresStorage) SelectUserProjects(ctx context.Context, u *core.User) 
 		logger.Log.Error("selectAllProjects",
 			zap.Error(err))
 		return nil, err
+
 	}
 	return p, nil
 }

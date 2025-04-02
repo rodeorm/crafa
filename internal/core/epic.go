@@ -5,6 +5,9 @@ import "context"
 type Epic struct {
 	ID   int
 	Name string
+
+	Issues       []Issue
+	Requirements []Requirement
 }
 
 type EpicStorager interface {

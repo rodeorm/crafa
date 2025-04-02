@@ -11,7 +11,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *Server) statusCreatePost(w http.ResponseWriter, r *http.Request) {
+func (s *Server) priorityCreatePost(w http.ResponseWriter, r *http.Request) {
 	session, err := s.getSession(r)
 	if err != nil {
 		logger.Log.Error("Session",
@@ -23,28 +23,28 @@ func (s *Server) statusCreatePost(w http.ResponseWriter, r *http.Request) {
 
 	levelID, err := strconv.Atoi(r.FormValue("levelid"))
 	if err != nil {
-		logger.Log.Error("StatusCreatePost. levelid",
+		logger.Log.Error("PriorityCreatePost. levelid",
 			zap.Error(err))
 		http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 		return
 	}
-	Status := &core.Status{
+	Priority := &core.Priority{
 		Name:  r.FormValue("name"),
 		Level: core.Level{ID: levelID},
 	}
 
 	at := make(map[string]any)
-	err = s.stgs.StatusStorager.InsertStatus(context.TODO(), Status)
+	err = s.stgs.PriorityStorager.InsertPriority(context.TODO(), Priority)
 
 	if err != nil {
-		logger.Log.Error("InsertStatus",
+		logger.Log.Error("InsertPriority",
 			zap.Error(err),
 		)
 		sign := make(map[string]string)
-		sign["Russ"] = "Ошибка при создании статуса"
+		sign["Russ"] = "Ошибка при создании категории"
 		sign["Err"] = err.Error()
 		pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
-		page.Execute("status", "list", w, pg)
+		page.Execute("Priority", "list", w, pg)
 		return
 	}
 

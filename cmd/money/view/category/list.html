@@ -34,7 +34,8 @@
                         </tr>
                         {{else}}
                         <tr>
-                            <td>Отсутствуют команды</td>
+                            <td>Отсутствуют категории</td>
+                            <td>-</td>
                             <td>-</td>
                         </tr>
                         {{ end }}
@@ -51,10 +52,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="/area/create" method="POST">
+                        <form action="/category/create" method="POST">
                             <div class="form-group">
-                                Наименование:<input type="text" class="form-control" placeholder="Наименование команды"
-                                    name="name">
+                                Наименование:<input type="text" class="form-control"
+                                    placeholder="Наименование категории" name="name">
                             </div>
                             <div class="col">
                                 <div name="level" class="form-group" data-width='auto'>

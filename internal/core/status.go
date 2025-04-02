@@ -2,7 +2,15 @@ package core
 
 import (
 	"context"
+	"time"
 )
+
+type StatusHistoryRecord struct {
+	Modifier       User
+	PreviousStatus Status
+	NewStatus      Status
+	Time           time.Time
+}
 
 type Status struct {
 	Level Level

@@ -44,6 +44,17 @@ func (s *postgresStorage) prepareStmts() error {
 	if err != nil {
 		return err
 	}
+
+	err = s.priorityPrepareStmts()
+	if err != nil {
+		return err
+	}
+
+	err = s.statusPrepareStmts()
+	if err != nil {
+		return err
+	}
+
 	err = s.projectPrepareStmts()
 	if err != nil {
 		return err
