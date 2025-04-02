@@ -6,17 +6,19 @@ import (
 	"time"
 
 	"money/internal/cfg"
-	"money/internal/core"
 	"money/internal/logger"
+	"money/internal/repo/postgres"
 
 	"go.uber.org/zap"
 )
 
-func Start(config *cfg.Config, es core.MessageStorager, wg *sync.WaitGroup, exit chan struct{}) {
+func Start(config *cfg.Config, wg *sync.WaitGroup, exit chan struct{}) {
+	ps, _ := postgres.GetPostgresStorage(config.ConnectionString)
+
 	// Асинхронно запускаем наполнитель очереди
 	s := NewFiller(
 		config.Queue,
-		es,
+		ps,
 		config.QueueFillPeriod,
 	)
 

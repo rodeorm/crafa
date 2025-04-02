@@ -16,14 +16,15 @@ type PostgresStorage struct {
 	preparedStatements map[string]*sqlx.Stmt
 }
 
+var (
+	dbErr error
+	db    *sqlx.DB
+	ps    *PostgresStorage
+	once  sync.Once
+)
+
 // GetPostgresStorage возвращает хранилище данных в Postgres (создает, если его не было ранее)
-func GetPostgresStorage(connectionString, cryptKey string) (*PostgresStorage, error) {
-	var (
-		dbErr error
-		db    *sqlx.DB
-		ps    *PostgresStorage
-		once  sync.Once
-	)
+func GetPostgresStorage(connectionString string) (*PostgresStorage, error) {
 	once.Do(
 		func() {
 			db, dbErr = sqlx.Open("pgx", connectionString)

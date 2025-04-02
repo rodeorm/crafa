@@ -1,7 +1,6 @@
 package cfg
 
 import (
-	"money/internal/core"
 	"money/internal/queue"
 	"os"
 	"strconv"
@@ -18,13 +17,12 @@ type Config struct {
 
 var (
 	cfg  *Config
-	stgs *core.Storage
 	exit chan struct{} // Через этот канал основные горутины узнают, что надо закрываться для изящного завершения работы
 	wg   sync.WaitGroup
 	once sync.Once
 )
 
-func GetConfig() (*Config, *core.Storage, chan struct{}, *sync.WaitGroup) {
+func Configurate() (*Config, chan struct{}, *sync.WaitGroup) {
 	once.Do(
 		func() {
 			cfg = &Config{}
@@ -69,12 +67,7 @@ func GetConfig() (*Config, *core.Storage, chan struct{}, *sync.WaitGroup) {
 			}
 
 			exit = make(chan struct{})
-
-			stgs, err = GetStorages(cfg.PostgresConfig, cfg.SecurityConfig)
-			if err != nil {
-				panic(err)
-			}
 		})
 
-	return cfg, stgs, exit, &wg
+	return cfg, exit, &wg
 }

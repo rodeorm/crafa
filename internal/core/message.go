@@ -1,7 +1,6 @@
 package core
 
 import (
-	"context"
 	"database/sql"
 )
 
@@ -15,11 +14,6 @@ const (
 	MessageCategoryEmail = iota
 	MessageCategorySMS
 )
-
-type MessageStorager interface {
-	UpdateMsg(ctx context.Context, m *Message) error
-	SelectUnsendedMsgs(context.Context) ([]Message, error)
-}
 
 // Базовое сообщение (может быть основой для email, sms, push и т.п.)
 type Message struct {
