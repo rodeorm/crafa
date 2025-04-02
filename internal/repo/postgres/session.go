@@ -6,16 +6,16 @@ import (
 )
 
 // StartSession начинает новую сессию
-func (s *postgresStorage) StartSession(context.Context, *core.User) (*core.Session, error) {
+func (s *PostgresStorage) StartSession(context.Context, *core.User) (*core.Session, error) {
 	return nil, nil
 }
 
 // UpdateSession обновляет данные сессии
-func (s *postgresStorage) UpdateSession(context.Context, *core.Session) error {
+func (s *PostgresStorage) UpdateSession(context.Context, *core.Session) error {
 	return nil
 }
 
 // EndSession закрывает сессию
-func (s *postgresStorage) EndSession(context.Context, *core.Session) error {
+func (s *PostgresStorage) EndSession(context.Context, *core.Session) error {
 	return nil
 }

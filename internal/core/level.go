@@ -25,14 +25,6 @@ type Level struct {
 	PossiblePriorities []Priority
 }
 
-type LevelStorager interface {
-	//	AddLevel(context.Context, *Level, *User) error
-	//	EditLevel(context.Context, *Level, *User) error
-	SelectLevel(context.Context, *Level) error
-	SelectAllLevels(context.Context) ([]Level, error)
-	//	DeleteLevel(context.Context, *Level, *User) error
-}
-
 type LevelCash struct {
 }
 

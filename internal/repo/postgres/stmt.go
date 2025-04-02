@@ -2,7 +2,7 @@ package postgres
 
 import "github.com/pkg/errors"
 
-func (s *postgresStorage) prepareStmts() error {
+func (s *PostgresStorage) prepareStmts() error {
 	err := s.userPrepareStmts()
 	if err != nil {
 		return err
@@ -74,7 +74,7 @@ func (s *postgresStorage) prepareStmts() error {
 	return nil
 }
 
-func (s *postgresStorage) sessionPrepareStmts() error {
+func (s *PostgresStorage) sessionPrepareStmts() error {
 	insertSession, err := s.DB.Preparex(`INSERT INTO cmn.Sessions
 	(userid, logintime, actiontime) 
 	 SELECT $1, $2, $3
@@ -87,7 +87,7 @@ func (s *postgresStorage) sessionPrepareStmts() error {
 	return nil
 }
 
-func (s *postgresStorage) userPrepareStmts() error {
+func (s *PostgresStorage) userPrepareStmts() error {
 	insertUser, err := s.DB.Preparex(`	INSERT INTO cmn.Users 
 	                                   (roleid, login, password, name, familyname, patronname, email, phone) 
 	                                   SELECT $1, $2, $3, $4, $5, $6, $7, $8
@@ -148,7 +148,7 @@ func (s *postgresStorage) userPrepareStmts() error {
 	return nil
 }
 
-func (s *postgresStorage) msgPrepareStmts() error {
+func (s *PostgresStorage) msgPrepareStmts() error {
 	insertMsg, err := s.DB.Preparex(`INSERT INTO msg.Messages
 	(typeid, categoryid, userid, text, email) 
 	 SELECT $1, $2, $3, $4, $5
@@ -194,7 +194,7 @@ func (s *postgresStorage) msgPrepareStmts() error {
 	return nil
 }
 
-func (s *postgresStorage) issuePrepareStmts() error {
+func (s *PostgresStorage) issuePrepareStmts() error {
 	insertIssue, err := s.DB.Preparex(`	INSERT INTO data.Issues
 											(userid, statusid, areaid, categoryid, iterationid, epicid, text)
 											SELECT $1, $2, $3, $4, $5, $6, $7;`)
@@ -215,7 +215,7 @@ func (s *postgresStorage) issuePrepareStmts() error {
 	return nil
 }
 
-func (s *postgresStorage) projectPrepareStmts() error {
+func (s *PostgresStorage) projectPrepareStmts() error {
 
 	insertProject, err := s.DB.Preparex(`		INSERT INTO data.Projects
 												(Name)
@@ -300,15 +300,15 @@ func (s *postgresStorage) projectPrepareStmts() error {
 /*
 
 
-func (s *postgresStorage) iterationPrepareStmts() error {
+func (s *PostgresStorage) iterationPrepareStmts() error {
 	return nil
 }
 
-func (s *postgresStorage) statusPrepareStmts() error {
+func (s *PostgresStorage) statusPrepareStmts() error {
 	return nil
 }
 
-func (s *postgresStorage) categoryPrepareStmts() error {
+func (s *PostgresStorage) categoryPrepareStmts() error {
 	return nil
 }
 */

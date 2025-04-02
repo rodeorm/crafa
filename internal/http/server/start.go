@@ -37,13 +37,15 @@ func Start(cfg *cfg.Config, stgs *core.Storage, wg *sync.WaitGroup, exit chan st
 	configMiddlewares(r, admin, auth, s)
 	configPrefixes(r)
 	configPaths(r, admin, auth, s)
+	// Конфигур сторадж
+	// Конфиг куки менеджер
 
 	logger.Log.Info("HTTP Server",
 		zap.String("Порт", cfg.RunAddress),
 		zap.String("БД", cfg.ConnectionString),
 	)
 
-	go http.ListenAndServe(":7070", nil)
+	go http.ListenAndServe(":7070", nil) //для pprof
 
 	s.gracefulShutdown()
 	err := srv.ListenAndServe()

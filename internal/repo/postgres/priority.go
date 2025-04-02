@@ -9,18 +9,18 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *postgresStorage) InsertPriority(ctx context.Context, c *core.Priority) error {
+func (s *PostgresStorage) InsertPriority(ctx context.Context, c *core.Priority) error {
 	return s.preparedStatements["insertPriority"].GetContext(ctx, c, c.Name, c.Level.ID)
 }
-func (s *postgresStorage) UpdatePriority(ctx context.Context, c *core.Priority) error {
+func (s *PostgresStorage) UpdatePriority(ctx context.Context, c *core.Priority) error {
 	_, err := s.preparedStatements["updatePriority"].ExecContext(ctx, c.ID, c.Name, c.Level.ID)
 	return err
 }
-func (s *postgresStorage) SelectPriority(ctx context.Context, c *core.Priority) error {
+func (s *PostgresStorage) SelectPriority(ctx context.Context, c *core.Priority) error {
 	return s.preparedStatements["selectPriority"].GetContext(ctx, c, c.ID)
 }
 
-func (s *postgresStorage) SelectAllPriorities(ctx context.Context) ([]core.Priority, error) {
+func (s *PostgresStorage) SelectAllPriorities(ctx context.Context) ([]core.Priority, error) {
 	c := make([]core.Priority, 0)
 	err := s.preparedStatements["selectAllPriorities"].SelectContext(ctx, &c)
 	if err != nil {
@@ -31,7 +31,7 @@ func (s *postgresStorage) SelectAllPriorities(ctx context.Context) ([]core.Prior
 	return c, nil
 }
 
-func (s *postgresStorage) SelectAllLevelPriorities(ctx context.Context, l *core.Level) error {
+func (s *PostgresStorage) SelectAllLevelPriorities(ctx context.Context, l *core.Level) error {
 	var c []core.Priority
 	err := s.preparedStatements["selectLevelPriorities"].SelectContext(ctx, c, l.ID)
 	if err != nil {
@@ -41,12 +41,12 @@ func (s *postgresStorage) SelectAllLevelPriorities(ctx context.Context, l *core.
 	return nil
 }
 
-func (s *postgresStorage) DeletePriority(ctx context.Context, c *core.Priority) error {
+func (s *PostgresStorage) DeletePriority(ctx context.Context, c *core.Priority) error {
 	_, err := s.preparedStatements["deletePriority"].ExecContext(ctx, c.ID)
 	return err
 }
 
-func (s *postgresStorage) priorityPrepareStmts() error {
+func (s *PostgresStorage) priorityPrepareStmts() error {
 	insertPriority, err := s.DB.Preparex(`		INSERT INTO ref.Priorities
 												(Name, LevelID)
 												SELECT $1, $2

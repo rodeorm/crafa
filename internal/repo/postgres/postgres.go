@@ -11,17 +11,17 @@ import (
 )
 
 // Реализация хранилища в СУБД Postgres
-type postgresStorage struct {
+type PostgresStorage struct {
 	DB                 *sqlx.DB
 	preparedStatements map[string]*sqlx.Stmt
 }
 
 // GetPostgresStorage возвращает хранилище данных в Postgres (создает, если его не было ранее)
-func GetPostgresStorage(connectionString, cryptKey string) (*postgresStorage, error) {
+func GetPostgresStorage(connectionString, cryptKey string) (*PostgresStorage, error) {
 	var (
 		dbErr error
 		db    *sqlx.DB
-		ps    *postgresStorage
+		ps    *PostgresStorage
 		once  sync.Once
 	)
 	once.Do(
@@ -35,7 +35,7 @@ func GetPostgresStorage(connectionString, cryptKey string) (*postgresStorage, er
 
 				return
 			}
-			ps = &postgresStorage{DB: db, preparedStatements: map[string]*sqlx.Stmt{}}
+			ps = &PostgresStorage{DB: db, preparedStatements: map[string]*sqlx.Stmt{}}
 			dbErr = ps.prepareStmts()
 		})
 
@@ -49,10 +49,10 @@ func GetPostgresStorage(connectionString, cryptKey string) (*postgresStorage, er
 	return ps, nil
 }
 
-func (s postgresStorage) Close() error {
+func (s PostgresStorage) Close() error {
 	return s.DB.Close()
 }
 
-func (s postgresStorage) Ping() error {
+func (s PostgresStorage) Ping() error {
 	return s.DB.Ping()
 }

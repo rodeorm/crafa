@@ -18,11 +18,6 @@ type Role struct {
 	Const string
 }
 
-type RoleStorager interface {
-	SelectPossibleRoles(context.Context) ([]Role, error)
-	SelectRole(context.Context, *Role) error
-}
-
 type RoleCash struct {
 }
 

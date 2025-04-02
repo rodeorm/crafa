@@ -7,18 +7,18 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (s *postgresStorage) InsertCategory(ctx context.Context, c *core.Category) error {
+func (s *PostgresStorage) InsertCategory(ctx context.Context, c *core.Category) error {
 	return s.preparedStatements["insertCategory"].GetContext(ctx, c, c.Name, c.Level.ID)
 }
-func (s *postgresStorage) UpdateCategory(ctx context.Context, c *core.Category) error {
+func (s *PostgresStorage) UpdateCategory(ctx context.Context, c *core.Category) error {
 	_, err := s.preparedStatements["updateCategory"].ExecContext(ctx, c.ID, c.Name, c.Level.ID)
 	return err
 }
-func (s *postgresStorage) SelectCategory(ctx context.Context, c *core.Category) error {
+func (s *PostgresStorage) SelectCategory(ctx context.Context, c *core.Category) error {
 	return s.preparedStatements["selectCategory"].GetContext(ctx, c, c.ID)
 }
 
-func (s *postgresStorage) SelectAllCategories(ctx context.Context) ([]core.Category, error) {
+func (s *PostgresStorage) SelectAllCategories(ctx context.Context) ([]core.Category, error) {
 	c := make([]core.Category, 0)
 	err := s.preparedStatements["selectAllCategories"].SelectContext(ctx, &c)
 	if err != nil {
@@ -28,7 +28,7 @@ func (s *postgresStorage) SelectAllCategories(ctx context.Context) ([]core.Categ
 	return c, nil
 }
 
-func (s *postgresStorage) SelectAllLevelCategories(ctx context.Context, l *core.Level) error {
+func (s *PostgresStorage) SelectAllLevelCategories(ctx context.Context, l *core.Level) error {
 	var c []core.Category
 	err := s.preparedStatements["selectLevelCategories"].SelectContext(ctx, c, l.ID)
 	if err != nil {
@@ -38,12 +38,12 @@ func (s *postgresStorage) SelectAllLevelCategories(ctx context.Context, l *core.
 	return nil
 }
 
-func (s *postgresStorage) DeleteCategory(ctx context.Context, c *core.Category) error {
+func (s *PostgresStorage) DeleteCategory(ctx context.Context, c *core.Category) error {
 	_, err := s.preparedStatements["deleteCategory"].ExecContext(ctx, c.ID)
 	return err
 }
 
-func (s *postgresStorage) categoryPrepareStmts() error {
+func (s *PostgresStorage) categoryPrepareStmts() error {
 	insertCategory, err := s.DB.Preparex(`		INSERT INTO ref.Categories
 												(Name, LevelID)
 												SELECT $1, $2

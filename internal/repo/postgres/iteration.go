@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *postgresStorage) iterationPrepareStmts() error {
+func (s *PostgresStorage) iterationPrepareStmts() error {
 	insertIteration, err := s.DB.Preparex(`		INSERT INTO ref.Iterations
 												(Name, LevelID, ParentID, Year, Month)
 												SELECT $1, $2, $3, $4, $5
@@ -83,7 +83,7 @@ func (s *postgresStorage) iterationPrepareStmts() error {
 	return nil
 }
 
-func (s *postgresStorage) InsertIteration(ctx context.Context, p *core.Iteration) error {
+func (s *PostgresStorage) InsertIteration(ctx context.Context, p *core.Iteration) error {
 	//Name, LevelID, ParentID, Year, Month)
 	_, err := s.preparedStatements["insertIteration"].ExecContext(ctx, p.Name, p.Level.ID, p.Parent.ID, p.Year, p.Month)
 	if err != nil {
@@ -92,7 +92,7 @@ func (s *postgresStorage) InsertIteration(ctx context.Context, p *core.Iteration
 	return nil
 }
 
-func (s *postgresStorage) UpdateIteration(ctx context.Context, p *core.Iteration) error {
+func (s *PostgresStorage) UpdateIteration(ctx context.Context, p *core.Iteration) error {
 	_, err := s.preparedStatements["updateIteration"].ExecContext(ctx, p.ID, p.Name, p.Level.ID, p.Parent.ID, p.Year, p.Month)
 	if err != nil {
 		return err
@@ -101,11 +101,11 @@ func (s *postgresStorage) UpdateIteration(ctx context.Context, p *core.Iteration
 	return nil
 }
 
-func (s *postgresStorage) SelectIteration(ctx context.Context, p *core.Iteration) error {
+func (s *PostgresStorage) SelectIteration(ctx context.Context, p *core.Iteration) error {
 	return s.preparedStatements["selectIteration"].GetContext(ctx, p, p.ID)
 }
 
-func (s *postgresStorage) SelectAllIterations(ctx context.Context) ([]core.Iteration, error) {
+func (s *PostgresStorage) SelectAllIterations(ctx context.Context) ([]core.Iteration, error) {
 	p := make([]core.Iteration, 0)
 	err := s.preparedStatements["selectAllIterations"].SelectContext(ctx, &p)
 	if err != nil {
@@ -116,7 +116,7 @@ func (s *postgresStorage) SelectAllIterations(ctx context.Context) ([]core.Itera
 	return p, nil
 }
 
-func (s *postgresStorage) SelectPossibleLevelIterations(ctx context.Context, l *core.Level) ([]core.Iteration, error) {
+func (s *PostgresStorage) SelectPossibleLevelIterations(ctx context.Context, l *core.Level) ([]core.Iteration, error) {
 	p := make([]core.Iteration, 0)
 	err := s.preparedStatements["selectPossibleLevelIterations"].SelectContext(ctx, &p, l.ID)
 	if err != nil {
@@ -127,7 +127,7 @@ func (s *postgresStorage) SelectPossibleLevelIterations(ctx context.Context, l *
 	return p, nil
 }
 
-func (s *postgresStorage) SelectPossibleParentIterations(ctx context.Context, i *core.Iteration) ([]core.Iteration, error) {
+func (s *PostgresStorage) SelectPossibleParentIterations(ctx context.Context, i *core.Iteration) ([]core.Iteration, error) {
 	p := make([]core.Iteration, 0)
 	err := s.preparedStatements["selectPossibleLevelIterations"].SelectContext(ctx, &p, i.ID)
 	if err != nil {
@@ -138,7 +138,7 @@ func (s *postgresStorage) SelectPossibleParentIterations(ctx context.Context, i 
 	return p, nil
 }
 
-func (s *postgresStorage) DeleteIteration(ctx context.Context, p *core.Iteration) error {
+func (s *PostgresStorage) DeleteIteration(ctx context.Context, p *core.Iteration) error {
 	_, err := s.preparedStatements["deleteIteration"].ExecContext(ctx, p.ID)
 	if err != nil {
 		return err

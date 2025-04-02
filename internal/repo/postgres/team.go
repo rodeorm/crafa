@@ -10,7 +10,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *postgresStorage) teamPrepareStmts() error {
+func (s *PostgresStorage) teamPrepareStmts() error {
 	insertTeam, err := s.DB.Preparex(`		INSERT INTO cmn.Teams
 												(Name)
 												SELECT $1
@@ -101,7 +101,7 @@ func (s *postgresStorage) teamPrepareStmts() error {
 	return nil
 }
 
-func (s *postgresStorage) InsertTeam(ctx context.Context, p *core.Team) error {
+func (s *PostgresStorage) InsertTeam(ctx context.Context, p *core.Team) error {
 	_, err := s.preparedStatements["insertTeam"].ExecContext(ctx, p.Name)
 	if err != nil {
 		return err
@@ -109,7 +109,7 @@ func (s *postgresStorage) InsertTeam(ctx context.Context, p *core.Team) error {
 	return nil
 }
 
-func (s *postgresStorage) UpdateTeam(ctx context.Context, p *core.Team) error {
+func (s *PostgresStorage) UpdateTeam(ctx context.Context, p *core.Team) error {
 	//SET Name = $2 WHERE ID = $1
 	_, err := s.preparedStatements["updateTeam"].ExecContext(ctx, p.ID, p.Name)
 	if err != nil {
@@ -119,7 +119,7 @@ func (s *postgresStorage) UpdateTeam(ctx context.Context, p *core.Team) error {
 	return nil
 }
 
-func (s *postgresStorage) SelectTeam(ctx context.Context, t *core.Team) error {
+func (s *PostgresStorage) SelectTeam(ctx context.Context, t *core.Team) error {
 	tx, err := s.DB.BeginTxx(ctx, nil)
 	if err != nil {
 		log.Println("SelectTeam 1", err)
@@ -143,7 +143,7 @@ func (s *postgresStorage) SelectTeam(ctx context.Context, t *core.Team) error {
 	return tx.Commit()
 }
 
-func (s *postgresStorage) SelectAllTeams(ctx context.Context) ([]core.Team, error) {
+func (s *PostgresStorage) SelectAllTeams(ctx context.Context) ([]core.Team, error) {
 	p := make([]core.Team, 0)
 	err := s.preparedStatements["selectAllTeams"].SelectContext(ctx, &p)
 	if err != nil {
@@ -154,7 +154,7 @@ func (s *postgresStorage) SelectAllTeams(ctx context.Context) ([]core.Team, erro
 	return p, nil
 }
 
-func (s *postgresStorage) SelectUserTeams(ctx context.Context, u *core.User) ([]core.Team, error) {
+func (s *PostgresStorage) SelectUserTeams(ctx context.Context, u *core.User) ([]core.Team, error) {
 	p := make([]core.Team, 0)
 	err := s.preparedStatements["selectUserTeams"].SelectContext(ctx, &p, u.ID)
 	if err != nil {
@@ -165,7 +165,7 @@ func (s *postgresStorage) SelectUserTeams(ctx context.Context, u *core.User) ([]
 	return p, nil
 }
 
-func (s *postgresStorage) DeleteTeam(ctx context.Context, p *core.Team) error {
+func (s *PostgresStorage) DeleteTeam(ctx context.Context, p *core.Team) error {
 	_, err := s.preparedStatements["deleteTeam"].ExecContext(ctx, p.ID)
 	if err != nil {
 		return err
@@ -174,7 +174,7 @@ func (s *postgresStorage) DeleteTeam(ctx context.Context, p *core.Team) error {
 	return nil
 }
 
-func (s *postgresStorage) DeleteUserTeam(ctx context.Context, u *core.User, p *core.Team) error {
+func (s *PostgresStorage) DeleteUserTeam(ctx context.Context, u *core.User, p *core.Team) error {
 	_, err := s.preparedStatements["deleteUserTeam"].ExecContext(ctx, u.ID, p.ID)
 	if err != nil {
 		logger.Log.Error("DeleteUserTeams",
@@ -185,7 +185,7 @@ func (s *postgresStorage) DeleteUserTeam(ctx context.Context, u *core.User, p *c
 	return nil
 }
 
-func (s *postgresStorage) InsertUserTeams(ctx context.Context, userID, TeamID int) error {
+func (s *PostgresStorage) InsertUserTeams(ctx context.Context, userID, TeamID int) error {
 	_, err := s.preparedStatements["insertUserTeams"].ExecContext(ctx, userID, TeamID)
 	if err != nil {
 		logger.Log.Error("InsertUserTeams",
@@ -196,7 +196,7 @@ func (s *postgresStorage) InsertUserTeams(ctx context.Context, userID, TeamID in
 	return nil
 }
 
-func (s *postgresStorage) SelectPossibleNewUserTeams(ctx context.Context, u *core.User) ([]core.Team, error) {
+func (s *PostgresStorage) SelectPossibleNewUserTeams(ctx context.Context, u *core.User) ([]core.Team, error) {
 	var ps []core.Team
 	err := s.preparedStatements["selectPossibleUserTeams"].SelectContext(ctx, &ps, u.ID)
 	if err != nil {
@@ -208,6 +208,6 @@ func (s *postgresStorage) SelectPossibleNewUserTeams(ctx context.Context, u *cor
 	return ps, nil
 }
 
-func (s *postgresStorage) SelectAllTeamEpics(ctx context.Context, c *core.Team) ([]core.Epic, error) {
+func (s *PostgresStorage) SelectAllTeamEpics(ctx context.Context, c *core.Team) ([]core.Epic, error) {
 	return nil, nil
 }

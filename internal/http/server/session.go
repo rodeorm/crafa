@@ -7,7 +7,7 @@ import (
 	"money/internal/http/cookie"
 )
 
-func (s *Server) getSession(r *http.Request) (*core.Session, error) {
+func (s *Server) GetSession(r *http.Request) (*core.Session, error) {
 	tkn, err := cookie.GetTokenFromRequest(r)
 	if err != nil {
 		//log.Println("getSession 1", err)
