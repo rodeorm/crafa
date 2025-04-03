@@ -56,7 +56,7 @@ func Start(config *cfg.Config, wg *sync.WaitGroup, exit chan struct{}) {
 		// Асинхронно запускаем email сендеры
 		s := NewSender(
 			config.Queue,
-			ps,
+			ps.Msg,
 			i,
 			config.SMTPPort,
 			config.MessageSendPeriod,

@@ -18,7 +18,7 @@ func Start(config *cfg.Config, wg *sync.WaitGroup, exit chan struct{}) {
 	// Асинхронно запускаем наполнитель очереди
 	s := NewFiller(
 		config.Queue,
-		ps,
+		ps.Msg,
 		config.QueueFillPeriod,
 	)
 

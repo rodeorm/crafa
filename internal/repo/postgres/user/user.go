@@ -1,4 +1,4 @@
-package postgres
+package user
 
 import (
 	"context"
@@ -13,7 +13,7 @@ import (
 )
 
 // RegUser создает пользователя в БД
-func (s *PostgresStorage) RegUser(ctx context.Context, u *core.User, domain string) (*core.Session, error) {
+func (s *Storage) RegUser(ctx context.Context, u *core.User, domain string) (*core.Session, error) {
 	if u.Login == "" { //TODO: проверку на сложность логина
 		return nil, fmt.Errorf("логин не может быть пустым")
 	}
@@ -27,13 +27,13 @@ func (s *PostgresStorage) RegUser(ctx context.Context, u *core.User, domain stri
 		return nil, err
 	}
 
-	tx, err := s.DB.BeginTxx(ctx, nil)
+	tx, err := s.db.BeginTxx(ctx, nil)
 	if err != nil {
 		log.Println("RegUser 2", err)
 		return nil, err
 	}
 
-	err = tx.Stmtx(s.preparedStatements["insertUser"]).GetContext(ctx, &u.ID, core.RoleReg, u.Login, passwordHash, u.Name, u.FamilyName, u.PatronName, u.Email, u.Phone)
+	err = tx.Stmtx(s.stmt["insertUser"]).GetContext(ctx, &u.ID, core.RoleReg, u.Login, passwordHash, u.Name, u.FamilyName, u.PatronName, u.Email, u.Phone)
 
 	if err != nil {
 		switch err.Error() {
@@ -49,7 +49,7 @@ func (s *PostgresStorage) RegUser(ctx context.Context, u *core.User, domain stri
 		return nil, err
 	}
 
-	_, err = tx.Stmtx(s.preparedStatements["insertMsg"]).ExecContext(ctx, core.MessageTypeConfirm, core.MessageCategoryEmail, u.ID, crypt.GetOneTimePassword(), u.Email)
+	_, err = tx.Stmtx(s.stmt["insertMsg"]).ExecContext(ctx, core.MessageTypeConfirm, core.MessageCategoryEmail, u.ID, crypt.GetOneTimePassword(), u.Email)
 	if err != nil {
 		log.Println("RegUser 4", err)
 		tx.Rollback()
@@ -59,7 +59,7 @@ func (s *PostgresStorage) RegUser(ctx context.Context, u *core.User, domain stri
 	u.Role = core.Role{ID: core.RoleReg}
 
 	session := &core.Session{User: *u}
-	err = tx.Stmtx(s.preparedStatements["insertSession"]).GetContext(ctx, &session.ID, u.ID, time.Now(), time.Now())
+	err = tx.Stmtx(s.stmt["insertSession"]).GetContext(ctx, &session.ID, u.ID, time.Now(), time.Now())
 	if err != nil {
 		log.Println("RegUser 5", err)
 		tx.Rollback()
@@ -71,15 +71,15 @@ func (s *PostgresStorage) RegUser(ctx context.Context, u *core.User, domain stri
 	return session, nil
 }
 
-func (s *PostgresStorage) ConfirmUserEmail(ctx context.Context, userID int, otp string) error {
-	tx, err := s.DB.BeginTxx(ctx, nil)
+func (s *Storage) ConfirmUserEmail(ctx context.Context, userID int, otp string) error {
+	tx, err := s.db.BeginTxx(ctx, nil)
 	if err != nil {
 		log.Println("ConfirmUserEmail 1", err)
 		return err
 	}
 	msg := core.Message{}
 	// Проверяем переданный код  UserID = $1 AND Text = $2 AND Email = $3
-	err = tx.Stmtx(s.preparedStatements["selectConfMsg"]).GetContext(ctx, &msg, userID, otp)
+	err = tx.Stmtx(s.stmt["selectConfMsg"]).GetContext(ctx, &msg, userID, otp)
 	if err != nil {
 		log.Println("ConfirmUserEmail 2", err)
 		tx.Rollback()
@@ -93,7 +93,7 @@ func (s *PostgresStorage) ConfirmUserEmail(ctx context.Context, userID int, otp 
 	msg.Used = true
 
 	// Обновляем сообщение, что оно было использовано
-	_, err = tx.Stmtx(s.preparedStatements["updateMsg"]).ExecContext(ctx, msg.ID, msg.Used, msg.Queued, msg.SendTime)
+	_, err = tx.Stmtx(s.stmt["updateMsg"]).ExecContext(ctx, msg.ID, msg.Used, msg.Queued, msg.SendTime)
 	if err != nil {
 		log.Println("ConfirmUserEmail 2", err)
 		tx.Rollback()
@@ -101,7 +101,7 @@ func (s *PostgresStorage) ConfirmUserEmail(ctx context.Context, userID int, otp 
 	}
 
 	// Обновляем роль пользователя
-	_, err = tx.Stmtx(s.preparedStatements["updateUserRole"]).ExecContext(ctx, userID, core.RoleAuth)
+	_, err = tx.Stmtx(s.stmt["updateUserRole"]).ExecContext(ctx, userID, core.RoleAuth)
 	if err != nil {
 		log.Println("ConfirmUserEmail 3", err)
 		tx.Rollback()
@@ -112,12 +112,13 @@ func (s *PostgresStorage) ConfirmUserEmail(ctx context.Context, userID int, otp 
 }
 
 // Аутентифицирует пользователя на основании данных в БД и возвращает все его данные
-func (s *PostgresStorage) BaseAuthUser(ctx context.Context, u *core.User) error {
+func (s *Storage) BaseAuthUser(ctx context.Context, u *core.User) error {
+
 	// Сохраняем введенный пароль
 	pass := u.Password
 
 	// Получаем данные пользователя, включая хэш пароля
-	err := s.preparedStatements["baseAuthUser"].Get(u, u.Login)
+	err := s.stmt["baseAuthUser"].Get(u, u.Login)
 	if err != nil {
 		return err
 	}
@@ -127,16 +128,15 @@ func (s *PostgresStorage) BaseAuthUser(ctx context.Context, u *core.User) error 
 	}
 
 	//Добавляем сообщение с одноразовым паролем
-	s.preparedStatements["insertMsg"].ExecContext(ctx, core.MessageTypeAuth, core.MessageCategoryEmail, u.ID, crypt.GetOneTimePassword(), u.Email)
-
+	s.stmt["insertMsg"].ExecContext(ctx, core.MessageTypeAuth, core.MessageCategoryEmail, u.ID, crypt.GetOneTimePassword(), u.Email)
 	return nil
 }
 
 // /AdvAuthUser авторизует пользователя, прошедшего базовую аутентификацию по одноразовому паролю
-func (s *PostgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp string, otpLiveTime time.Duration) (*core.Session, error) {
+func (s *Storage) AdvAuthUser(ctx context.Context, u *core.User, otp string, otpLiveTime time.Duration) (*core.Session, error) {
 	msg := core.Message{}
 	// Проверяем переданный код  UserID = $1 AND Text = $2
-	err := s.preparedStatements["selectAuthMsg"].GetContext(ctx, &msg, u.ID, otp)
+	err := s.stmt["selectAuthMsg"].GetContext(ctx, &msg, u.ID, otp)
 	if err != nil {
 		return nil, fmt.Errorf("неправильный одноразовый пароль")
 	}
@@ -146,7 +146,7 @@ func (s *PostgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp str
 	}
 
 	// Если всё хорошо с паролем, то получаем данные пользователя, включая роль
-	err = s.preparedStatements["selectUser"].GetContext(ctx, u, u.ID)
+	err = s.stmt["selectUser"].GetContext(ctx, u, u.ID)
 	if err != nil {
 		log.Println("AdvAuthUser 3", err)
 		return nil, err
@@ -154,14 +154,14 @@ func (s *PostgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp str
 
 	sn := core.Session{User: *u}
 
-	tx, err := s.DB.BeginTxx(ctx, nil)
+	tx, err := s.db.BeginTxx(ctx, nil)
 	if err != nil {
 		log.Println("ConfirmUserEmail 1", err)
 		return nil, err
 	}
 
 	// Затем создаем для него новую сессию и возвращаем её
-	err = tx.Stmtx(s.preparedStatements["insertSession"]).GetContext(ctx, &sn.ID, u.ID, time.Now(), time.Now())
+	err = tx.Stmtx(s.stmt["insertSession"]).GetContext(ctx, &sn.ID, u.ID, time.Now(), time.Now())
 	if err != nil {
 		tx.Rollback()
 		return nil, err
@@ -171,7 +171,7 @@ func (s *PostgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp str
 	msg.Used = true
 
 	// Обновляем сообщение, что оно было использовано
-	_, err = tx.Stmtx(s.preparedStatements["updateMsg"]).ExecContext(ctx, msg.ID, msg.Used, msg.Queued, msg.SendTime)
+	_, err = tx.Stmtx(s.stmt["updateMsg"]).ExecContext(ctx, msg.ID, msg.Used, msg.Queued, msg.SendTime)
 	if err != nil {
 		log.Println("ConfirmUserEmail 2", err)
 		tx.Rollback()
@@ -184,15 +184,15 @@ func (s *PostgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp str
 }
 
 // Возвращает данные пользователя
-func (s *PostgresStorage) SelectUser(ctx context.Context, u *core.User) error {
-	err := s.preparedStatements["selectUser"].GetContext(ctx, u, u.ID)
+func (s *Storage) SelectUser(ctx context.Context, u *core.User) error {
+	err := s.stmt["selectUser"].GetContext(ctx, u, u.ID)
 	return err
 }
 
 // Возвращает данные всех пользователей
-func (s *PostgresStorage) SelectAllUsers(ctx context.Context) ([]core.User, error) {
+func (s *Storage) SelectAllUsers(ctx context.Context) ([]core.User, error) {
 	u := make([]core.User, 0)
-	err := s.preparedStatements["selectAllUsers"].SelectContext(ctx, &u)
+	err := s.stmt["selectAllUsers"].SelectContext(ctx, &u)
 	if err != nil {
 		logger.Log.Info("SelectAllUsers",
 			zap.Error(err))
@@ -202,9 +202,9 @@ func (s *PostgresStorage) SelectAllUsers(ctx context.Context) ([]core.User, erro
 }
 
 // Обновляет данные пользователя
-func (s *PostgresStorage) UpdateUser(ctx context.Context, u *core.User) error {
+func (s *Storage) UpdateUser(ctx context.Context, u *core.User) error {
 	//roleid = $2, login = $3, name = $4, familyname = $5, patronname = $6, email = $7, phone = $8
-	_, err := s.preparedStatements["updateUser"].ExecContext(ctx, u.ID, u.Role.ID, u.Login, u.Name, u.FamilyName, u.PatronName, u.Email, u.Phone)
+	_, err := s.stmt["updateUser"].ExecContext(ctx, u.ID, u.Role.ID, u.Login, u.Name, u.FamilyName, u.PatronName, u.Email, u.Phone)
 	if err != nil {
 		return err
 	}
@@ -213,13 +213,13 @@ func (s *PostgresStorage) UpdateUser(ctx context.Context, u *core.User) error {
 }
 
 // Меняет пароль пользователю
-func (s *PostgresStorage) ChangeUserPassword(ctx context.Context, u *core.User) error {
+func (s *Storage) ChangeUserPassword(ctx context.Context, u *core.User) error {
 	// Хэшируем пароль
 	pwdHash, err := crypt.HashPassword(u.Password)
 	if err != nil {
 		return err
 	}
-	_, err = s.preparedStatements["changeUserPassword"].ExecContext(ctx, u.ID, pwdHash)
+	_, err = s.stmt["changeUserPassword"].ExecContext(ctx, u.ID, pwdHash)
 	if err != nil {
 		return err
 	}

@@ -37,6 +37,7 @@ func Start(cfg *cfg.Config, wg *sync.WaitGroup, exit chan struct{}) error {
 	if err != nil {
 		return err
 	}
+
 	cm := cookie.NewCookieManager(cfg.JWTKey, cfg.TokenLiveTime)
 	cash := cash.NewCashStorage()
 

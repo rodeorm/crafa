@@ -2,43 +2,82 @@ package postgres
 
 import (
 	"money/internal/logger"
+	"money/internal/repo/postgres/area"
+	"money/internal/repo/postgres/category"
+	"money/internal/repo/postgres/iteration"
+	"money/internal/repo/postgres/msg"
+	"money/internal/repo/postgres/priority"
+	"money/internal/repo/postgres/project"
+	"money/internal/repo/postgres/status"
+	"money/internal/repo/postgres/team"
+	"money/internal/repo/postgres/user"
 	"sync"
-	"time"
 
-	_ "github.com/jackc/pgx/v5/stdlib"
-	"github.com/jmoiron/sqlx"
 	"go.uber.org/zap"
 )
 
 // Реализация хранилища в СУБД Postgres
 type PostgresStorage struct {
-	DB                 *sqlx.DB
-	preparedStatements map[string]*sqlx.Stmt
+	Area      *area.Storage
+	Category  *category.Storage
+	Iteration *iteration.Storage
+	Msg       *msg.Storage
+	Priority  *priority.Storage
+	User      *user.Storage
+	Team      *team.Storage
+	Status    *status.Storage
+	Project   *project.Storage
 }
 
 var (
 	dbErr error
-	db    *sqlx.DB
 	ps    *PostgresStorage
 	once  sync.Once
 )
 
 // GetPostgresStorage возвращает хранилище данных в Postgres (создает, если его не было ранее)
-func GetPostgresStorage(connectionString string) (*PostgresStorage, error) {
-	once.Do(
-		func() {
-			db, dbErr = sqlx.Open("pgx", connectionString)
-			db.SetMaxOpenConns(50) // Подобрать оптимальное значение
-			db.SetMaxIdleConns(2)  // Подобрать оптимальное значение
-			db.SetConnMaxLifetime(10 * time.Second)
+func GetPostgresStorage(cs string) (*PostgresStorage, error) {
 
-			if dbErr != nil {
+	once.Do(func() {
+		ps = &PostgresStorage{}
+		ps.Area, dbErr = area.NewStorage(cs)
+		if dbErr != nil {
+			return
+		}
+		ps.Category, dbErr = category.NewStorage(cs)
+		if dbErr != nil {
+			return
+		}
+		ps.Iteration, dbErr = iteration.NewStorage(cs)
+		if dbErr != nil {
+			return
+		}
+		ps.Msg, dbErr = msg.NewStorage(cs)
+		if dbErr != nil {
+			return
+		}
+		ps.Priority, dbErr = priority.NewStorage(cs)
+		if dbErr != nil {
+			return
+		}
+		ps.User, dbErr = user.NewStorage(cs)
+		if dbErr != nil {
+			return
+		}
+		ps.Team, dbErr = team.NewStorage(cs)
+		if dbErr != nil {
+			return
+		}
+		ps.Status, dbErr = status.NewStorage(cs)
+		if dbErr != nil {
+			return
+		}
+		ps.Project, dbErr = project.NewStorage(cs)
+		if dbErr != nil {
+			return
+		}
 
-				return
-			}
-			ps = &PostgresStorage{DB: db, preparedStatements: map[string]*sqlx.Stmt{}}
-			dbErr = ps.prepareStmts()
-		})
+	})
 
 	if dbErr != nil {
 		logger.Log.Error("GetPostgresStorage",
@@ -46,14 +85,5 @@ func GetPostgresStorage(connectionString string) (*PostgresStorage, error) {
 		)
 		return nil, dbErr
 	}
-
 	return ps, nil
-}
-
-func (s PostgresStorage) Close() error {
-	return s.DB.Close()
-}
-
-func (s PostgresStorage) Ping() error {
-	return s.DB.Ping()
 }

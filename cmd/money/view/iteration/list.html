@@ -65,12 +65,12 @@
                                 Год:<input type="text" class="form-control" required placeholder="Год" name="year">
                             </div>
                             <div class="form-group">
-                                Месяц:<input type="text" class="form-control" placeholder="Месяц" name="year">
+                                Месяц:<input type="text" class="form-control" placeholder="Месяц" name="month">
                             </div>
                             <div class="col">
-                                <div name="level" class="form-group" data-width='auto'>
+                                <div name="levelid" class="form-group" data-width='auto'>
                                     Уровень:
-                                    <select name="iterationid" id="iterationid" required class="form-select"
+                                    <select name="levelid" id="levelid" required class="form-select"
                                         data-live-search="true" noneResultsText="Нет совпадений" data-size="10"
                                         width="auto">
                                         {{ range $level := index $.Attributes.PossibleLevels}}
