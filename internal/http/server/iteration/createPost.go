@@ -12,7 +12,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func IterationCreatePost(s SessionManager, i IterationStorager) http.HandlerFunc {
+func CreatePost(s SessionManager, i IterationStorager) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		session, err := s.GetSession(r)
 		if err != nil {

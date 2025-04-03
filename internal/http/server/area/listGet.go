@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func ListGet(s SessionManager, a AreaStorager) http.HandlerFunc {
+func ListGet(s SessionManager, a AreaStorager, l LevelStorager) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		session, err := s.GetSession(r)
 		if err != nil {
@@ -25,7 +25,7 @@ func ListGet(s SessionManager, a AreaStorager) http.HandlerFunc {
 
 		ctx := context.TODO()
 
-		areas, err := s.stgs.SelectAllAreas(ctx)
+		areas, err := a.SelectAllAreas(ctx)
 		if err != nil {
 			logger.Log.Error("categories all",
 				zap.Error(err))
@@ -33,7 +33,7 @@ func ListGet(s SessionManager, a AreaStorager) http.HandlerFunc {
 			return
 		}
 
-		possibleLevels, err := s.stgs.SelectAllLevels(ctx)
+		possibleLevels, err := l.SelectAllLevels(ctx)
 		if err != nil {
 			logger.Log.Error("possible levels",
 				zap.Error(err))

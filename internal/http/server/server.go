@@ -13,6 +13,6 @@ type Server struct {
 	cfg  *cfg.Config
 	ps   *postgres.PostgresStorage
 	cm   *cookie.CookieManager
-	cash *cash.CashManager
+	cash *cash.CashStorage
 	exit chan struct{}
 }

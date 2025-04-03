@@ -2,7 +2,14 @@ package server
 
 import (
 	"money/internal/http/middle"
+	"money/internal/http/server/area"
+	"money/internal/http/server/category"
 	"money/internal/http/server/index"
+	"money/internal/http/server/iteration"
+	"money/internal/http/server/priority"
+	"money/internal/http/server/project"
+	"money/internal/http/server/status"
+	"money/internal/http/server/team"
 	"money/internal/http/server/user"
 	"net/http"
 
@@ -22,49 +29,45 @@ func configPaths(r, admin, auth *mux.Router, s *Server) {
 	r.HandleFunc("/user/verify", user.VerifyPost(s, s.ps, s.cm, s.cfg.OTPLiveTime)).Methods(http.MethodPost)
 	r.HandleFunc("/user/logout", user.LogOut)
 	admin.HandleFunc("/user/list", user.ListGet(s, s.ps)).Methods(http.MethodGet)
+	auth.HandleFunc("/user/update", user.UpdateGet(s, s.ps, s.ps, s.ps, s.cash)).Methods(http.MethodGet)
+	auth.HandleFunc("/user/update", user.UpdatePost(s, s.ps, s.ps, s.ps, s.cash)).Methods(http.MethodPost)
 
-	/*
-		auth.HandleFunc("/user/update", user.UpdateGet(s, s.ps, s.ps, s.ps, s.)).Methods(http.MethodGet)
-		auth.HandleFunc("/user/update", s.userUpdatePost).Methods(http.MethodPost)
+	auth.HandleFunc("/project/list", project.ListGet(s, s.ps)).Methods(http.MethodGet)
+	admin.HandleFunc("/project/create", project.CreatePost(s, s.ps)).Methods(http.MethodPost)
+	admin.HandleFunc("/project/update", project.UpdateGet(s, s.ps)).Methods(http.MethodGet)
+	admin.HandleFunc("/project/update", project.UpdatePost(s, s.ps)).Methods(http.MethodPost)
+	admin.HandleFunc("/project/connect", project.ConnectPost(s, s.ps)).Methods(http.MethodPost)
+	admin.HandleFunc("/project/disconnect", project.DisconnectGet(s, s.ps)).Methods(http.MethodGet)
 
-		auth.HandleFunc("/project/list", s.projectListGet).Methods(http.MethodGet)
-		admin.HandleFunc("/project/create", s.projectCreatePost).Methods(http.MethodPost)
-		admin.HandleFunc("/project/update", s.projectUpdateGet).Methods(http.MethodGet)
-		admin.HandleFunc("/project/update", s.projectUpdatePost).Methods(http.MethodPost)
-		admin.HandleFunc("/project/connect", s.projectConnectPost).Methods(http.MethodPost)
-		admin.HandleFunc("/project/disconnect", s.projectDisconnectGet).Methods(http.MethodGet)
+	auth.HandleFunc("/iteration/list", iteration.ListGet(s, s.ps, s.cash, s.ps)).Methods(http.MethodGet)
+	admin.HandleFunc("/iteration/create", iteration.CreatePost(s, s.ps)).Methods(http.MethodPost)
+	admin.HandleFunc("/iteration/update", iteration.UpdateGet(s, s.ps)).Methods(http.MethodGet)
+	admin.HandleFunc("/iteration/update", iteration.UpdatePost(s, s.ps)).Methods(http.MethodPost)
 
-		auth.HandleFunc("/iteration/list", s.iterationListGet).Methods(http.MethodGet)
-		admin.HandleFunc("/iteration/create", s.iterationCreatePost).Methods(http.MethodPost)
-		admin.HandleFunc("/iteration/update", s.iterationUpdateGet).Methods(http.MethodGet)
-		admin.HandleFunc("/iteration/update", s.iterationUpdatePost).Methods(http.MethodPost)
+	admin.HandleFunc("/category/list", category.ListGet(s, s.ps, s.cash)).Methods(http.MethodGet)
+	admin.HandleFunc("/category/create", category.CreatePost(s, s.ps)).Methods(http.MethodPost)
 
-		admin.HandleFunc("/category/list", s.categoryListGet).Methods(http.MethodGet)
-		admin.HandleFunc("/category/create", s.categoryCreatePost).Methods(http.MethodPost)
+	admin.HandleFunc("/team/list", team.ListGet(s, s.ps)).Methods(http.MethodGet)
+	admin.HandleFunc("/team/create", team.CreatePost(s, s.ps)).Methods(http.MethodPost)
+	admin.HandleFunc("/team/update", team.UpdateGet(s, s.ps)).Methods(http.MethodGet)
+	admin.HandleFunc("/team/update", team.UpdatePost(s, s.ps)).Methods(http.MethodPost)
+	admin.HandleFunc("/team/delete", team.DeleteGet(s, s.ps)).Methods(http.MethodGet)
+	admin.HandleFunc("/team/delete", team.DeletePost(s, s.ps)).Methods(http.MethodPost)
+	admin.HandleFunc("/team/connect", team.ConnectPost(s, s.ps)).Methods(http.MethodPost)
+	admin.HandleFunc("/team/disconnect", team.DisconnectGet(s, s.ps)).Methods(http.MethodGet)
 
-		admin.HandleFunc("/team/list", s.teamListGet).Methods(http.MethodGet)
-		admin.HandleFunc("/team/create", s.teamCreatePost).Methods(http.MethodPost)
-		admin.HandleFunc("/team/update", s.teamUpdateGet).Methods(http.MethodGet)
-		admin.HandleFunc("/team/update", s.teamUpdatePost).Methods(http.MethodPost)
-		admin.HandleFunc("/team/delete", s.teamDeleteGet).Methods(http.MethodGet)
-		admin.HandleFunc("/team/delete", s.teamDeletePost).Methods(http.MethodPost)
-		admin.HandleFunc("/team/connect", s.teamConnectPost).Methods(http.MethodPost)
-		admin.HandleFunc("/team/disconnect", s.teamDisconnectGet).Methods(http.MethodGet)
+	admin.HandleFunc("/category/list", category.ListGet(s, s.ps, s.cash)).Methods(http.MethodGet)
+	admin.HandleFunc("/category/create", category.CreatePost(s, s.ps)).Methods(http.MethodPost)
 
-		admin.HandleFunc("/category/list", s.categoryListGet).Methods(http.MethodGet)
-		admin.HandleFunc("/category/create", s.categoryCreatePost).Methods(http.MethodPost)
+	admin.HandleFunc("/priority/list", priority.ListGet(s, s.cash, s.ps)).Methods(http.MethodGet)
+	admin.HandleFunc("/priority/create", priority.CreatePost(s, s.ps)).Methods(http.MethodPost)
 
-		admin.HandleFunc("/priority/list", s.priorityListGet).Methods(http.MethodGet)
-		admin.HandleFunc("/priority/create", s.priorityCreatePost).Methods(http.MethodPost)
+	admin.HandleFunc("/status/list", status.ListGet(s, s.ps, s.cash)).Methods(http.MethodGet)
+	admin.HandleFunc("/status/create", status.CreatePost(s, s.ps)).Methods(http.MethodPost)
 
-		admin.HandleFunc("/status/list", s.statusListGet).Methods(http.MethodGet)
-		admin.HandleFunc("/status/create", s.statusCreatePost).Methods(http.MethodPost)
+	admin.HandleFunc("/area/list", area.ListGet(s, s.ps, s.cash)).Methods(http.MethodGet)
+	admin.HandleFunc("/area/create", area.CreatePost(s, s.ps)).Methods(http.MethodPost)
 
-		admin.HandleFunc("/area/list", s.areaListGet).Methods(http.MethodGet)
-		admin.HandleFunc("/area/create", s.areaCreatePost).Methods(http.MethodPost)
-
-		//admin.HandleFunc("/admin/index", s.forbidden)
-	*/
 }
 
 func configMiddlewares(r, admin, auth *mux.Router, s *Server) {

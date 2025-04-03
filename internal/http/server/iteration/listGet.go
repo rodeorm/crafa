@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func IterationListGet(s SessionManager, i IterationStorager, l LevelStorager, t TeamStorager) http.HandlerFunc {
+func ListGet(s SessionManager, i IterationStorager, l LevelStorager, t TeamStorager) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		session, err := s.GetSession(r)
 		if err != nil {
