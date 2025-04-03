@@ -11,7 +11,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func IterationUpdateGet(s SessionManager, i IterationStorager) http.HandlerFunc {
+func UpdateGet(s SessionManager, i IterationStorager) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		session, err := s.GetSession(r)
 		if err != nil {

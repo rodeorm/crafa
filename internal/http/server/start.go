@@ -7,7 +7,9 @@ import (
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 
+	"money/internal/cash"
 	"money/internal/cfg"
+	"money/internal/http/cookie"
 	"money/internal/logger"
 	"money/internal/repo/postgres"
 
@@ -31,18 +33,15 @@ func Start(cfg *cfg.Config, wg *sync.WaitGroup, exit chan struct{}) error {
 	}
 	defer srv.Close()
 
-	// Postgres
 	ps, err := postgres.GetPostgresStorage(cfg.ConnectionString)
 	if err != nil {
 		return err
 	}
-
-	// Cookie manager
-
-	// Cash manager
+	cm := cookie.NewCookieManager(cfg.JWTKey, cfg.TokenLiveTime)
+	cash := cash.NewCashStorage()
 
 	// Сервер с окружением
-	s := &Server{srv: srv, exit: exit, cfg: cfg, ps: ps}
+	s := &Server{srv: srv, exit: exit, cfg: cfg, ps: ps, cm: cm, cash: cash}
 
 	configMiddlewares(r, admin, auth, s)
 	configPrefixes(r)

@@ -18,3 +18,8 @@ type AreaStorager interface {
 	SelectAllLevelAreas(context.Context, *core.Level) error
 	DeleteArea(context.Context, *core.Area) error
 }
+
+type LevelStorager interface {
+	SelectLevel(context.Context, *core.Level) error
+	SelectAllLevels(context.Context) ([]core.Level, error)
+}
