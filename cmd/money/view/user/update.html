@@ -6,7 +6,7 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <form action="../user/update?id={{ .Attributes.User.ID }}" class="needs-validation" novalidate
+                <form action="../user/update?id={{.Attributes.User.ID}}" class="needs-validation" novalidate
                     method="POST">
                     <h4>Редактирование информации о пользователе <span
                             class="text-primary">{{.Attributes.User.Login}}</span>: </h4>
@@ -67,7 +67,7 @@
                                     8)</div>
                             </div>
                         </div>
-                        {{if eq {{.Session.User.Role.ID}} 1 }}
+                        {{if eq .Session.User.Role.ID 1 }}
                         <div class="col">
                             <div name="role" class="form-group" data-width='auto'>
                                 Роль:
