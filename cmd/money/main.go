@@ -9,16 +9,14 @@ import (
 )
 
 func main() {
-	config, stgs, exit, wg := cfg.GetConfig()
+	config, exit, wg := cfg.Configurate()
 
 	defer logger.Log.Sync()
-	defer stgs.DBStorager.Close()
-
 	wg.Add(1 + config.EmailConfig.FillWorkerCount + config.EmailConfig.SendWorkerCount)
 
-	go server.Start(config, stgs, wg, exit)
-	go sender.Start(config, stgs.MessageStorager, wg, exit)
-	go filler.Start(config, stgs.MessageStorager, wg, exit)
+	go server.Start(config, wg, exit)
+	go sender.Start(config, wg, exit)
+	go filler.Start(config, wg, exit)
 
 	wg.Wait()
 }

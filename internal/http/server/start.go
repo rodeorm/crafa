@@ -8,13 +8,13 @@ import (
 	"go.uber.org/zap"
 
 	"money/internal/cfg"
-	"money/internal/core"
 	"money/internal/logger"
+	"money/internal/repo/postgres"
 
 	_ "net/http/pprof"
 )
 
-func Start(cfg *cfg.Config, stgs *core.Storage, wg *sync.WaitGroup, exit chan struct{}) error {
+func Start(cfg *cfg.Config, wg *sync.WaitGroup, exit chan struct{}) error {
 	defer wg.Done()
 
 	// Маршрутизаторы
@@ -31,8 +31,18 @@ func Start(cfg *cfg.Config, stgs *core.Storage, wg *sync.WaitGroup, exit chan st
 	}
 	defer srv.Close()
 
+	// Postgres
+	ps, err := postgres.GetPostgresStorage(cfg.ConnectionString)
+	if err != nil {
+		return err
+	}
+
+	// Cookie manager
+
+	// Cash manager
+
 	// Сервер с окружением
-	s := &Server{srv: srv, exit: exit, cfg: cfg, stgs: stgs}
+	s := &Server{srv: srv, exit: exit, cfg: cfg, ps: ps}
 
 	configMiddlewares(r, admin, auth, s)
 	configPrefixes(r)
@@ -43,10 +53,10 @@ func Start(cfg *cfg.Config, stgs *core.Storage, wg *sync.WaitGroup, exit chan st
 		zap.String("БД", cfg.ConnectionString),
 	)
 
-	go http.ListenAndServe(":7070", nil)
+	go http.ListenAndServe(":7070", nil) //для pprof
 
 	s.gracefulShutdown()
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 	if err != nil {
 		logger.Log.Info("HTTP Server",
 			zap.String("Порт", err.Error()),

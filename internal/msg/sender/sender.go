@@ -8,6 +8,7 @@ import (
 	"money/internal/cfg"
 	"money/internal/core"
 	"money/internal/logger"
+	"money/internal/repo/postgres"
 
 	"go.uber.org/zap"
 	"gopkg.in/gomail.v2"
@@ -15,14 +16,14 @@ import (
 
 // Sender - рабочий, отправляющий сообщения
 type Sender struct {
-	msgStorager core.MessageStorager // Хранилище сообщений
-	domain      string               // Домен
-	from        string               // Отправитель
-	fileName    string               // Имя файла вложения
-	queue       QueueStorager        // Очередь сообщений
-	emailDialer *gomail.Dialer       // Отправитель
-	ID          int                  // Идентификатор воркера
-	period      int                  // Периодичность отправки сообщений
+	msgStorager MessageStorager // Хранилище сообщений
+	domain      string          // Домен
+	from        string          // Отправитель
+	fileName    string          // Имя файла вложения
+	queue       QueueStorager   // Очередь сообщений
+	emailDialer *gomail.Dialer  // Отправитель
+	ID          int             // Идентификатор воркера
+	period      int             // Периодичность отправки сообщений
 }
 
 type QueueStorager interface {
@@ -32,7 +33,7 @@ type QueueStorager interface {
 
 // NewSender создает новый Sender
 // Каждый Sender может рассылать сообщения через свой собственный smtp сервер
-func NewSender(queue QueueStorager, storage core.MessageStorager, id, smtpPort, prd int, smtpServer, smtpLogin, smtpPassword, from, fileName, domain string) *Sender {
+func NewSender(queue QueueStorager, storage MessageStorager, id, smtpPort, prd int, smtpServer, smtpLogin, smtpPassword, from, fileName, domain string) *Sender {
 	s := Sender{
 		ID:          id,
 		queue:       queue,
@@ -48,12 +49,14 @@ func NewSender(queue QueueStorager, storage core.MessageStorager, id, smtpPort, 
 	return &s
 }
 
-func Start(config *cfg.Config, storage core.MessageStorager, wg *sync.WaitGroup, exit chan struct{}) {
+func Start(config *cfg.Config, wg *sync.WaitGroup, exit chan struct{}) {
+	ps, _ := postgres.GetPostgresStorage(config.ConnectionString)
+
 	for i := range config.SendWorkerCount {
 		// Асинхронно запускаем email сендеры
 		s := NewSender(
 			config.Queue,
-			storage,
+			ps,
 			i,
 			config.SMTPPort,
 			config.MessageSendPeriod,

@@ -34,7 +34,8 @@
                         </tr>
                         {{else}}
                         <tr>
-                            <td>Отсутствуют команды</td>
+                            <td>Отсутствуют статусы</td>
+                            <td>-</td>
                             <td>-</td>
                         </tr>
                         {{ end }}
@@ -51,9 +52,9 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="/area/create" method="POST">
+                        <form action="/status/create" method="POST">
                             <div class="form-group">
-                                Наименование:<input type="text" class="form-control" placeholder="Наименование команды"
+                                Наименование:<input type="text" class="form-control" placeholder="Наименование"
                                     name="name">
                             </div>
                             <div class="col">

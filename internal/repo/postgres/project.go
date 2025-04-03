@@ -9,7 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *postgresStorage) InsertProject(ctx context.Context, p *core.Project) error {
+func (s *PostgresStorage) InsertProject(ctx context.Context, p *core.Project) error {
 	_, err := s.preparedStatements["insertProject"].ExecContext(ctx, p.Name)
 	if err != nil {
 		return err
@@ -17,7 +17,7 @@ func (s *postgresStorage) InsertProject(ctx context.Context, p *core.Project) er
 	return nil
 }
 
-func (s *postgresStorage) UpdateProject(ctx context.Context, p *core.Project) error {
+func (s *PostgresStorage) UpdateProject(ctx context.Context, p *core.Project) error {
 	//SET Name = $2 WHERE ID = $1
 	_, err := s.preparedStatements["updateProject"].ExecContext(ctx, p.ID, p.Name)
 	if err != nil {
@@ -27,7 +27,7 @@ func (s *postgresStorage) UpdateProject(ctx context.Context, p *core.Project) er
 	return nil
 }
 
-func (s *postgresStorage) SelectProject(ctx context.Context, p *core.Project) error {
+func (s *PostgresStorage) SelectProject(ctx context.Context, p *core.Project) error {
 
 	tx, err := s.DB.BeginTxx(ctx, nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func (s *postgresStorage) SelectProject(ctx context.Context, p *core.Project) er
 
 }
 
-func (s *postgresStorage) SelectAllProjects(ctx context.Context) ([]core.Project, error) {
+func (s *PostgresStorage) SelectAllProjects(ctx context.Context) ([]core.Project, error) {
 	p := make([]core.Project, 0)
 	err := s.preparedStatements["selectAllProjects"].SelectContext(ctx, &p)
 	if err != nil {
@@ -64,7 +64,7 @@ func (s *postgresStorage) SelectAllProjects(ctx context.Context) ([]core.Project
 	return p, nil
 }
 
-func (s *postgresStorage) SelectUserProjects(ctx context.Context, u *core.User) ([]core.Project, error) {
+func (s *PostgresStorage) SelectUserProjects(ctx context.Context, u *core.User) ([]core.Project, error) {
 	p := make([]core.Project, 0)
 	err := s.preparedStatements["selectUserProjects"].SelectContext(ctx, &p, u.ID)
 	if err != nil {
@@ -76,7 +76,7 @@ func (s *postgresStorage) SelectUserProjects(ctx context.Context, u *core.User) 
 	return p, nil
 }
 
-func (s *postgresStorage) DeleteProject(ctx context.Context, p *core.Project) error {
+func (s *PostgresStorage) DeleteProject(ctx context.Context, p *core.Project) error {
 	_, err := s.preparedStatements["deleteProject"].ExecContext(ctx, p.ID)
 	if err != nil {
 		return err
@@ -85,7 +85,7 @@ func (s *postgresStorage) DeleteProject(ctx context.Context, p *core.Project) er
 	return nil
 }
 
-func (s *postgresStorage) DeleteUserProject(ctx context.Context, u *core.User, p *core.Project) error {
+func (s *PostgresStorage) DeleteUserProject(ctx context.Context, u *core.User, p *core.Project) error {
 	_, err := s.preparedStatements["deleteUserProject"].ExecContext(ctx, u.ID, p.ID)
 	if err != nil {
 		logger.Log.Error("DeleteUserProject",
@@ -96,7 +96,7 @@ func (s *postgresStorage) DeleteUserProject(ctx context.Context, u *core.User, p
 	return nil
 }
 
-func (s *postgresStorage) InsertUserProject(ctx context.Context, userID, projectID int) error {
+func (s *PostgresStorage) InsertUserProject(ctx context.Context, userID, projectID int) error {
 	_, err := s.preparedStatements["insertUserProject"].ExecContext(ctx, userID, projectID)
 	if err != nil {
 		logger.Log.Error("InsertUserProject",
@@ -107,7 +107,7 @@ func (s *postgresStorage) InsertUserProject(ctx context.Context, userID, project
 	return nil
 }
 
-func (s *postgresStorage) SelectPossibleNewUserProjects(ctx context.Context, u *core.User) ([]core.Project, error) {
+func (s *PostgresStorage) SelectPossibleNewUserProjects(ctx context.Context, u *core.User) ([]core.Project, error) {
 	var ps []core.Project
 	err := s.preparedStatements["selectPossibleUserProjects"].SelectContext(ctx, &ps, u.ID)
 	if err != nil {
@@ -119,6 +119,6 @@ func (s *postgresStorage) SelectPossibleNewUserProjects(ctx context.Context, u *
 	return ps, nil
 }
 
-func (s *postgresStorage) SelectAllProjectEpics(ctx context.Context, c *core.Project) ([]core.Epic, error) {
+func (s *PostgresStorage) SelectAllProjectEpics(ctx context.Context, c *core.Project) ([]core.Epic, error) {
 	return nil, nil
 }

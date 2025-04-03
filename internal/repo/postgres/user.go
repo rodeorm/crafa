@@ -13,7 +13,7 @@ import (
 )
 
 // RegUser создает пользователя в БД
-func (s *postgresStorage) RegUser(ctx context.Context, u *core.User, domain string) (*core.Session, error) {
+func (s *PostgresStorage) RegUser(ctx context.Context, u *core.User, domain string) (*core.Session, error) {
 	if u.Login == "" { //TODO: проверку на сложность логина
 		return nil, fmt.Errorf("логин не может быть пустым")
 	}
@@ -71,7 +71,7 @@ func (s *postgresStorage) RegUser(ctx context.Context, u *core.User, domain stri
 	return session, nil
 }
 
-func (s *postgresStorage) ConfirmUserEmail(ctx context.Context, userID int, otp string) error {
+func (s *PostgresStorage) ConfirmUserEmail(ctx context.Context, userID int, otp string) error {
 	tx, err := s.DB.BeginTxx(ctx, nil)
 	if err != nil {
 		log.Println("ConfirmUserEmail 1", err)
@@ -112,7 +112,7 @@ func (s *postgresStorage) ConfirmUserEmail(ctx context.Context, userID int, otp 
 }
 
 // Аутентифицирует пользователя на основании данных в БД и возвращает все его данные
-func (s *postgresStorage) BaseAuthUser(ctx context.Context, u *core.User) error {
+func (s *PostgresStorage) BaseAuthUser(ctx context.Context, u *core.User) error {
 	// Сохраняем введенный пароль
 	pass := u.Password
 
@@ -133,7 +133,7 @@ func (s *postgresStorage) BaseAuthUser(ctx context.Context, u *core.User) error 
 }
 
 // /AdvAuthUser авторизует пользователя, прошедшего базовую аутентификацию по одноразовому паролю
-func (s *postgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp string, otpLiveTime time.Duration) (*core.Session, error) {
+func (s *PostgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp string, otpLiveTime time.Duration) (*core.Session, error) {
 	msg := core.Message{}
 	// Проверяем переданный код  UserID = $1 AND Text = $2
 	err := s.preparedStatements["selectAuthMsg"].GetContext(ctx, &msg, u.ID, otp)
@@ -184,14 +184,14 @@ func (s *postgresStorage) AdvAuthUser(ctx context.Context, u *core.User, otp str
 }
 
 // Возвращает данные пользователя
-func (s *postgresStorage) SelectUser(ctx context.Context, u *core.User) error {
+func (s *PostgresStorage) SelectUser(ctx context.Context, u *core.User) error {
 	err := s.preparedStatements["selectUser"].GetContext(ctx, u, u.ID)
 	log.Println(u)
 	return err
 }
 
 // Возвращает данные всех пользователей
-func (s *postgresStorage) SelectAllUsers(ctx context.Context) ([]core.User, error) {
+func (s *PostgresStorage) SelectAllUsers(ctx context.Context) ([]core.User, error) {
 	u := make([]core.User, 0)
 	err := s.preparedStatements["selectAllUsers"].SelectContext(ctx, &u)
 	if err != nil {
@@ -203,7 +203,7 @@ func (s *postgresStorage) SelectAllUsers(ctx context.Context) ([]core.User, erro
 }
 
 // Обновляет данные пользователя
-func (s *postgresStorage) UpdateUser(ctx context.Context, u *core.User) error {
+func (s *PostgresStorage) UpdateUser(ctx context.Context, u *core.User) error {
 	//roleid = $2, login = $3, name = $4, familyname = $5, patronname = $6, email = $7, phone = $8
 	_, err := s.preparedStatements["updateUser"].ExecContext(ctx, u.ID, u.Role.ID, u.Login, u.Name, u.FamilyName, u.PatronName, u.Email, u.Phone)
 	if err != nil {
@@ -214,7 +214,7 @@ func (s *postgresStorage) UpdateUser(ctx context.Context, u *core.User) error {
 }
 
 // Меняет пароль пользователю
-func (s *postgresStorage) ChangeUserPassword(ctx context.Context, u *core.User) error {
+func (s *PostgresStorage) ChangeUserPassword(ctx context.Context, u *core.User) error {
 	// Хэшируем пароль
 	pwdHash, err := crypt.HashPassword(u.Password)
 	if err != nil {

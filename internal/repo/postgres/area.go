@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (s *postgresStorage) areaPrepareStmts() error {
+func (s *PostgresStorage) areaPrepareStmts() error {
 	insertArea, err := s.DB.Preparex(`	INSERT INTO ref.Areas
 										(name, levelid) 
 	 									SELECT $1, $2
@@ -63,19 +63,19 @@ func (s *postgresStorage) areaPrepareStmts() error {
 	return nil
 }
 
-func (s *postgresStorage) InsertArea(ctx context.Context, a *core.Area) error {
+func (s *PostgresStorage) InsertArea(ctx context.Context, a *core.Area) error {
 	log.Println("InsertArea", a.Name, a.Level.ID)
 	return s.preparedStatements["insertArea"].GetContext(ctx, a, a.Name, a.Level.ID)
 }
-func (s *postgresStorage) UpdateArea(ctx context.Context, a *core.Area) error {
+func (s *PostgresStorage) UpdateArea(ctx context.Context, a *core.Area) error {
 	_, err := s.preparedStatements["updateArea"].ExecContext(ctx, a.ID, a.Name, a.Level.ID)
 	return err
 }
-func (s *postgresStorage) SelectArea(ctx context.Context, a *core.Area) error {
+func (s *PostgresStorage) SelectArea(ctx context.Context, a *core.Area) error {
 	return s.preparedStatements["selectArea"].GetContext(ctx, a, a.ID)
 }
 
-func (s *postgresStorage) SelectAllAreas(ctx context.Context) ([]core.Area, error) {
+func (s *PostgresStorage) SelectAllAreas(ctx context.Context) ([]core.Area, error) {
 	a := make([]core.Area, 0)
 	err := s.preparedStatements["selectAllAreas"].SelectContext(ctx, &a)
 	if err != nil {
@@ -85,7 +85,7 @@ func (s *postgresStorage) SelectAllAreas(ctx context.Context) ([]core.Area, erro
 	return a, nil
 }
 
-func (s *postgresStorage) SelectAllLevelAreas(ctx context.Context, l *core.Level) error {
+func (s *PostgresStorage) SelectAllLevelAreas(ctx context.Context, l *core.Level) error {
 	var c []core.Area
 	err := s.preparedStatements["selectLevelAreas"].SelectContext(ctx, c, l.ID)
 	if err != nil {
@@ -95,7 +95,7 @@ func (s *postgresStorage) SelectAllLevelAreas(ctx context.Context, l *core.Level
 	return nil
 }
 
-func (s *postgresStorage) DeleteArea(ctx context.Context, a *core.Area) error {
+func (s *PostgresStorage) DeleteArea(ctx context.Context, a *core.Area) error {
 	_, err := s.preparedStatements["deleteArea"].ExecContext(ctx, a.ID)
 	return err
 }
