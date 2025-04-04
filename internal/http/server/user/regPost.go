@@ -49,6 +49,6 @@ func RegPost(u UserStorager, c CookieManager, domain string) http.HandlerFunc {
 
 		http.SetCookie(w, ck)
 
-		http.Redirect(w, r, "/user/send", http.StatusTemporaryRedirect)
+		http.Redirect(w, r, "/user/wait", http.StatusTemporaryRedirect)
 	}
 }
