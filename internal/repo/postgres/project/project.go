@@ -2,6 +2,7 @@ package project
 
 import (
 	"context"
+	"database/sql"
 	"log"
 	"money/internal/core"
 	"money/internal/logger"
@@ -43,7 +44,7 @@ func (s *Storage) SelectProject(ctx context.Context, p *core.Project) error {
 
 	p.Epics = make([]core.Epic, 0)
 	err = tx.Stmtx(s.stmt["selectProjectEpics"]).SelectContext(ctx, &p.Epics, p.ID)
-	if err != nil {
+	if err != nil && err != sql.ErrNoRows {
 		log.Println("selectProject 2", err)
 		tx.Rollback()
 		return err

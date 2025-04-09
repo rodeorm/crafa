@@ -1,4 +1,4 @@
-package issue
+package epic
 
 import (
 	"money/internal/repo/postgres/db"

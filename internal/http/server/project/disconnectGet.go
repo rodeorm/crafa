@@ -10,7 +10,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func DisconnectGet(s SessionManager, p ProjectStorager) http.HandlerFunc {
+func DisconnectGet(s SessionManager, p ProjectStorager, u UserProjectManager) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		session, err := s.GetSession(r)
 		if err != nil {
@@ -45,7 +45,7 @@ func DisconnectGet(s SessionManager, p ProjectStorager) http.HandlerFunc {
 		}
 		ctx := context.TODO()
 
-		err = p.DeleteUserProject(ctx, usr, pr)
+		err = u.DeleteUserProject(ctx, usr, pr)
 		if err != nil {
 			logger.Log.Error("DeleteUserProject",
 				zap.Error(err),

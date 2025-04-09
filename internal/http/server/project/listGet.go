@@ -10,7 +10,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func ListGet(s SessionManager, p ProjectStorager) http.HandlerFunc {
+func ListGet(s SessionManager, p ProjectStorager, u UserProjectManager) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		session, err := s.GetSession(r)
 		if err != nil {
@@ -37,7 +37,7 @@ func ListGet(s SessionManager, p ProjectStorager) http.HandlerFunc {
 			}
 
 		} else {
-			projects, err = p.SelectUserProjects(ctx, &session.User)
+			projects, err = u.SelectUserProjects(ctx, &session.User)
 			if err != nil {
 				logger.Log.Error("projects user",
 					zap.Error(err))

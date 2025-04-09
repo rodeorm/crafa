@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+{{ template "header.html" . }}
+
+<body>
+    <div class="jumbotron text-center">
+        <h1>Регистрация для работы на автоматизированном рабочем месте</h1>
+    </div>
+    <div class="container">
+        Адрес электронной почты {{ .Attributes.Email }} подтвержден. Теперь вы полностью авторизованы и можете начинать
+        работать.
+    </div>
+</body>
+{{ template "footer.html" . }}
+
+</html>

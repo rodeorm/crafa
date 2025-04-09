@@ -16,9 +16,13 @@ type ProjectStorager interface { //TODO: разбить на два интерф
 	UpdateProject(context.Context, *core.Project) error
 	SelectProject(context.Context, *core.Project) error
 	SelectAllProjects(context.Context) ([]core.Project, error)
-	SelectUserProjects(context.Context, *core.User) ([]core.Project, error)
 	DeleteProject(context.Context, *core.Project) error
+	SelectAllProjectEpics(context.Context, *core.Project) ([]core.Epic, error)
+}
+
+type UserProjectManager interface {
+	SelectUserProjects(context.Context, *core.User) ([]core.Project, error)
+	SelectUserProject(context.Context, *core.Project, *core.User) error
 	DeleteUserProject(context.Context, *core.User, *core.Project) error
 	SelectPossibleNewUserProjects(context.Context, *core.User) ([]core.Project, error)
-	SelectAllProjectEpics(context.Context, *core.Project) ([]core.Epic, error)
 }

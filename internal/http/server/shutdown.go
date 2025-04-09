@@ -25,7 +25,7 @@ func (s *Server) gracefulShutdown() {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 		logger.Log.Info("Server Shutdown",
-			zap.String("Изященое выклюение", "Начато"),
+			zap.String("Изященое выключение", "Начато"),
 		)
 		// получили сигнал os.Interrupt, запускаем процедуру graceful shutdown
 		if err := s.srv.Shutdown(ctx); err != nil {
