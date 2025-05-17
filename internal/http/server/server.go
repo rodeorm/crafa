@@ -1,9 +1,9 @@
 package server
 
 import (
-	"money/internal/cash"
 	"money/internal/cfg"
 	"money/internal/http/cookie"
+	"money/internal/repo/cash"
 	"money/internal/repo/postgres"
 	"net/http"
 )

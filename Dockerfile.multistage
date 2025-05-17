@@ -7,7 +7,7 @@ RUN CGO_ENABLED=0 go install -ldflags '-extldflags "-static"'
 
 FROM scratch
 WORKDIR /app
-COPY --from=builder /go/bin/money .
+COPY --from=builder /go/bin/ui .
 COPY --from=builder /app/cmd/ui .
 COPY --from=builder /app/cmd/ui/static static
 COPY --from=builder /app/cmd/ui/view view
@@ -16,4 +16,4 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 
 ENV TZ=Europe/Moscow
-ENTRYPOINT ["/app/money"]
+ENTRYPOINT ["/app/ui"]

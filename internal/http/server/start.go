@@ -7,10 +7,10 @@ import (
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 
-	"money/internal/cash"
 	"money/internal/cfg"
 	"money/internal/http/cookie"
 	"money/internal/logger"
+	"money/internal/repo/cash"
 	"money/internal/repo/postgres"
 
 	_ "net/http/pprof"
