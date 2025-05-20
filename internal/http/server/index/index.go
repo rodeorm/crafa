@@ -19,7 +19,7 @@ func Index(s SessionManager) http.HandlerFunc {
 		case core.RoleGuest:
 			page.Execute("index", "index", w, p)
 		case core.RoleReg:
-			http.Redirect(w, r, "/user/send", http.StatusTemporaryRedirect)
+			http.Redirect(w, r, "/user/wait", http.StatusTemporaryRedirect)
 		case core.RoleAdmin:
 			http.Redirect(w, r, "/main", http.StatusTemporaryRedirect)
 		case core.RoleAuth:

@@ -22,7 +22,7 @@
                     </thead>
                     <tbody>
                         {{range .Attributes.Teams}}
-                        <tr class=" = " onclick="location.href = '/Team/view?id={{ .ID }}'" style="cursor: pointer;">
+                        <tr class=" = " onclick="location.href = '/team/view?id={{ .ID }}'" style="cursor: pointer;">
                             <td>{{ .Name }}</td>
                             <td>
                                 <a href="/team/update?id={{ .ID }}" class="btn btn-outline-warning"

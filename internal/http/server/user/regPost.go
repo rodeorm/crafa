@@ -21,7 +21,7 @@ func RegPost(u UserStorager, c CookieManager, domain string) http.HandlerFunc {
 			Phone:      r.FormValue("phonenumber"),
 		}
 		// Регистрируем пользователя. Получаем идентификатор пользователя и идентификатор сессии
-		session, err := u.RegUser(context.TODO(), &user, domain)
+		_, err := u.RegUser(context.TODO(), &user, domain)
 		if err != nil {
 			sign := make(map[string]string)
 			sign["Russ"] = "Ошибка при регистрации"
@@ -33,22 +33,26 @@ func RegPost(u UserStorager, c CookieManager, domain string) http.HandlerFunc {
 			page.Execute("user", "reg", w, pg)
 			return
 		}
-		// Создаем jwt-токен и сохраняем его в куках
-		ck, err := c.NewCookieWithSession(session)
-		if err != nil {
-			sign := make(map[string]string)
-			sign["russ"] = "Ошибка при регистрации"
-			sign["err"] = err.Error()
-			at := make(map[string]any)
-			at["User"] = user
-			pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at))
-			w.WriteHeader(http.StatusUnauthorized)
-			page.Execute("user", "reg", w, pg)
-			return
-		}
+		/*	Меняем логику. Пользователь регистрируется не сам, а через администратора. Код устаревает:
+					// Создаем jwt-токен и сохраняем его в куках
+					ck, err := c.NewCookieWithSession(session)
+					if err != nil {
+						sign := make(map[string]string)
+						sign["russ"] = "Ошибка при регистрации"
+						sign["err"] = err.Error()
+						at := make(map[string]any)
+						at["User"] = user
+						pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at))
+						w.WriteHeader(http.StatusUnauthorized)
+						page.Execute("user", "reg", w, pg)
+						return
+					}
 
-		http.SetCookie(w, ck)
+				http.SetCookie(w, ck)
 
-		http.Redirect(w, r, "/user/wait", http.StatusTemporaryRedirect)
+			http.Redirect(w, r, "/user/wait", http.StatusTemporaryRedirect)
+		*/
+
+		http.Redirect(w, r, "/user/list", http.StatusSeeOther)
 	}
 }

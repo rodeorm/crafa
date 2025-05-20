@@ -21,8 +21,8 @@ func configPaths(r, admin, auth *mux.Router, s *Server) {
 	r.HandleFunc("/", index.Index(s))
 	r.HandleFunc("/main", index.MainMenu(s))
 
-	r.HandleFunc("/user/reg", user.RegGet).Methods(http.MethodGet)
-	r.HandleFunc("/user/reg", user.RegPost(s.ps.User, s.cm, s.cfg.Domain)).Methods(http.MethodPost)
+	admin.HandleFunc("/user/reg", user.RegGet).Methods(http.MethodGet)
+	admin.HandleFunc("/user/reg", user.RegPost(s.ps.User, s.cm, s.cfg.Domain)).Methods(http.MethodPost)
 	r.HandleFunc("/user/wait", user.Wait(s, s.ps.User))
 	r.HandleFunc("/user/confirm", user.ConfirmGet(s, s.ps.User, s.cm)).Methods(http.MethodGet)
 	r.HandleFunc("/user/login", user.LoginPost(s.ps.User)).Methods(http.MethodPost)
