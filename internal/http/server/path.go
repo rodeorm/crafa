@@ -32,9 +32,10 @@ func configPaths(r, admin, auth *mux.Router, s *Server) {
 	auth.HandleFunc("/user/update", user.UpdateGet(s, s.ps.User, s.ps.Project, s.ps.Team, s.cash)).Methods(http.MethodGet)
 	auth.HandleFunc("/user/update", user.UpdatePost(s, s.ps.User, s.ps.Project, s.ps.Team, s.cash)).Methods(http.MethodPost)
 
-	auth.HandleFunc("/project/list", project.ListGet(s, s.ps.Project, s.ps.Project)).Methods(http.MethodGet)
+	auth.HandleFunc("/project/list", project.ListGet(s, s.ps.Project)).Methods(http.MethodGet)
 	admin.HandleFunc("/project/create", project.CreatePost(s, s.ps.Project)).Methods(http.MethodPost)
-	admin.HandleFunc("/project/update", project.UpdateGet(s, s.ps.Project)).Methods(http.MethodGet)
+	admin.HandleFunc("/project/update", project.UpdateGet(s, s.ps.Project, s.ps.Project, s.ps.Project)).Methods(http.MethodGet)
+	auth.HandleFunc("/project/view", project.ViewGet(s, s.ps.Project, s.ps.Project, s.ps.Project)).Methods(http.MethodGet)
 	admin.HandleFunc("/project/update", project.UpdatePost(s, s.ps.Project)).Methods(http.MethodPost)
 	admin.HandleFunc("/project/connect", project.ConnectPost(s, s.ps.Project)).Methods(http.MethodPost)
 	admin.HandleFunc("/project/disconnect", project.DisconnectGet(s, s.ps.Project, s.ps.Project)).Methods(http.MethodGet)

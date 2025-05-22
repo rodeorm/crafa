@@ -7,17 +7,13 @@ import (
 	"money/internal/logger"
 	"net/http"
 	"strconv"
-
-	"go.uber.org/zap"
 )
 
-func UpdateGet(s SessionManager, p ProjectStorager) http.HandlerFunc {
+func UpdateGet(s SessionManager, p ProjectStorager, u ProjectUserSelecter, e ProjectEpicSelecter) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		session, err := s.GetSession(r)
 		if err != nil {
-			logger.Log.Error("session",
-				zap.Error(err),
-			)
+			logger.Sugar.Error(err)
 			http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 			return
 		}
@@ -26,9 +22,7 @@ func UpdateGet(s SessionManager, p ProjectStorager) http.HandlerFunc {
 
 		// Редактировать проект может только администратор (уже проверяется в middle, на всякий случай и здесь)
 		if err != nil || (session.User.Role.ID != core.RoleAdmin) {
-			logger.Log.Error("id",
-				zap.Error(err),
-			)
+			logger.Sugar.Error(err)
 			http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 			return
 		}
@@ -38,16 +32,33 @@ func UpdateGet(s SessionManager, p ProjectStorager) http.HandlerFunc {
 
 		err = p.SelectProject(ctx, prjct)
 		if err != nil {
-			logger.Log.Error("Project",
-				zap.Error(err),
-			)
+			logger.Sugar.Error(err)
 			http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+			return
+		}
+
+		err = e.SelectProjectStatusEpics(ctx, prjct, nil)
+		if err != nil {
+			logger.Sugar.Error(err)
+			//http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+			return
+		}
+
+		err = u.SelectProjectUsers(ctx, prjct)
+		if err != nil {
+			logger.Sugar.Error(err)
+			//http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
 			return
 		}
 
 		at["Project"] = prjct
 
 		pg := page.NewPage(page.WithAttrs(at), page.WithSession(session))
-		page.Execute("project", "update", w, pg)
+		err = page.Execute("project", "update", w, pg)
+		if err != nil {
+			logger.Sugar.Error(err)
+			//http.Redirect(w, r, "/forbidden", http.StatusTemporaryRedirect)
+			return
+		}
 	}
 }

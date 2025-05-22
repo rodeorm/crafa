@@ -24,7 +24,7 @@
                                 required>
                         </div>
                         <div id="help" class="form-text">Для изменения пароля - перейдите по ссылке <a
-                                href="./user/password" class="close">"сбросить пароль"</a>.
+                                href="../user/password" class="close">"сбросить пароль"</a>.
                             Никто не может получить доступ к чужому паролю.
                             Он не хранится в Системе в явном виде.
                         </div>
@@ -86,7 +86,7 @@
                     <div class="d-flex flex-column flex-sm-row align-items-center">
                         <button type="submit" class="btn btn-outline-success mb-2 mb-sm-0 me-sm-2"
                             style="min-width: 150px;">Сохранить информацию о пользователе</button>
-                        <a href="./user/list" class="btn btn-outline-danger">Отменить изменение информации о
+                        <a href="../user/list" class="btn btn-outline-danger">Отменить изменение информации о
                             пользователе</a>
                         {{if .Signals }}
                         <div class="alert alert-danger mb-0" role="alert"
@@ -107,7 +107,10 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <h5>Проекты <span class="text-primary">{{.Attributes.User.Login}}</span>:</h5>
+                        <h5>Проекты, в которых участвует <span class="text-primary">{{.Attributes.User.Login}}</span>:
+                        </h5>
+                        <div id="help" class="form-text">Изменения сохраняются автоматически
+                        </div>
                         <div>
                             <table id="projects"
                                 class="table table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
@@ -153,7 +156,10 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <h5>Команды <span class="text-success">{{.Attributes.User.Login}}</span>:</h5>
+                        <h5>Команды, в которых состоит <span class="text-success">{{.Attributes.User.Login}}</span>:
+                        </h5>
+                        <div id="help" class="form-text">Изменения сохраняются автоматически
+                        </div>
                         <div>
                             <table id="teams"
                                 class="table table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">

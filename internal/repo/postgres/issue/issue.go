@@ -99,18 +99,6 @@ func (s *Storage) InsertUserIssue(ctx context.Context, userID, IssueID int) erro
 	return nil
 }
 
-func (s *Storage) SelectPossibleNewUserIssues(ctx context.Context, u *core.User) ([]core.Issue, error) {
-	var ps []core.Issue
-	err := s.stmt["selectPossibleUserIssues"].SelectContext(ctx, &ps, u.ID)
-	if err != nil {
-		logger.Log.Error("selectPossibleUserIssues",
-			zap.Error(err))
-		return nil, err
-	}
-
-	return ps, nil
-}
-
 func (s *Storage) SelectAllIssueEpics(ctx context.Context, c *core.Issue) ([]core.Epic, error) {
 	return nil, nil
 }

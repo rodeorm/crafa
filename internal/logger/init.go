@@ -8,7 +8,10 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-var Log *zap.Logger // Доступен всему коду как синглтон (потокобезопасно)
+var (
+	Log   *zap.Logger        // Доступен всему коду как синглтон (потокобезопасно)
+	Sugar *zap.SugaredLogger // упрощённый логгер
+)
 
 func init() {
 
@@ -38,4 +41,5 @@ func init() {
 	)
 
 	Log = zap.New(core).WithOptions(zap.AddCaller())
+	Sugar = Log.Sugar()
 }

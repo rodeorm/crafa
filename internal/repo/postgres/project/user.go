@@ -32,3 +32,7 @@ func (s *Storage) SelectUserProject(ctx context.Context, p *core.Project, u *cor
 	return tx.Commit()
 
 }
+
+func (s *Storage) SelectProjectUsers(context.Context, *core.Project) error {
+	return nil
+}

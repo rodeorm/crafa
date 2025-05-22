@@ -10,7 +10,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func ConnectPost(s SessionManager, p ProjectStorager) http.HandlerFunc {
+func ConnectPost(s SessionManager, p UserProjectManager) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		session, err := s.GetSession(r)
 		if err != nil {
