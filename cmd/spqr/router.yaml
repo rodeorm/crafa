@@ -1,0 +1,30 @@
+host: "localhost"
+router_port: "6432"       
+admin_console_port: "7432"
+router_mode: "PROXY"    
+log_level: debug        
+pretty_logging: true    
+daemonize: true
+
+shards:
+  shard1:
+    usr: app
+    db: crafa_data_1    
+    pwd: qqqQQQ123      
+    type: DATA
+    hosts:
+      - "crafa.ru:5432" 
+  shard2:
+    usr: app
+    db: crafa_data_2    
+    pwd: qqqQQQ123      
+    type: DATA
+    hosts:
+      - "crafa.ru:5432" 
+
+frontend_rules:
+  - usr: demo
+    db: demo
+    pool_mode: TRANSACTION
+    auth_rule:
+      auth_method: ok

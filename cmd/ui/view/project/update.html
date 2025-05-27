@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+{{ template "header.html" . }}
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <form action="../user/update?id={{.Attributes.User.ID}}" class="needs-validation" novalidate
+                    method="POST">
+                    <h4>Редактирование информации о проекте <span
+                            class="text-primary">{{.Attributes.Project.Name}}</span>: </h4>
+                    <div class="row align-items-start">
+                        <div class="col">
+                            <label class="control-label" for="project">Наименование проекта:</label>
+                            <input {{if .Attributes.Project.Name }} value="{{.Attributes.Project.Name}}" {{end}}
+                                type="text" class="form-control" placeholder="Проект" name="project" required>
+                            <div class="invalid-feedback">Пожалуйста укажите наименование проекта</div>
+                        </div>
+                        <div class="d-flex flex-column flex-sm-row align-items-center">
+                            <button type="submit" class="btn btn-outline-success mb-2 mb-sm-0 me-sm-2"
+                                style="min-width: 150px;">Сохранить изменения</button>
+                            <a href="../project/list" class="btn btn-outline-danger">Отменить изменения</a>
+                            {{if .Signals }}
+                            <div class="alert alert-danger mb-0" role="alert"
+                                style="flex: 1; display: flex; align-items: center;">
+                                <strong>{{.Signals.Russ}}:</strong>&nbsp;{{.Signals.Err}}
+                            </div>
+                            {{end}}
+                        </div>
+                </form>
+            </div>
+        </div>
+
+        <hr style="border: none; height: 2px; background: linear-gradient(to right, #ccc, #eee, #ccc); margin: 25px 0;">
+
+
+        <div class="row g-0">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h5><span class="text-primary">Эпики</span>:</h5>
+                        <div>
+                            <table id="epics"
+                                class="table table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
+                                <thead>
+                                    <tr onclick="location.href = '/epic/list?project={{.Attributes.Project.ID}}'">
+                                        <th class="table-primary" scope="col">Дата</th>
+                                        <th class="table-primary" scope="col">Наименование</th>
+                                        <th class="table-primary" scope="col">Текст</th>
+                                        <th class="table-primary" scope="col">Статус</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{range .Attributes.ProjectEpics}}
+                                    <tr onclick="location.href = '/epic/update?id={{ .ID }}'" style="cursor: pointer;">
+                                        <td>{{ .Name }}</td>
+                                        <td>{{ .Name }}</td>
+                                        <td>{{ .Name }}</td>
+                                        <td>{{ .Name }}</td>
+                                    </tr>
+                                    {{else}}
+                                    <tr>
+                                        <td>Отсутствуют эпики</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    {{ end }}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Вертикальный разделитель -->
+            <div class="col-md-auto d-none d-md-block">
+                <div class="vr h-100"></div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h5>Участники<span class="text-success">{{.Attributes.User.Login}}</span>:
+                        </h5>
+                        <div id="help" class="form-text">Изменения сохраняются автоматически
+                        </div>
+                        <div>
+                            <table id="users"
+                                class="table table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
+                                <thead>
+                                    <tr onclick="location.href = '/project/list'">
+                                        <th class="table-success" scope="col">Логин</th>
+                                        <th class="table-success" scope="col">Email</th>
+                                        <th class="table-success" scope="col">Имя</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{range .Attributes.ProjectUsers}}
+                                    <tr onclick="location.href = '/user/view?id={{ .ID }}'" style="cursor: pointer;">
+                                        <td>{{ .Login }}</td>
+                                        <td>{{ .Email }}</td>
+                                        <td>{{ .Name }}</td>
+                                    </tr>
+                                    {{else}}
+                                    <tr>
+                                        <td>Отсутствуют участники</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+                                    {{ end }}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#epics').DataTable({
+                language: { url: '../static/DataTables/language.json' },
+                order: [[1, 'desc']],
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#users').DataTable({
+                language: { url: '../static/DataTables/language.json' },
+                order: [[1, 'desc']],
+            });
+        });
+    </script>
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Get the forms we want to add validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })()
+    </script>
+</body>
+{{ template "footer.html" . }}
+
+</html>

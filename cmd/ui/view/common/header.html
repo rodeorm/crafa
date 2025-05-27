@@ -1,0 +1,79 @@
+{{if .Session}}
+{{if (eq .Session.User.Role.ID 1)}}
+{{ template "headerAdmin.html" . }}
+{{else if (eq .Session.User.Role.ID 2)}}
+{{ template "headerReg.html" . }}
+{{else if (eq .Session.User.Role.ID 3)}}
+{{ template "headerAuth.html" . }}
+{{else if (eq .Session.User.Role.ID 4)}}
+{{ template "headerEmployee.html" . }}
+{{else}}
+
+<head>
+    <title>Crafa - Carnot Systems</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../static/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/js/chart.js" charset="utf-8"></script>
+    <link rel="shortcut icon" href="../static/img/favicon.ico" />
+    <link rel="stylesheet" href="../static/DataTables/datatables.css" />
+    <script src="../static/DataTables/datatables.js"></script>
+    <style>
+        .table-hover tbody tr:hover td,
+        .table-hover tbody tr:hover th {
+            background-color: #F08400 !important;
+        }
+    </style>
+</head>
+<header>
+    <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark"
+        style="background: linear-gradient(to right, #005D9F,  #0a134b);">
+        <div class="container-fluid">
+            <img src="../static/img/logo.jpg" style="width:50px;" class="rounded-circle">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+</header>
+
+<body>
+    <div id="content">
+        {{end}}
+        {{else}}
+
+        <head>
+            <title>Crafa - Carnot Systems</title>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+            <script src="../static/js/bootstrap.bundle.min.js"></script>
+            <script src="../static/js/chart.js" charset="utf-8"></script>
+            <link rel="shortcut icon" href="../static/img/favicon.ico" />
+            <link rel="stylesheet" href="../static/DataTables/datatables.css" />
+            <script src="../static/DataTables/datatables.js"></script>
+            <style>
+                .table-hover tbody tr:hover td,
+                .table-hover tbody tr:hover th {
+                    background-color: #F08400 !important;
+                }
+            </style>
+        </head>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark"
+                style="background: linear-gradient(to right, #005D9F,  #4b58ac);">
+                <div class="container-fluid">
+                    <img src="../static/img/logo.jpg" style="width:50px;" class="rounded-circle">
+                    <link rel="shortcut icon" href="../static/img/favicon.ico" />
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </nav>
+        </header>
+        {{end}}

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+{{ template "header.html" . }}
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <form action="../user/update?id={{ .Attributes.User.ID }}" class="needs-validation" novalidate
+                    method="POST">
+                    <h4>Редактирование статуса <span class="text-primary">{{.Attributes.Status.Name}}</span>: </h4>
+                    <div class="row align-items-start">
+                        <div class="col">
+                            <label class="control-label" for="name">Наименование:</label>
+                            <input {{if .Attributes.Status.Name}} value="{{.Attributes.Status.Name}}" {{end}}
+                                type="text" class="form-control" placeholder="Наименование" name="name" required>
+                            <div class="invalid-feedback">Пожалуйста укажите наименование</div>
+                        </div>
+                        <div class="d-flex flex-column flex-sm-row align-items-center">
+                            <button type="submit" class="btn btn-outline-success mb-2 mb-sm-0 me-sm-2"
+                                style="min-width: 150px;">Сохранить информацию</button>
+                            <a href="./user/list" class="btn btn-outline-danger">Отменить изменение информации</a>
+                            {{if .Signals }}
+                            <div class="alert alert-danger mb-0" role="alert"
+                                style="flex: 1; display: flex; align-items: center;">
+                                <strong>{{.Signals.Russ}}:</strong>&nbsp;{{.Signals.Err}}
+                            </div>
+                            {{end}}
+                        </div>
+                </form>
+            </div>
+        </div>
+        <div class="row g-0">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Предыдущие статусы <span class="text-primary">{{.Attributes.Status.Name}}</span>:</h5>
+                        <div>
+                            <table id="parents"
+                                class="table table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
+                                <thead>
+                                    <tr onclick="location.href = '/project/list'">
+                                        <th class="table-primary" scope="col">Наименование</th>
+                                        <th class="table-primary" scope="col">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{range .Attributes.PreviousStatuses}}
+                                    <tr onclick="location.href = '/status/update?id={{ .ID }}'"
+                                        style="cursor: pointer;">
+                                        <td>{{ .Name }}</td>
+                                        <td>
+                                            <a href="/status/parent/disconnect?parent={{ .ID }}&child={{ $.Attributes.Status.ID}}"
+                                                class="btn btn-outline-danger" role="button">Исключить</a>
+                                        </td>
+                                    </tr>
+                                    {{else}}
+                                    <tr>
+                                        <td>Отсутствуют предыдущие статусы</td>
+                                        <td>-</td>
+                                    </tr>
+                                    {{ end }}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex flex-column flex-sm-row align-items-center">
+                            <button type="button" class="btn btn-outline-primary mb-2 mb-sm-0 me-sm-2"
+                                style="min-width: 150px;" data-bs-toggle="modal" data-bs-target="#addParent">Добавить
+                                предыдущий статус</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Последующие статусы <span class="text-primary">{{.Attributes.Status.Name}}</span>:</h5>
+                        <div>
+                            <table id="children"
+                                class="table table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
+                                <thead>
+                                    <tr onclick="location.href = '/project/list'">
+                                        <th class="table-primary" scope="col">Наименование</th>
+                                        <th class="table-primary" scope="col">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{range .Attributes.PreviousStatuses}}
+                                    <tr onclick="location.href = '/status/update?id={{ .ID }}'"
+                                        style="cursor: pointer;">
+                                        <td>{{ .Name }}</td>
+                                        <td>
+                                            <a href="/status/child/disconnect?child={{ .ID }}&child={{ $.Attributes.Status.ID}}"
+                                                class="btn btn-outline-danger" role="button">Исключить</a>
+                                        </td>
+                                    </tr>
+                                    {{else}}
+                                    <tr>
+                                        <td>Отсутствуют предыдущие статусы</td>
+                                        <td>-</td>
+                                    </tr>
+                                    {{ end }}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex flex-column flex-sm-row align-items-center">
+                            <button type="button" class="btn btn-outline-primary mb-2 mb-sm-0 me-sm-2"
+                                style="min-width: 150px;" data-bs-toggle="modal" data-bs-target="#addParent">Добавить
+                                последующий статус</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addParent" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Добавить предыдущий статус</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/status/parent?id={{.Attributes.Status.ID}}" method="POST">
+                        <div name="status" class="form-group" data-width='auto'>
+                            Статус:
+                            <select name="projectid" id="teamid" required class="form-select" data-live-search="true"
+                                noneResultsText="Нет совпадений" data-size="10" width="auto">
+                                <option> </option>
+                                {{ range $status := index $.Attributes.PossibleParents}}
+                                <option value={{ $status.ID}}>{{ $status.Name}} </option>
+                                {{ end }}
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                            <button type="submit" class="btn btn-outline-success">Добавить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addChild" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Добавить предыдущий статус</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/status/child?id={{.Attributes.Status.ID}}" method="POST">
+                        <div name="status" class="form-group" data-width='auto'>
+                            Статус:
+                            <select name="projectid" id="teamid" required class="form-select" data-live-search="true"
+                                noneResultsText="Нет совпадений" data-size="10" width="auto">
+                                <option> </option>
+                                {{ range $status := index $.Attributes.PossibleChildren}}
+                                <option value={{ $status.ID}}>{{ $status.Name}} </option>
+                                {{ end }}
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                            <button type="submit" class="btn btn-outline-success">Добавить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#parents').DataTable({
+                language: { url: '../static/DataTables/language.json' },
+                order: [[1, 'desc']],
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#children').DataTable({
+                language: { url: '../static/DataTables/language.json' },
+                order: [[1, 'desc']],
+            });
+        });
+    </script>
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Get the forms we want to add validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })()
+    </script>
+</body>
+{{ template "footer.html" . }}
+
+</html>

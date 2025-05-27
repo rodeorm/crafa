@@ -1,0 +1,27 @@
+name: Go test coverage check
+
+on:
+  push:
+    branches:
+      - brave_new_world
+  pull_request:  # Исправлено: добавлен правильный отступ
+    branches:
+      - brave_new_world
+
+jobs:  # Добавлено: необходимо указать jobs
+  coverage:  # Название job
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+      
+      - name: generate test coverage
+        run: go test ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
+
+      - name: check test coverage
+        uses: vladopajic/go-test-coverage@v2
+        with:
+          config: ./.testcoverage.yml
+          profile: cover.out
+          local-prefix: github.com/rodeomr/money
+          badge-file-name: coverage.svg

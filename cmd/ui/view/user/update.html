@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+{{ template "header.html" . }}
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <form action="../user/update?id={{.Attributes.User.ID}}" class="needs-validation" novalidate
+                    method="POST">
+                    <h4>Редактирование информации о пользователе <span
+                            class="text-primary">{{.Attributes.User.Login}}</span>: </h4>
+                    <div class="row align-items-start">
+                        <div class="col">
+                            <label class="control-label" for="login">Имя пользователя:</label>
+                            <input {{if .Attributes.User.Login }} value="{{.Attributes.User.Login}}" {{end}} type="text"
+                                class="form-control" placeholder="Логин" name="login" required>
+                            <div class="invalid-feedback">Пожалуйста укажите логин</div>
+                        </div>
+                        <div class="col">
+                            <label for="password">Пароль:</label>
+                            <input {{if .Attributes.User.Password }} value={{.Attributes.User.Password}} {{end}}
+                                type="password" disabled class="form-control" placeholder="Пароль" name="password"
+                                required>
+                        </div>
+                        <div id="help" class="form-text">Для изменения пароля - перейдите по ссылке <a
+                                href="../user/password" class="close">"сбросить пароль"</a>.
+                            Никто не может получить доступ к чужому паролю.
+                            Он не хранится в Системе в явном виде.
+                        </div>
+                    </div>
+                    <div class="row align-items-start">
+                        <div class="col">
+                            <label for="familyname">Фамилия:</label>
+                            <input {{if .Attributes.User.FamilyName }} value="{{.Attributes.User.FamilyName}}" {{end}}
+                                type=" text" class="form-control" placeholder="Иванов" name="familyname" required>
+                            <div class="invalid-feedback">Пожалуйста укажите фамилию</div>
+                        </div>
+                        <div class="col">
+                            <label for="name">Имя:</label>
+                            <input {{if .Attributes.User.Name }} value="{{.Attributes.User.Name}}" {{end}} type="text"
+                                class="form-control" placeholder="Иван" name="name" required>
+                            <div class="invalid-feedback">Пожалуйста укажите имя</div>
+                        </div>
+                        <div class="col">
+                            <label for="patronname">Отчество:</label>
+                            <input {{if .Attributes.User.PatronName }} value="{{.Attributes.User.PatronName}}" {{end}}
+                                type=" text" class="form-control" placeholder="Иванович" name="patronname" required>
+                            <div class="invalid-feedback">Пожалуйста укажите отчество</div>
+                        </div>
+                    </div>
+                    <div class="row align-items-start">
+                        <div class="col">
+                            <label for="email">Адрес электронной почты:</label>
+                            <input {{if .Attributes.User.Email }} value="{{.Attributes.User.Email }}" {{end}}
+                                type="email" class="form-control" placeholder="priemn@dvec.ru" name="email" required>
+                            <div class="invalid-feedback">Пожалуйста укажите корректный адрес электронной почты</div>
+                        </div>
+                        <div class="col">
+                            <label for="phonenumber">Контактный номер телефона:</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="phonenumber">+7</span>
+                                <input {{if .Attributes.User.Phone }} value="{{.Attributes.User.Phone}}" {{end}}
+                                    type="number" class="form-control" placeholder="4232406845" name="phonenumber"
+                                    required>
+                                <div class="invalid-feedback">Пожалуйста укажите корректный номер телефона (без +7 или
+                                    8)</div>
+                            </div>
+                        </div>
+                        {{if eq .Session.User.Role.ID 1 }}
+                        <div class="col">
+                            <div name="role" class="form-group" data-width='auto'>
+                                Роль:
+                                <select name="roleid" id="roleid" required class="form-select" data-live-search="true"
+                                    noneResultsText="Нет совпадений" data-size="10" width="auto">
+                                    <option value={{.Attributes.User.Role.ID}}>--Текущая роль:
+                                        {{.Attributes.User.Role.Name}}--</option>
+                                    {{ range $role := index $.Attributes.PossibleRoles}}
+                                    <option value={{ $role.ID}}>{{ $role.Name}} </option>
+                                    {{ end }}
+                                </select>
+                            </div>
+                        </div>
+                        {{end}}
+                    </div>
+                    <div class="d-flex flex-column flex-sm-row align-items-center">
+                        <button type="submit" class="btn btn-outline-success mb-2 mb-sm-0 me-sm-2"
+                            style="min-width: 150px;">Сохранить информацию о пользователе</button>
+                        <a href="../user/list" class="btn btn-outline-danger">Отменить изменение информации о
+                            пользователе</a>
+                        {{if .Signals }}
+                        <div class="alert alert-danger mb-0" role="alert"
+                            style="flex: 1; display: flex; align-items: center;">
+                            <strong>{{.Signals.Russ}}:</strong>&nbsp;{{.Signals.Err}}
+                        </div>
+                        {{end}}
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <hr style="border: none; height: 2px; background: linear-gradient(to right, #ccc, #eee, #ccc); margin: 25px 0;">
+
+
+        <div class="row g-0">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h5>Проекты, в которых участвует <span class="text-primary">{{.Attributes.User.Login}}</span>:
+                        </h5>
+                        <div id="help" class="form-text">Изменения сохраняются автоматически
+                        </div>
+                        <div>
+                            <table id="projects"
+                                class="table table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
+                                <thead>
+                                    <tr onclick="location.href = '/project/list'">
+                                        <th class="table-primary" scope="col">Наименование</th>
+                                        <th class="table-primary" scope="col">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{range .Attributes.UserProjects}}
+                                    <tr onclick="location.href = '/project/view?id={{ .ID }}'" style="cursor: pointer;">
+                                        <td>{{ .Name }}</td>
+                                        <td>
+                                            <a href="/project/disconnect?projectid={{ .ID }}&userid={{ $.Attributes.User.ID}}"
+                                                class="btn btn-outline-danger" role="button">Исключить из
+                                                проекта</a>
+                                        </td>
+                                    </tr>
+                                    {{else}}
+                                    <tr>
+                                        <td>Отсутствуют проекты</td>
+                                        <td>-</td>
+                                    </tr>
+                                    {{ end }}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex flex-column flex-sm-row align-items-center">
+                            <button type="button" class="btn btn-outline-primary mb-2 mb-sm-0 me-sm-2"
+                                style="min-width: 150px;" data-bs-toggle="modal" data-bs-target="#addProject">Добавить в
+                                новый проект</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Вертикальный разделитель -->
+            <div class="col-md-auto d-none d-md-block">
+                <div class="vr h-100"></div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h5>Команды, в которых состоит <span class="text-success">{{.Attributes.User.Login}}</span>:
+                        </h5>
+                        <div id="help" class="form-text">Изменения сохраняются автоматически
+                        </div>
+                        <div>
+                            <table id="teams"
+                                class="table table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
+                                <thead>
+                                    <tr onclick="location.href = '/project/list'">
+                                        <th class="table-success" scope="col">Наименование</th>
+                                        <th class="table-success" scope="col">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{range .Attributes.UserTeams}}
+                                    <tr onclick="location.href = '/team/view?id={{ .ID }}'" style="cursor: pointer;">
+                                        <td>{{ .Name }}</td>
+                                        <td>
+                                            <a href="/team/disconnect?teamid={{ .ID }}&userid={{ $.Attributes.User.ID}}"
+                                                class="btn btn-outline-danger" role="button">Исключить из
+                                                команды</a>
+                                        </td>
+                                    </tr>
+                                    {{else}}
+                                    <tr>
+                                        <td>Отсутствуют команды</td>
+                                        <td>-</td>
+                                    </tr>
+                                    {{ end }}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex flex-column flex-sm-row align-items-center">
+                            <button type="button" class="btn btn-outline-success mb-2 mb-sm-0 me-sm-2"
+                                style="min-width: 150px;" data-bs-toggle="modal" data-bs-target="#addTeam">Добавить
+                                в новую команду</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addProject" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Добавить в новый проект</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/project/connect?id={{.Attributes.User.ID}}" method="POST">
+                        <div name="project" class="form-group" data-width='auto'>
+                            Проект:
+                            <select name="projectid" id="teamid" required class="form-select" data-live-search="true"
+                                noneResultsText="Нет совпадений" data-size="10" width="auto">
+                                <option> </option>
+                                {{ range $project := index $.Attributes.PossibleProjects}}
+                                <option value={{ $project.ID}}>{{ $project.Name}} </option>
+                                {{ end }}
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                            <button type="submit" class="btn btn-outline-success">Добавить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addTeam" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Добавить в новую команду</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/team/connect?id={{.Attributes.User.ID}}" method="POST">
+                        <div name="team" class="form-group" data-width='auto'>
+                            Команда:
+                            <select name="teamid" id="teamid" required class="form-select" data-live-search="true"
+                                noneResultsText="Нет совпадений" data-size="10" width="auto">
+                                <option> </option>
+                                {{ range $team := index $.Attributes.PossibleTeams}}
+                                <option value={{ $team.ID}}>{{ $team.Name}} </option>
+                                {{ end }}
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                            <button type="submit" class="btn btn-outline-success">Добавить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#projects').DataTable({
+                language: { url: '../static/DataTables/language.json' },
+                order: [[1, 'desc']],
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#teams').DataTable({
+                language: { url: '../static/DataTables/language.json' },
+                order: [[1, 'desc']],
+            });
+        });
+    </script>
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                // Get the forms we want to add validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })()
+    </script>
+</body>
+{{ template "footer.html" . }}
+
+</html>

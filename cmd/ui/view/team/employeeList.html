@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+{{ template "header.html" . }}
+
+<body>
+    <div class="card text-left">
+        <div class="card-body">
+            <div>
+                <table id="Teams"
+                    class="table  table-hover table-bordered border-1 rounded rounded-3 overflow-hidden align-middle">
+                    <thead>
+                        <tr onclick="location.href = '/team/list'">
+                            <th class="table-primary" scope=" col">Наименование</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{range .Attributes.Teams}}
+                        <tr class=" = " onclick="location.href = '/team/view?id={{ .ID }}'" style="cursor: pointer;">
+                            <td>{{ .Name }}</td>
+                            </td>
+                        </tr>
+                        {{else}}
+                        <tr>
+                            <td>Отсутствуют команды</td>
+                        </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('#users').DataTable({ language: { url: '../static/DataTables/language.json' } });
+            });
+        </script>
+</body>
+{{ template "footer.html" . }}
+
+</html>

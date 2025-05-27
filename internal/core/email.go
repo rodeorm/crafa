@@ -1,23 +1,81 @@
 package core
 
 import (
-	"database/sql"
+	"bytes"
+	"fmt"
+	"path/filepath"
+	"text/template"
+
+	"gopkg.in/gomail.v2"
 )
 
+// Email сообщение
 type Email struct {
-	Login            string       // Логин, для которого было отправлено подтверждение
-	Email            string       // Адрес электронной почты, на который было отправлено подтверждение
-	Key              string       // Код для ссылки, подтверждающий email
-	SendedTime       sql.NullTime // Время, когда сообщение было отправлено
-	ConfirmedTime    sql.NullTime // Время, когда email был подтержден
-	ConfirmationLink string       // Ссылка, использованная для подтверждения
-	TemplateID       int
-
-	User
+	Message
+	GMS *gomail.Message
 }
 
-type EmailTemplate struct {
-	ID   int
-	Name string
-	Text string
+// NewEmail создает новое письмо с набором функц опций
+func NewEmail(m Message, opts ...func(*Email)) *Email {
+	e := &Email{GMS: gomail.NewMessage(),
+		Message: m}
+	for _, opt := range opts {
+		opt(e)
+	}
+	return e
+}
+
+// WithAttachment добавляет к письму вложение
+func WithAttachment(filePath string) func(*Email) {
+	return func(e *Email) {
+		attachPath, err := filepath.Abs(filepath.Join(".", "static", "img", filePath))
+		if err == nil {
+			e.GMS.Attach(attachPath)
+		}
+	}
+}
+
+// WithHeader добавляет subject, from, to
+func WithHeader(from, to string) func(*Email) {
+	return func(e *Email) {
+		switch e.Type.ID {
+		case MessageTypeConfirm:
+			e.GMS.SetHeader("Subject", "Подтверждение адреса электронной почты")
+		case MessageTypeAuth:
+			e.GMS.SetHeader("Subject", "Одноразовый пароль")
+		case MessageTypeNotify:
+			e.GMS.SetHeader("Subject", "Уведомление")
+		}
+		e.GMS.SetHeader("From", from)
+		e.GMS.SetHeader("To", to)
+	}
+}
+
+// WithBody персонализирует текст email сообщения по шаблону (папка, страница)
+func WithBody(domain, sign string, userID int) func(*Email) {
+	return func(e *Email) {
+		var (
+			templatePath string
+			body         bytes.Buffer
+		)
+		switch e.Type.ID {
+		case MessageTypeConfirm:
+			templatePath, _ = filepath.Abs(fmt.Sprintf("./view/%s/%s.html", "email", "confirm"))
+			mail, _ := template.ParseFiles(templatePath)
+			url := fmt.Sprintf("https://%s/user/confirm?id=%d&otp=%s", domain, userID, sign)
+			mail.Execute(&body, url)
+
+		case MessageTypeAuth:
+			templatePath, _ = filepath.Abs(fmt.Sprintf("./view/%s/%s.html", "email", "auth"))
+
+			mail, _ := template.ParseFiles(templatePath)
+			mail.Execute(&body, sign)
+		case MessageTypeNotify:
+			templatePath, _ = filepath.Abs(fmt.Sprintf("./view/%s/%s.html", "email", "notify"))
+
+			mail, _ := template.ParseFiles(templatePath)
+			mail.Execute(&body, sign)
+		}
+		e.GMS.SetBody("text/html", body.String())
+	}
 }
