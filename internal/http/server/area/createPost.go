@@ -45,6 +45,7 @@ func CreatePost(s SessionManager, a AreaStorager) http.HandlerFunc {
 			sign["Russ"] = "Ошибка при создании категории"
 			sign["Err"] = err.Error()
 			pg := page.NewPage(page.WithSignals(sign), page.WithAttrs(at), page.WithSession(session))
+			w.WriteHeader(http.StatusInternalServerError)
 			page.Execute("area", "list", w, pg)
 			return
 		}
