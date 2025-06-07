@@ -2,7 +2,7 @@ package priority
 
 import (
 	"context"
-	"money/internal/core"
+	"crafa/internal/core"
 )
 
 func (s *Storage) DeletePriority(ctx context.Context, c *core.Priority) error {

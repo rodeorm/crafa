@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"money/internal/core"
-	"money/internal/crypt"
-	"money/internal/logger"
+	"crafa/internal/core"
+	"crafa/internal/crypt"
+	"crafa/internal/logger"
 	"time"
 
 	"go.uber.org/zap"

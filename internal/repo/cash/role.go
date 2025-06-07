@@ -2,7 +2,7 @@ package cash
 
 import (
 	"context"
-	"money/internal/core"
+	"crafa/internal/core"
 )
 
 type RoleCash struct {

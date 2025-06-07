@@ -2,7 +2,7 @@ package priority
 
 import (
 	"context"
-	"money/internal/core"
+	"crafa/internal/core"
 )
 
 func (s *Storage) SelectAllLevelPriorities(ctx context.Context, l *core.Level) error {

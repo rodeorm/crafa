@@ -3,7 +3,7 @@ package msg
 import (
 	"context"
 	"log"
-	"money/internal/core"
+	"crafa/internal/core"
 )
 
 func (s *Storage) UpdateMsg(ctx context.Context, e *core.Message) error {

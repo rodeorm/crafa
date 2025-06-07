@@ -3,8 +3,8 @@ package team
 import (
 	"context"
 	"log"
-	"money/internal/core"
-	"money/internal/logger"
+	"crafa/internal/core"
+	"crafa/internal/logger"
 
 	"go.uber.org/zap"
 )

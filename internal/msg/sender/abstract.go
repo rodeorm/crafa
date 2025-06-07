@@ -2,7 +2,7 @@ package sender
 
 import (
 	"context"
-	"money/internal/core"
+	"crafa/internal/core"
 )
 
 type MessageStorager interface {

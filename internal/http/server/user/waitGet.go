@@ -2,7 +2,7 @@ package user
 
 import (
 	"context"
-	"money/internal/http/page"
+	"crafa/internal/http/page"
 	"net/http"
 )
 

@@ -2,7 +2,7 @@ package status
 
 import (
 	"context"
-	"money/internal/core"
+	"crafa/internal/core"
 	"net/http"
 )
 

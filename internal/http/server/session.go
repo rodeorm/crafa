@@ -3,8 +3,8 @@ package server
 import (
 	"net/http"
 
-	"money/internal/core"
-	"money/internal/http/cookie"
+	"crafa/internal/core"
+	"crafa/internal/http/cookie"
 )
 
 func (s *Server) GetSession(r *http.Request) (*core.Session, error) {

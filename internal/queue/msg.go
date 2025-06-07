@@ -1,6 +1,6 @@
 package queue
 
-import "money/internal/core"
+import "crafa/internal/core"
 
 // Queue - очередь на отправку сообщений
 type MessageQueue struct {

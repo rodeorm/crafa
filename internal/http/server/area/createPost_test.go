@@ -11,8 +11,8 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 
-	"money/internal/core"
-	mocks "money/internal/repo/mocks/area"
+	"crafa/internal/core"
+	mocks "crafa/internal/repo/mocks/area"
 )
 
 func TestCreatePost_TableDriven(t *testing.T) {

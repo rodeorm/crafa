@@ -1,9 +1,9 @@
 package priority
 
 import (
-	"money/internal/logger"
-	"money/internal/repo/postgres/db"
-	"money/internal/repo/postgres/stmt"
+	"crafa/internal/logger"
+	"crafa/internal/repo/postgres/db"
+	"crafa/internal/repo/postgres/stmt"
 
 	"github.com/pkg/errors"
 	"go.uber.org/zap"

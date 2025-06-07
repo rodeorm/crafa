@@ -2,7 +2,7 @@ package category
 
 import (
 	"context"
-	"money/internal/core"
+	"crafa/internal/core"
 )
 
 func (s Storage) SelectAllLevelCategories(ctx context.Context, l *core.Level) error {

@@ -3,8 +3,8 @@ package sender
 import (
 	"context"
 	"fmt"
-	"money/internal/core"
-	"money/internal/logger"
+	"crafa/internal/core"
+	"crafa/internal/logger"
 	"time"
 
 	"go.uber.org/zap"

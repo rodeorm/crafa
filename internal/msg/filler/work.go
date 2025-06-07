@@ -5,9 +5,9 @@ import (
 	"sync"
 	"time"
 
-	"money/internal/cfg"
-	"money/internal/logger"
-	"money/internal/repo/postgres"
+	"crafa/internal/cfg"
+	"crafa/internal/logger"
+	"crafa/internal/repo/postgres"
 
 	"go.uber.org/zap"
 )

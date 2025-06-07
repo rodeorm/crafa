@@ -6,7 +6,7 @@ package mock_area
 
 import (
 	context "context"
-	core "money/internal/core"
+	core "crafa/internal/core"
 	http "net/http"
 	reflect "reflect"
 

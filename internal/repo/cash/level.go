@@ -3,7 +3,7 @@ package cash
 import (
 	"context"
 	"fmt"
-	"money/internal/core"
+	"crafa/internal/core"
 )
 
 type LevelCash struct {

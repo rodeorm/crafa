@@ -2,7 +2,7 @@ package area
 
 import (
 	"context"
-	"money/internal/core"
+	"crafa/internal/core"
 
 	"github.com/pkg/errors"
 )

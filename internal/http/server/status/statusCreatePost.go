@@ -2,9 +2,9 @@ package status
 
 import (
 	"context"
-	"money/internal/core"
-	"money/internal/http/page"
-	"money/internal/logger"
+	"crafa/internal/core"
+	"crafa/internal/http/page"
+	"crafa/internal/logger"
 	"net/http"
 	"strconv"
 

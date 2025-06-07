@@ -1,16 +1,16 @@
 package server
 
 import (
-	"money/internal/http/middle"
-	"money/internal/http/server/area"
-	"money/internal/http/server/category"
-	"money/internal/http/server/index"
-	"money/internal/http/server/iteration"
-	"money/internal/http/server/priority"
-	"money/internal/http/server/project"
-	"money/internal/http/server/status"
-	"money/internal/http/server/team"
-	"money/internal/http/server/user"
+	"crafa/internal/http/middle"
+	"crafa/internal/http/server/area"
+	"crafa/internal/http/server/category"
+	"crafa/internal/http/server/index"
+	"crafa/internal/http/server/iteration"
+	"crafa/internal/http/server/priority"
+	"crafa/internal/http/server/project"
+	"crafa/internal/http/server/status"
+	"crafa/internal/http/server/team"
+	"crafa/internal/http/server/user"
 	"net/http"
 
 	"github.com/gorilla/mux"

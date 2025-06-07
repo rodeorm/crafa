@@ -5,10 +5,10 @@ import (
 	"sync"
 	"time"
 
-	"money/internal/cfg"
-	"money/internal/core"
-	"money/internal/logger"
-	"money/internal/repo/postgres"
+	"crafa/internal/cfg"
+	"crafa/internal/core"
+	"crafa/internal/logger"
+	"crafa/internal/repo/postgres"
 
 	"go.uber.org/zap"
 	"gopkg.in/gomail.v2"

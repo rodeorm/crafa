@@ -1,9 +1,9 @@
 package middle
 
 import (
-	"money/internal/core"
-	"money/internal/crypt"
-	"money/internal/http/cookie"
+	"crafa/internal/core"
+	"crafa/internal/crypt"
+	"crafa/internal/http/cookie"
 	"net/http"
 )
 

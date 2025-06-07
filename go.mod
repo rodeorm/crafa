@@ -1,4 +1,4 @@
-module money
+module crafa
 
 go 1.23
 

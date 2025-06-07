@@ -1,7 +1,7 @@
 package cfg
 
 import (
-	"money/internal/queue"
+	"crafa/internal/queue"
 )
 
 type EmailConfig struct {

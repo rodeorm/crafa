@@ -1,7 +1,7 @@
 package stmt
 
 import (
-	"money/internal/logger"
+	"crafa/internal/logger"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"

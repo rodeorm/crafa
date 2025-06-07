@@ -1,7 +1,7 @@
 package filler
 
 import (
-	"money/internal/core"
+	"crafa/internal/core"
 )
 
 // Filler - рабочий, заполняющий очередь сообщений

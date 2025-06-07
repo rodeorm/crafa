@@ -2,8 +2,8 @@ package area
 
 import (
 	"context"
-	"money/internal/http/page"
-	"money/internal/logger"
+	"crafa/internal/http/page"
+	"crafa/internal/logger"
 	"net/http"
 
 	"go.uber.org/zap"

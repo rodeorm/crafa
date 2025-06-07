@@ -1,10 +1,10 @@
 package server
 
 import (
-	"money/internal/cfg"
-	"money/internal/http/cookie"
-	"money/internal/repo/cash"
-	"money/internal/repo/postgres"
+	"crafa/internal/cfg"
+	"crafa/internal/http/cookie"
+	"crafa/internal/repo/cash"
+	"crafa/internal/repo/postgres"
 	"net/http"
 )
 

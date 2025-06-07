@@ -2,7 +2,7 @@ package issue
 
 import (
 	"context"
-	"money/internal/core"
+	"crafa/internal/core"
 	"net/http"
 )
 

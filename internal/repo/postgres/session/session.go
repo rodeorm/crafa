@@ -2,7 +2,7 @@ package session
 
 import (
 	"context"
-	"money/internal/core"
+	"crafa/internal/core"
 )
 
 // StartSession начинает новую сессию

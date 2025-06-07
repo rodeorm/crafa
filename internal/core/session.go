@@ -7,7 +7,7 @@ import (
 
 	"github.com/golang-jwt/jwt"
 
-	"money/internal/crypt"
+	"crafa/internal/crypt"
 )
 
 type Session struct {

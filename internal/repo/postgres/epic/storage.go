@@ -1,8 +1,8 @@
 package epic
 
 import (
-	"money/internal/repo/postgres/db"
-	"money/internal/repo/postgres/stmt"
+	"crafa/internal/repo/postgres/db"
+	"crafa/internal/repo/postgres/stmt"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"

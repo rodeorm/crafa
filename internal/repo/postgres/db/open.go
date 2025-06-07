@@ -1,7 +1,7 @@
 package db
 
 import (
-	"money/internal/logger"
+	"crafa/internal/logger"
 	"sync"
 	"time"
 

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"money/internal/cfg"
-	"money/internal/http/server"
-	"money/internal/logger"
-	"money/internal/msg/filler"
-	"money/internal/msg/sender"
+	"crafa/internal/cfg"
+	"crafa/internal/http/server"
+	"crafa/internal/logger"
+	"crafa/internal/msg/filler"
+	"crafa/internal/msg/sender"
 )
 
 func main() {

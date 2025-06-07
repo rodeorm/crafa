@@ -1,6 +1,6 @@
 package page
 
-import "money/internal/core"
+import "crafa/internal/core"
 
 //Page - набор атрибутов для страницы
 type Page struct {

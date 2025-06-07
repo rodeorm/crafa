@@ -2,7 +2,7 @@ package iteration
 
 import (
 	"context"
-	"money/internal/core"
+	"crafa/internal/core"
 )
 
 func (s *Storage) DeleteIteration(ctx context.Context, p *core.Iteration) error {

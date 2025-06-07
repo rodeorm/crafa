@@ -2,7 +2,7 @@ package iteration
 
 import (
 	"context"
-	"money/internal/core"
+	"crafa/internal/core"
 )
 
 func (s *Storage) InsertIteration(ctx context.Context, i *core.Iteration) error {

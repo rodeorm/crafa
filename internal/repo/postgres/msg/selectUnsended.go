@@ -3,7 +3,7 @@ package msg
 import (
 	"context"
 	"log"
-	"money/internal/core"
+	"crafa/internal/core"
 )
 
 func (s *Storage) SelectUnsendedMsgs(ctx context.Context) ([]core.Message, error) {

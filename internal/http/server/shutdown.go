@@ -2,7 +2,7 @@ package server
 
 import (
 	"context"
-	"money/internal/logger"
+	"crafa/internal/logger"
 	"os"
 	"os/signal"
 	"syscall"

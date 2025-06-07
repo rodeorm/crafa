@@ -1,16 +1,16 @@
 package postgres
 
 import (
-	"money/internal/logger"
-	"money/internal/repo/postgres/area"
-	"money/internal/repo/postgres/category"
-	"money/internal/repo/postgres/iteration"
-	"money/internal/repo/postgres/msg"
-	"money/internal/repo/postgres/priority"
-	"money/internal/repo/postgres/project"
-	"money/internal/repo/postgres/status"
-	"money/internal/repo/postgres/team"
-	"money/internal/repo/postgres/user"
+	"crafa/internal/logger"
+	"crafa/internal/repo/postgres/area"
+	"crafa/internal/repo/postgres/category"
+	"crafa/internal/repo/postgres/iteration"
+	"crafa/internal/repo/postgres/msg"
+	"crafa/internal/repo/postgres/priority"
+	"crafa/internal/repo/postgres/project"
+	"crafa/internal/repo/postgres/status"
+	"crafa/internal/repo/postgres/team"
+	"crafa/internal/repo/postgres/user"
 	"sync"
 
 	"go.uber.org/zap"

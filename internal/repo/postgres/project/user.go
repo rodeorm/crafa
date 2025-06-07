@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"log"
-	"money/internal/core"
+	"crafa/internal/core"
 )
 
 func (s *Storage) SelectUserProject(ctx context.Context, p *core.Project, u *core.User) error {

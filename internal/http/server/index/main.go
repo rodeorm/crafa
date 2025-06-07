@@ -1,8 +1,8 @@
 package index
 
 import (
-	"money/internal/core"
-	"money/internal/http/page"
+	"crafa/internal/core"
+	"crafa/internal/http/page"
 	"net/http"
 )
 
