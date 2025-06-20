@@ -2,12 +2,12 @@ version: '3.8'
 
 services:
   crafa:
-    image: crafa:latest
-    container_name: crafa
-    ports:
-      - "8080:8080"
+    build:
+      dockerfile: Dockerfile
+    expose:
+        - "8080:8080"
     env_file:
-      - .env
+        - .env
     restart: unless-stopped
 
   nginx:
