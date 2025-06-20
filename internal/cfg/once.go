@@ -1,6 +1,7 @@
 package cfg
 
 import (
+	"crafa/internal/logger"
 	"crafa/internal/queue"
 	"os"
 	"strconv"
@@ -63,10 +64,12 @@ func Configurate() (*Config, chan struct{}, *sync.WaitGroup) {
 			cfg.SecurityConfig = SecurityConfig{
 				TokenLiveTime: 1800000, // os.Getenv("TOKEN_LIVE_TIME")
 				OTPLiveTime:   18000,
-				JWTKey:        os.Getenv("JWK_KEY"),
+				JWTKey:        os.Getenv("JWT_KEY"),
 			}
 
 			exit = make(chan struct{})
+
+			logger.Sugar.Info("Запущена конфигурация. JWTKey", cfg.JWTKey)
 		})
 
 	return cfg, exit, &wg
