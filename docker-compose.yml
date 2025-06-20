@@ -1,13 +1,14 @@
-version: '3.8'
+version: '3.8'  
 
 services:
   crafa:
     build:
+      context: .
       dockerfile: Dockerfile
     expose:
-        - "8080"
+      - "8080"
     env_file:
-        - .env
+      - .env
     restart: unless-stopped
 
   nginx:
@@ -26,6 +27,8 @@ services:
 
   certbot:
     image: certbot/certbot:latest
+    env_file:
+      - .env
     volumes:
       - ./certs:/etc/letsencrypt
       - ./static:/usr/share/nginx/html/static
