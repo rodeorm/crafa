@@ -4,6 +4,7 @@ import (
 	"context"
 	"crafa/internal/core"
 	"crafa/internal/http/page"
+	"crafa/internal/logger"
 	"net/http"
 	"strconv"
 	"time"
@@ -25,6 +26,7 @@ func VerifyPost(s SessionManager, u UserStorager, c CookieManager, liveTime time
 
 		session, err := u.AdvAuthUser(context.TODO(), usr, otp, liveTime)
 		if err != nil {
+			logger.Sugar.Error(err)
 			sign := make(map[string]string)
 			sign["russ"] = "Неправильный код подтверждения"
 			sign["err"] = err.Error()
