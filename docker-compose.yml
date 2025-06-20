@@ -21,7 +21,7 @@ services:
       - ./logs:/var/log/nginx
       - ./static:/usr/share/nginx/html/static
     depends_on:
-      - go-app
+      - crafa
     restart: unless-stopped
 
   certbot:
