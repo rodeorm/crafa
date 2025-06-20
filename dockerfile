@@ -13,6 +13,7 @@ COPY --from=builder /go/bin/ui /app/ui
 COPY --from=builder /app/cmd/ui/static /app/static
 COPY --from=builder /app/cmd/ui/view /app/view
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 
 EXPOSE 8080
 ENV TZ=Europe/Moscow
