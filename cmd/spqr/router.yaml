@@ -9,15 +9,13 @@ daemonize: true
 shards:
   shard1:
     usr: app
-    db: crafa_data_1    
-    pwd: qqqQQQ123      
+    db: crafa_data_1      
     type: DATA
     hosts:
       - "crafa.ru:5432" 
   shard2:
     usr: app
-    db: crafa_data_2    
-    pwd: qqqQQQ123      
+    db: crafa_data_2        
     type: DATA
     hosts:
       - "crafa.ru:5432" 
